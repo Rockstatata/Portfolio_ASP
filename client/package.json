@@ -4,9 +4,10 @@
   "description": "Personal portfolio website",
   "main": "index.html",
   "scripts": {
-    "build:css": "tailwindcss -i ./css/input.css -o ./css/styles.css",
+    "build:css": "tailwindcss -i ./css/input.css -o ./css/styles.css --minify",
     "watch:css": "tailwindcss -i ./css/input.css -o ./css/styles.css --watch",
-    "start": "npm run watch:css"
+    "dev": "npm run watch:css",
+    "start": "npm run dev"
   },
   "keywords": [
     "portfolio",
