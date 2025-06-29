@@ -1,390 +1,775 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sarwad Hasan Siddiqui - Portfolio</title>
-    
+
     <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Configure Tailwind -->
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#fef2f2',
-                            100: '#fee2e2',
-                            200: '#fecaca',
-                            300: '#fca5a5',
-                            400: '#f87171',
-                            500: '#ef4444',
-                            600: '#dc2626',
-                            700: '#b91c1c',
-                            800: '#991b1b',
-                            900: '#7f1d1d',
-                        }
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: {
+                50: "#fef2f2",
+                100: "#fee2e2",
+                200: "#fecaca",
+                300: "#fca5a5",
+                400: "#f87171",
+                500: "#ef4444",
+                600: "#dc2626",
+                700: "#b91c1c",
+                800: "#991b1b",
+                900: "#7f1d1d",
+              },
+            },
+          },
+        },
+      };
     </script>
-</head>
+  </head>
 
-<body class="font-inter bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300">
-    
-    <!-- NAVBAR - Direct HTML, No Loading Required -->
-    <nav class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-11/12 max-w-6xl transition-all duration-300" id="main-navbar">
-        <!-- Main Navbar Container -->
-        <div class="bg-white/10 dark:bg-gray-900/10 backdrop-blur-md border border-white/20 dark:border-gray-700/20 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-4">
-            
-            <!-- Main Flex Container -->
-            <div class="flex items-center justify-between">
-                
-                <!-- LEFT SIDE: Brand/Logo -->
-                <div class="flex items-center">
-                    <a href="#home" class="group flex items-center space-x-3 text-xl font-bold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300">
-                        <!-- Optional Logo Icon -->
-                        <div class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                            <span class="text-white font-bold text-sm">SH</span>
-                        </div>
-                        <!-- Brand Text -->
-                        <span class="hidden sm:block">Sarwad Hasan Siddiqui</span>
-                    </a>
-                </div>
-                
-                <!-- CENTER: Desktop Navigation Links -->
-                <div class="hidden lg:flex items-center space-x-1">
-                    <a href="#home" class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group">
-                        Home
-                        <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"></span>
-                    </a>
-                    
-                    <a href="#about" class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group">
-                        About Me
-                        <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"></span>
-                    </a>
-                    
-                    <a href="#timeline" class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group">
-                        Timeline
-                        <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"></span>
-                    </a>
-                    
-                    <a href="#skills" class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group">
-                        Skills
-                        <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"></span>
-                    </a>
-                    
-                    <a href="#projects" class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group">
-                        Projects
-                        <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"></span>
-                    </a>
-                    
-                    <a href="#blog" class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group">
-                        Blog
-                        <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"></span>
-                    </a>
-                    
-                    <a href="#github" class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group">
-                        GitHub Stats
-                        <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"></span>
-                    </a>
-                    
-                    <a href="#contact" class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group">
-                        Contact
-                        <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"></span>
-                    </a>
-                </div>
-                
-                <!-- RIGHT SIDE: Theme Toggle & Mobile Menu -->
-                <div class="flex items-center space-x-3">
-                    <!-- Theme Toggle Button -->
-                    <button id="theme-toggle" class="relative p-3 rounded-full bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm border border-white/30 dark:border-gray-600/30 hover:bg-white/30 dark:hover:bg-gray-800/40 hover:scale-105 transition-all duration-300 group" aria-label="Toggle theme">
-                        <!-- Sun Icon (visible in dark mode) -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 hidden dark:block transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                        <!-- Moon Icon (visible in light mode) -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600 block dark:hidden transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                        </svg>
-                    </button>
-                    
-                    <!-- Mobile Menu Button (Hamburger) -->
-                    <button id="mobile-menu-toggle" class="lg:hidden p-3 rounded-full bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm border border-white/30 dark:border-gray-600/30 hover:bg-white/30 dark:hover:bg-gray-800/40 hover:scale-105 transition-all duration-300" aria-label="Toggle mobile menu">
-                        <!-- Hamburger Icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
+  <body
+    class="font-inter bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300"
+  >
+    <!-- VANTA Background -->
+    <div id="vanta-background" class="fixed inset-0 z-0"></div>
+
+    <!-- NAVBAR -->
+    <nav
+      class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-11/12 max-w-6xl transition-all duration-300"
+      id="main-navbar"
+    >
+      <!-- Main Navbar Container -->
+      <div
+        class="bg-white/10 dark:bg-gray-900/10 backdrop-blur-md border border-white/20 dark:border-gray-700/20 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-4"
+      >
+        <!-- Main Flex Container -->
+        <div class="flex items-center justify-between">
+          <!-- LEFT SIDE: Brand/Logo -->
+          <div class="flex items-center">
+            <a
+              href="#home"
+              class="group flex items-center space-x-3 text-xl font-bold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300"
+            >
+              <!-- Optional Logo Icon -->
+              <!-- <div
+                class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
+              >
+                <span class="text-white font-bold text-sm">SH</span>
+              </div> -->
+              <!-- Brand Text -->
+              <span class="hidden sm:block">Sarwad Hasan Siddiqui</span>
+            </a>
+          </div>
+
+          <!-- CENTER: Desktop Navigation Links -->
+          <div class="hidden lg:flex items-center space-x-1">
+            <a
+              href="#home"
+              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
+            >
+              Home
+              <span
+                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
+              ></span>
+            </a>
+
+            <a
+              href="#about"
+              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
+            >
+              About Me
+              <span
+                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
+              ></span>
+            </a>
+
+            <a
+              href="#timeline"
+              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
+            >
+              Timeline
+              <span
+                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
+              ></span>
+            </a>
+
+            <a
+              href="#skills"
+              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
+            >
+              Skills
+              <span
+                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
+              ></span>
+            </a>
+
+            <a
+              href="#projects"
+              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
+            >
+              Projects
+              <span
+                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
+              ></span>
+            </a>
+
+            <a
+              href="#blog"
+              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
+            >
+              Blog
+              <span
+                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
+              ></span>
+            </a>
+
+            <a
+              href="#github"
+              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
+            >
+              GitHub Stats
+              <span
+                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
+              ></span>
+            </a>
+
+            <a
+              href="#contact"
+              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
+            >
+              Contact
+              <span
+                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
+              ></span>
+            </a>
+          </div>
+
+          <!-- RIGHT SIDE: Theme Toggle & Mobile Menu -->
+          <div class="flex items-center space-x-3">
+            <!-- Theme Toggle Button -->
+            <button
+              id="theme-toggle"
+              class="relative p-3 rounded-full bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm border border-white/30 dark:border-gray-600/30 hover:bg-white/30 dark:hover:bg-gray-800/40 hover:scale-105 transition-all duration-300 group"
+              aria-label="Toggle theme"
+            >
+              <!-- Sun Icon (visible in dark mode) -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-yellow-500 hidden dark:block transition-transform duration-300 group-hover:rotate-12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+              <!-- Moon Icon (visible in light mode) -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-indigo-600 block dark:hidden transition-transform duration-300 group-hover:rotate-12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+            </button>
+
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button
+              id="mobile-menu-toggle"
+              class="lg:hidden p-3 rounded-full bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm border border-white/30 dark:border-gray-600/30 hover:bg-white/30 dark:hover:bg-gray-800/40 hover:scale-105 transition-all duration-300"
+              aria-label="Toggle mobile menu"
+            >
+              <!-- Hamburger Icon -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 text-gray-700 dark:text-gray-300"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
-        
-        <!-- Mobile Navigation Menu (Hidden by default) -->
-        <div id="mobile-menu" class="lg:hidden mt-4 bg-white/10 dark:bg-gray-900/10 backdrop-blur-md border border-white/20 dark:border-gray-700/20 rounded-2xl shadow-lg hidden transition-all duration-300">
-            <div class="px-6 py-4">
-                <!-- Mobile Navigation Links -->
-                <nav class="flex flex-col space-y-1">
-                    <a href="#home" class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                        Home
-                    </a>
-                    
-                    <a href="#about" class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        About Me
-                    </a>
-                    
-                    <a href="#timeline" class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Timeline
-                    </a>
-                    
-                    <a href="#skills" class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                        </svg>
-                        Skills
-                    </a>
-                    
-                    <a href="#projects" class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
-                        Projects
-                    </a>
-                    
-                    <a href="#blog" class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                        </svg>
-                        Blog
-                    </a>
-                    
-                    <a href="#github" class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                        GitHub Stats
-                    </a>
-                    
-                    <a href="#contact" class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-3 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        Contact
-                    </a>
-                </nav>
-            </div>
+      </div>
+
+      <!-- Mobile Navigation Menu (Hidden by default) -->
+      <div
+        id="mobile-menu"
+        class="lg:hidden mt-4 bg-white/10 dark:bg-gray-900/10 backdrop-blur-md border border-white/20 dark:border-gray-700/20 rounded-2xl shadow-lg hidden transition-all duration-300"
+      >
+        <div class="px-6 py-4">
+          <!-- Mobile Navigation Links -->
+          <nav class="flex flex-col space-y-1">
+            <a
+              href="#home"
+              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-3 opacity-70"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                />
+              </svg>
+              Home
+            </a>
+
+            <a
+              href="#about"
+              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-3 opacity-70"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+              About Me
+            </a>
+
+            <a
+              href="#timeline"
+              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-3 opacity-70"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              Timeline
+            </a>
+
+            <a
+              href="#skills"
+              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-3 opacity-70"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                />
+              </svg>
+              Skills
+            </a>
+
+            <a
+              href="#projects"
+              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-3 opacity-70"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                />
+              </svg>
+              Projects
+            </a>
+
+            <a
+              href="#blog"
+              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-3 opacity-70"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
+              Blog
+            </a>
+
+            <a
+              href="#github"
+              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-3 opacity-70"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                />
+              </svg>
+              GitHub Stats
+            </a>
+
+            <a
+              href="#contact"
+              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4 mr-3 opacity-70"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+              Contact
+            </a>
+          </nav>
         </div>
+      </div>
     </nav>
-    
+
     <!-- Main Content -->
-    <main class="pt-32">
-        <!-- Test sections to see the navbar working -->
-        <section id="home" class="min-h-screen flex items-center justify-center">
-            <div class="text-center">
-                <h1 class="text-5xl font-bold mb-4">Welcome to My Portfolio</h1>
-                <p class="text-xl text-gray-600 dark:text-gray-400">Full Stack Developer & Software Engineer</p>
+    <main class="pt-24 relative z-10">
+      <!-- Home Section -->
+      <section
+        id="home"
+        class="min-h-screen relative overflow-hidden flex items-center"
+      >
+        <!-- Floating Elements Background - Reduced quantity for performance -->
+        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div
+            class="floating-shape absolute top-20 left-10 w-24 h-24 bg-gradient-to-br from-primary-500/15 to-primary-600/25 rounded-3xl transform rotate-12"
+          ></div>
+          <div
+            class="floating-shape absolute top-40 right-20 w-16 h-16 bg-gradient-to-br from-primary-400/10 to-primary-700/20 rounded-full"
+          ></div>
+          <div
+            class="floating-shape absolute bottom-32 left-1/4 w-12 h-12 bg-gradient-to-br from-primary-600/15 to-primary-500/25 transform rotate-45"
+          ></div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="container mx-auto px-6 relative z-10">
+          <div class="grid lg:grid-cols-12 gap-8 items-center min-h-[80vh]">
+            <!-- Left Side: Text Content -->
+            <div class="lg:col-span-7 space-y-6">
+              <!-- Status Badge -->
+              <div
+                class="inline-flex items-center gap-3 px-4 py-2 bg-white/10 dark:bg-gray-900/10 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 rounded-full"
+              >
+                <div class="w-3 h-3 bg-green-500 rounded-full pulse-dot"></div>
+                <span
+                  class="text-sm font-medium text-gray-600 dark:text-gray-400"
+                  >Available for Projects</span
+                >
+              </div>
+
+              <!-- Name with Optimized Typography -->
+              <div class="space-y-2">
+                <h1
+                  class="text-6xl lg:text-8xl font-black leading-[0.85] tracking-tight"
+                >
+                  <div class="overflow-hidden">
+                    <span
+                      class="block slide-up text-gradient-primary"
+                      style="--delay: 0ms"
+                      >SARWAD</span
+                    >
+                  </div>
+                  <div class="overflow-hidden">
+                    <span
+                      class="block slide-up text-gray-800 dark:text-gray-200"
+                      style="--delay: 100ms"
+                      >HASAN</span
+                    >
+                  </div>
+                  <div class="overflow-hidden">
+                    <span
+                      class="block slide-up text-gradient-secondary"
+                      style="--delay: 200ms"
+                      >SIDDIQUI</span
+                    >
+                  </div>
+                </h1>
+              </div>
+
+              <!-- Role Description -->
+              <div class="space-y-4">
+                <!-- Main Tagline -->
+                <div class="slide-up" style="--delay: 300ms">
+                  <h2
+                    class="text-xl lg:text-2xl font-semibold text-gray-700 dark:text-gray-200 leading-snug max-w-md"
+                  >
+                    Crafting Digital Experiences with
+                    <span class="text-primary-600 dark:text-primary-400"
+                      >Innovation</span
+                    >
+                    &
+                    <span class="text-purple-600 dark:text-purple-400"
+                      >Precision</span
+                    >
+                  </h2>
+                </div>
+
+                <!-- Description -->
+                <div class="slide-up" style="--delay: 400ms">
+                  <p
+                    class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl"
+                  >
+                    Full-stack developer transforming ideas into scalable,
+                    user-focused applications.
+                  </p>
+                </div>
+
+                <!-- Specialization Tags -->
+                <div
+                  class="flex flex-wrap gap-2 slide-up"
+                  style="--delay: 500ms"
+                >
+                  <span class="skill-tag">Full Stack</span>
+                  <span class="skill-tag">Python Enthusiast</span>
+                  <span class="skill-tag">React Dev</span>
+                  <span class="skill-tag">UI/UX</span>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                <a
+                  href="#projects"
+                  class="btn-primary slide-up"
+                  style="--delay: 700ms"
+                  data-magnetic
+                >
+                  <span class="btn-content">
+                    <span>Explore My Work</span>
+                    <svg
+                      class="btn-arrow"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </span>
+                </a>
+
+                <a
+                  href="#contact"
+                  class="btn-secondary slide-up"
+                  style="--delay: 750ms"
+                  data-magnetic
+                >
+                  <span class="btn-content">
+                    <svg
+                      class="btn-icon"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                      />
+                    </svg>
+                    <span>Let's Talk</span>
+                  </span>
+                </a>
+              </div>
             </div>
-        </section>
-        
-        <section id="about" class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-800">
-            <div class="text-center">
-                <h1 class="text-4xl font-bold mb-4">About Me</h1>
-                <p class="text-lg text-gray-600 dark:text-gray-400">Learn more about my background and experience</p>
+
+            <!-- Right Side: Profile Display -->
+            <div class="lg:col-span-5 flex justify-center lg:justify-end">
+              <div class="relative profile-section">
+                <!-- Main Profile Container -->
+                <div
+                  class="profile-container relative w-80 h-80 lg:w-96 lg:h-96"
+                >
+                  <!-- Optimized Rotating Ring -->
+                  <div class="profile-ring"></div>
+                  <div class="profile-ring-inner"></div>
+
+                  <!-- Profile Image -->
+                  <div class="profile-image-container">
+                    <img
+                      src="./assets/images/Sarwad.jpeg"
+                      alt="Sarwad Hasan Siddiqui"
+                      class="profile-image"
+                      loading="lazy"
+                      decoding="async"
+                      data-magnetic
+                    />
+                  </div>
+
+                  <!-- Floating Info Cards - Optimized -->
+                  <div class="info-card info-card-1">
+                    <div class="info-card-value">3+ Years</div>
+                    <div class="info-card-label">Experience</div>
+                  </div>
+
+                  <div class="info-card info-card-2">
+                    <div class="info-card-value">15+ Projects</div>
+                    <div class="info-card-label">Completed</div>
+                  </div>
+
+                  <div class="info-card info-card-3">
+                    <div class="info-card-value">Python</div>
+                    <div class="info-card-label">Expert</div>
+                  </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="social-links">
+                  <a
+                    href="https://github.com/Rockstatata"
+                    target="_blank"
+                    class="social-link"
+                    data-magnetic
+                    aria-label="GitHub Profile"
+                  >
+                    <svg
+                      class="social-icon"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                      />
+                    </svg>
+                  </a>
+
+                  <a
+                    href="https://www.linkedin.com/in/sarwad-hasan-siddiqui/"
+                    target="_blank"
+                    class="social-link"
+                    data-magnetic
+                    aria-label="LinkedIn Profile"
+                  >
+                    <svg
+                      class="social-icon"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                      />
+                    </svg>
+                  </a>
+
+                  <a
+                    href="mailto:sarwad015@gmail.com"
+                    class="social-link"
+                    data-magnetic
+                    aria-label="Email Contact"
+                  >
+                    <svg
+                      class="social-icon"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
             </div>
-        </section>
-        
-        <section id="timeline" class="min-h-screen flex items-center justify-center">
-            <div class="text-center">
-                <h1 class="text-4xl font-bold mb-4">Timeline</h1>
-                <p class="text-lg text-gray-600 dark:text-gray-400">My educational and professional journey</p>
-            </div>
-        </section>
-        
-        <section id="skills" class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-800">
-            <div class="text-center">
-                <h1 class="text-4xl font-bold mb-4">Skills</h1>
-                <p class="text-lg text-gray-600 dark:text-gray-400">Technologies and tools I work with</p>
-            </div>
-        </section>
-        
-        <section id="projects" class="min-h-screen flex items-center justify-center">
-            <div class="text-center">
-                <h1 class="text-4xl font-bold mb-4">Projects</h1>
-                <p class="text-lg text-gray-600 dark:text-gray-400">Showcase of my development work</p>
-            </div>
-        </section>
-        
-        <section id="blog" class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-800">
-            <div class="text-center">
-                <h1 class="text-4xl font-bold mb-4">Blog</h1>
-                <p class="text-lg text-gray-600 dark:text-gray-400">Articles and thoughts on development</p>
-            </div>
-        </section>
-        
-        <section id="github" class="min-h-screen flex items-center justify-center">
-            <div class="text-center">
-                <h1 class="text-4xl font-bold mb-4">GitHub Stats</h1>
-                <p class="text-lg text-gray-600 dark:text-gray-400">My coding activity and contributions</p>
-            </div>
-        </section>
-        
-        <section id="contact" class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-800">
-            <div class="text-center">
-                <h1 class="text-4xl font-bold mb-4">Contact</h1>
-                <p class="text-lg text-gray-600 dark:text-gray-400">Get in touch with me</p>
-            </div>
-        </section>
+          </div>
+        </div>
+
+        <!-- Optimized Scroll Indicator -->
+        <div class="scroll-indicator" data-magnetic>
+          <span class="scroll-text">Scroll</span>
+          <div class="scroll-mouse">
+            <div class="scroll-wheel"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section - Remove solid background -->
+      <section id="about" class="min-h-screen flex items-center justify-center">
+        <div
+          class="text-center bg-white/10 dark:bg-gray-900/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 dark:border-gray-700/20"
+        >
+          <h1 class="text-4xl font-bold mb-4">About Me</h1>
+          <p class="text-lg text-gray-600 dark:text-gray-400">
+            Learn more about my background and experience
+          </p>
+        </div>
+      </section>
+
+      <!-- Timeline Section -->
+      <section
+        id="timeline"
+        class="min-h-screen flex items-center justify-center"
+      >
+        <div class="text-center">
+          <h1 class="text-4xl font-bold mb-4">Timeline</h1>
+          <p class="text-lg text-gray-600 dark:text-gray-400">
+            My educational and professional journey
+          </p>
+        </div>
+      </section>
+
+      <!-- Skills Section - Remove solid background -->
+      <section
+        id="skills"
+        class="min-h-screen flex items-center justify-center"
+      >
+        <div
+          class="text-center bg-white/10 dark:bg-gray-900/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 dark:border-gray-700/20"
+        >
+          <h1 class="text-4xl font-bold mb-4">Skills</h1>
+          <p class="text-lg text-gray-600 dark:text-gray-400">
+            Technologies and tools I work with
+          </p>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section
+        id="projects"
+        class="min-h-screen flex items-center justify-center"
+      >
+        <div class="text-center">
+          <h1 class="text-4xl font-bold mb-4">Projects</h1>
+          <p class="text-lg text-gray-600 dark:text-gray-400">
+            Showcase of my development work
+          </p>
+        </div>
+      </section>
+
+      <!-- Blog Section - Remove solid background -->
+      <section id="blog" class="min-h-screen flex items-center justify-center">
+        <div
+          class="text-center bg-white/10 dark:bg-gray-900/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 dark:border-gray-700/20"
+        >
+          <h1 class="text-4xl font-bold mb-4">Blog</h1>
+          <p class="text-lg text-gray-600 dark:text-gray-400">
+            Articles and thoughts on development
+          </p>
+        </div>
+      </section>
+
+      <!-- GitHub Section -->
+      <section
+        id="github"
+        class="min-h-screen flex items-center justify-center"
+      >
+        <div class="text-center">
+          <h1 class="text-4xl font-bold mb-4">GitHub Stats</h1>
+          <p class="text-lg text-gray-600 dark:text-gray-400">
+            My coding activity and contributions
+          </p>
+        </div>
+      </section>
+
+      <!-- Contact Section - Remove solid background -->
+      <section
+        id="contact"
+        class="min-h-screen flex items-center justify-center"
+      >
+        <div
+          class="text-center bg-white/10 dark:bg-gray-900/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 dark:border-gray-700/20"
+        >
+          <h1 class="text-4xl font-bold mb-4">Contact</h1>
+          <p class="text-lg text-gray-600 dark:text-gray-400">
+            Get in touch with me
+          </p>
+        </div>
+      </section>
     </main>
 
-    <!-- SIMPLE JAVASCRIPT - Easy to understand! -->
-    <script>
-        // Wait for page to load
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ Page loaded successfully!');
-            
-            // Set up theme
-            setupTheme();
-            
-            // Set up mobile menu
-            setupMobileMenu();
-            
-            // Set up smooth scrolling
-            setupSmoothScrolling();
-            
-            console.log('✅ All features initialized!');
-        });
-        
-        // THEME FUNCTIONALITY
-        function setupTheme() {
-            // Load saved theme or use system preference
-            const savedTheme = localStorage.getItem('theme');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            
-            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-                document.documentElement.classList.add('dark');
-            }
-            
-            // Get theme toggle button
-            const themeToggle = document.getElementById('theme-toggle');
-            
-            if (themeToggle) {
-                // Add click event
-                themeToggle.addEventListener('click', function() {
-                    console.log('🎨 Theme button clicked!');
-                    
-                    // Toggle dark class
-                    const isDark = document.documentElement.classList.toggle('dark');
-                    
-                    // Save preference
-                    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-                    
-                    console.log('🎨 Theme changed to:', isDark ? 'dark' : 'light');
-                });
-                
-                console.log('✅ Theme toggle set up successfully!');
-            } else {
-                console.log('❌ Theme toggle button not found');
-            }
-        }
-        
-        // MOBILE MENU FUNCTIONALITY
-        function setupMobileMenu() {
-            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            if (mobileMenuToggle && mobileMenu) {
-                // Toggle mobile menu
-                mobileMenuToggle.addEventListener('click', function() {
-                    console.log('📱 Mobile menu button clicked!');
-                    
-                    // Toggle hidden class
-                    const isHidden = mobileMenu.classList.contains('hidden');
-                    
-                    if (isHidden) {
-                        mobileMenu.classList.remove('hidden');
-                        console.log('📱 Mobile menu opened');
-                    } else {
-                        mobileMenu.classList.add('hidden');
-                        console.log('📱 Mobile menu closed');
-                    }
-                });
-                
-                // Close menu when clicking on a link
-                const mobileLinks = mobileMenu.querySelectorAll('a');
-                mobileLinks.forEach(function(link) {
-                    link.addEventListener('click', function() {
-                        mobileMenu.classList.add('hidden');
-                        console.log('📱 Mobile menu closed (link clicked)');
-                    });
-                });
-                
-                // Close menu when clicking outside
-                document.addEventListener('click', function(event) {
-                    if (!mobileMenu.contains(event.target) && !mobileMenuToggle.contains(event.target)) {
-                        if (!mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                            console.log('📱 Mobile menu closed (clicked outside)');
-                        }
-                    }
-                });
-                
-                console.log('✅ Mobile menu set up successfully!');
-            } else {
-                console.log('❌ Mobile menu elements not found');
-            }
-        }
-        
-        // SMOOTH SCROLLING FUNCTIONALITY
-        function setupSmoothScrolling() {
-            const navLinks = document.querySelectorAll('a[href^="#"]');
-            
-            navLinks.forEach(function(link) {
-                link.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetElement = document.getElementById(targetId);
-                    
-                    if (targetElement) {
-                        // Close mobile menu if open
-                        const mobileMenu = document.getElementById('mobile-menu');
-                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                            mobileMenu.classList.add('hidden');
-                        }
-                        
-                        // Calculate scroll position (account for navbar height)
-                        const navbarHeight = 120;
-                        const targetPosition = targetElement.offsetTop - navbarHeight;
-                        
-                        // Smooth scroll
-                        window.scrollTo({
-                            top: targetPosition,
-                            behavior: 'smooth'
-                        });
-                        
-                        console.log('🎯 Scrolled to:', targetId);
-                    }
-                });
-            });
-            
-            console.log('✅ Smooth scrolling set up for', navLinks.length, 'links!');
-        }
-    </script>
-</body>
+    <!-- Load JavaScript -->
+    <script src="./js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+  </body>
 </html>
