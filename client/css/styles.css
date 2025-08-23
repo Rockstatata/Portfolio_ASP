@@ -141,7 +141,7 @@ body.dark .brand-link {
 }
 
 body.dark .brand-link:hover {
-  color: var(--color-primary-dark);
+  color: var(--color-primary);
 }
 
 .brand-text {
@@ -258,19 +258,36 @@ body.dark .hamburger-icon {
 
 /* Mobile Menu */
 .mobile-menu {
-  display: none;
+  display: block;
   margin-top: 1rem;
   background: var(--bg-glass);
   backdrop-filter: blur(12px);
   border: 1px solid var(--border-light);
   border-radius: 1rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 500px;
+  overflow: hidden;
+}
+
+.mobile-menu.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  max-height: 0;
+  margin-top: 0;
+  border: none;
+  box-shadow: none;
 }
 
 body.dark .mobile-menu {
   background: var(--bg-glass-dark);
   border: 1px solid var(--border-dark);
+}
+
+body.dark .mobile-menu.hidden {
+  border: none;
 }
 
 .mobile-menu-content {
@@ -327,7 +344,7 @@ body.dark .mobile-nav-link:hover {
   overflow: hidden;
   display: flex;
   align-items: center;
-  padding: 6rem 0;
+  padding: 6rem 4rem;
 }
 
 .content-grid {
@@ -564,7 +581,7 @@ body.dark .btn-secondary:hover {
   background: linear-gradient(45deg, var(--color-primary), var(--accent-light)) border-box;
   mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
-  animation: rotate 8s linear infinite;
+  animation: spinSlow 20s linear infinite;
 }
 
 .profile-ring-inner {
@@ -572,7 +589,7 @@ body.dark .btn-secondary:hover {
   inset: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  animation: rotate 12s linear infinite reverse;
+  animation: spinSlow 30s linear infinite reverse;
 }
 
 body.dark .profile-ring-inner {
@@ -657,6 +674,7 @@ body.dark .social-link:hover {
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.3s;
+  animation: float 3s ease-in-out infinite;
 }
 
 body.dark .scroll-indicator {
@@ -689,7 +707,7 @@ body.dark .scroll-indicator:hover {
 .timeline-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 4rem;
 }
 
 .timeline-header {
@@ -1000,7 +1018,7 @@ body.dark .glass-card {
 /* About Section */
 .about-section {
   min-height: 100vh;
-  padding: 6rem 0;
+  padding: 6rem 4rem;
 }
 
 .about-container {
@@ -1458,16 +1476,44 @@ body.dark .learning-desc {
 }
 
 @keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
+/* Additional essential animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Enhanced slide-up with proper animation */
+.slide-up {
+  opacity: 0;
+  transform: translateY(2rem);
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--delay, 0ms);
+}
+
 /* Responsive Design */
 @media (min-width: 640px) {
   .brand-text { display: block; }
   .action-buttons { flex-direction: row; }
+}
+
+@media (max-width: 1023px) {
+  .mobile-menu-toggle { display: block; }
+  .desktop-nav { display: none; }
 }
 
 @media (min-width: 1024px) {
@@ -1483,7 +1529,15 @@ body.dark .learning-desc {
 }
 
 /* Utility Classes */
-.hidden { display: none; }
+.mobile-menu.hidden { 
+  opacity: 0;
+  transform: translateY(-10px);
+  max-height: 0;
+  margin-top: 0;
+  border: none;
+  box-shadow: none;
+  pointer-events: none;
+}
 .block { display: block; }
 .relative { position: relative; }
 .transition-colors { transition: color 0.15s, background-color 0.15s; }
@@ -1500,4 +1554,38 @@ body.dark .nav-link:focus,
 body.dark .mobile-nav-link:focus,
 body.dark button:focus {
   box-shadow: 0 0 0 2px var(--color-primary-dark), 0 0 0 4px rgba(96, 165, 250, 0.1);
+}
+
+/* Magnetic effect */
+[data-magnetic] {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+/* Floating shapes */
+.floating-shape {
+  animation: float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+.floating-shape:nth-child(2) { animation-delay: -2s; }
+.floating-shape:nth-child(3) { animation-delay: -4s; }
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  [data-magnetic] {
+    transition: none !important;
+  }
+  
+  .scroll-indicator,
+  .profile-ring,
+  .profile-ring-inner,
+  .floating-shape {
+    animation: none !important;
+  }
 }
