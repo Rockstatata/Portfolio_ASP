@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sarwad Hasan Siddiqui - Portfolio</title>
+    <title>Sarwad Hasan Siddiqui</title>
 
     <!-- Inter Font -->
     <link
@@ -11,164 +11,71 @@
       rel="stylesheet"
     />
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Configure Tailwind -->
-    <script>
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              primary: {
-                50: "#fef2f2",
-                100: "#fee2e2",
-                200: "#fecaca",
-                300: "#fca5a5",
-                400: "#f87171",
-                500: "#ef4444",
-                600: "#dc2626",
-                700: "#b91c1c",
-                800: "#991b1b",
-                900: "#7f1d1d",
-              },
-            },
-          },
-        },
-      };
-    </script>
+    <link href="css/styles.css" rel="stylesheet" />
   </head>
 
-  <body
-    class="font-inter bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300"
-  >
+  <body class="body-base">
     <!-- VANTA Background -->
-    <div id="vanta-background" class="fixed inset-0 z-0"></div>
+    <div id="vanta-background" class="vanta-bg"></div>
 
     <!-- NAVBAR -->
-    <nav
-      class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-11/12 max-w-6xl transition-all duration-300"
-      id="main-navbar"
-    >
+    <nav class="navbar-container" id="main-navbar">
       <!-- Main Navbar Container -->
-      <div
-        class="bg-white/10 dark:bg-gray-900/10 backdrop-blur-md border border-white/20 dark:border-gray-700/20 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-4"
-      >
+      <div class="navbar-content">
         <!-- Main Flex Container -->
-        <div class="flex items-center justify-between">
+        <div class="navbar-flex">
           <!-- LEFT SIDE: Brand/Logo -->
-          <div class="flex items-center">
-            <a
-              href="#home"
-              class="group flex items-center space-x-3 text-xl font-bold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-300"
-            >
-              <!-- Optional Logo Icon -->
-              <!-- <div
-                class="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-              >
-                <span class="text-white font-bold text-sm">SH</span>
-              </div> -->
+          <div class="navbar-brand">
+            <a href="#home" class="brand-link">
               <!-- Brand Text -->
-              <span class="hidden sm:block">Sarwad Hasan Siddiqui</span>
+              <span class="brand-text">Sarwad Hasan Siddiqui</span>
             </a>
           </div>
 
           <!-- CENTER: Desktop Navigation Links -->
-          <div class="hidden lg:flex items-center space-x-1">
-            <a
-              href="#home"
-              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
-            >
+          <div class="desktop-nav">
+            <a href="#home" class="nav-link">
               Home
-              <span
-                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
-              ></span>
+              <span class="nav-underline"></span>
             </a>
-
-            <a
-              href="#about"
-              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
-            >
+            <a href="#about" class="nav-link">
               About Me
-              <span
-                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
-              ></span>
+              <span class="nav-underline"></span>
             </a>
-
-            <a
-              href="#timeline"
-              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
-            >
+            <a href="#timeline" class="nav-link">
               Timeline
-              <span
-                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
-              ></span>
+              <span class="nav-underline"></span>
             </a>
-
-            <a
-              href="#skills"
-              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
-            >
+            <a href="#skills" class="nav-link">
               Skills
-              <span
-                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
-              ></span>
+              <span class="nav-underline"></span>
             </a>
-
-            <a
-              href="#projects"
-              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
-            >
+            <a href="#projects" class="nav-link">
               Projects
-              <span
-                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
-              ></span>
+              <span class="nav-underline"></span>
             </a>
-
-            <a
-              href="#blog"
-              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
-            >
+            <a href="#blog" class="nav-link">
               Blog
-              <span
-                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
-              ></span>
+              <span class="nav-underline"></span>
             </a>
-
-            <a
-              href="#github"
-              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
-            >
+            <a href="#github" class="nav-link">
               GitHub Stats
-              <span
-                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
-              ></span>
+              <span class="nav-underline"></span>
             </a>
-
-            <a
-              href="#contact"
-              class="nav-link relative px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-white/20 dark:hover:bg-gray-800/30 transition-all duration-300 group"
-            >
+            <a href="#contact" class="nav-link">
               Contact
-              <span
-                class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-primary-600 group-hover:w-3/4 transition-all duration-300"
-              ></span>
+              <span class="nav-underline"></span>
             </a>
           </div>
 
           <!-- RIGHT SIDE: Theme Toggle & Mobile Menu -->
-          <div class="flex items-center space-x-3">
+          <div class="nav-actions">
             <!-- Theme Toggle Button -->
-            <button
-              id="theme-toggle"
-              class="relative p-3 rounded-full bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm border border-white/30 dark:border-gray-600/30 hover:bg-white/30 dark:hover:bg-gray-800/40 hover:scale-105 transition-all duration-300 group"
-              aria-label="Toggle theme"
-            >
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
               <!-- Sun Icon (visible in dark mode) -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-yellow-500 hidden dark:block transition-transform duration-300 group-hover:rotate-12"
+                class="theme-icon sun-icon"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -183,7 +90,7 @@
               <!-- Moon Icon (visible in light mode) -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-indigo-600 block dark:hidden transition-transform duration-300 group-hover:rotate-12"
+                class="theme-icon moon-icon"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -198,15 +105,11 @@
             </button>
 
             <!-- Mobile Menu Button (Hamburger) -->
-            <button
-              id="mobile-menu-toggle"
-              class="lg:hidden p-3 rounded-full bg-white/20 dark:bg-gray-800/20 backdrop-blur-sm border border-white/30 dark:border-gray-600/30 hover:bg-white/30 dark:hover:bg-gray-800/40 hover:scale-105 transition-all duration-300"
-              aria-label="Toggle mobile menu"
-            >
+            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle mobile menu">
               <!-- Hamburger Icon -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5 text-gray-700 dark:text-gray-300"
+                class="hamburger-icon"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -224,20 +127,14 @@
       </div>
 
       <!-- Mobile Navigation Menu (Hidden by default) -->
-      <div
-        id="mobile-menu"
-        class="lg:hidden mt-4 bg-white/10 dark:bg-gray-900/10 backdrop-blur-md border border-white/20 dark:border-gray-700/20 rounded-2xl shadow-lg hidden transition-all duration-300"
-      >
-        <div class="px-6 py-4">
+      <div id="mobile-menu" class="mobile-menu">
+        <div class="mobile-menu-content">
           <!-- Mobile Navigation Links -->
-          <nav class="flex flex-col space-y-1">
-            <a
-              href="#home"
-              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
-            >
+          <nav class="mobile-nav-container">
+            <a href="#home" class="mobile-nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 mr-3 opacity-70"
+                class="mobile-nav-icon"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -252,13 +149,10 @@
               Home
             </a>
 
-            <a
-              href="#about"
-              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
-            >
+            <a href="#about" class="mobile-nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 mr-3 opacity-70"
+                class="mobile-nav-icon"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -273,13 +167,10 @@
               About Me
             </a>
 
-            <a
-              href="#timeline"
-              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
-            >
+            <a href="#timeline" class="mobile-nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 mr-3 opacity-70"
+                class="mobile-nav-icon"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -294,13 +185,10 @@
               Timeline
             </a>
 
-            <a
-              href="#skills"
-              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
-            >
+            <a href="#skills" class="mobile-nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 mr-3 opacity-70"
+                class="mobile-nav-icon"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -315,13 +203,10 @@
               Skills
             </a>
 
-            <a
-              href="#projects"
-              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
-            >
+            <a href="#projects" class="mobile-nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 mr-3 opacity-70"
+                class="mobile-nav-icon"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -336,13 +221,10 @@
               Projects
             </a>
 
-            <a
-              href="#blog"
-              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
-            >
+            <a href="#blog" class="mobile-nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 mr-3 opacity-70"
+                class="mobile-nav-icon"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -357,13 +239,10 @@
               Blog
             </a>
 
-            <a
-              href="#github"
-              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
-            >
+            <a href="#github" class="mobile-nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 mr-3 opacity-70"
+                class="mobile-nav-icon"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -378,13 +257,10 @@
               GitHub Stats
             </a>
 
-            <a
-              href="#contact"
-              class="mobile-nav-link flex items-center px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-white/20 dark:hover:bg-gray-800/30 rounded-lg transition-all duration-300 group"
-            >
+            <a href="#contact" class="mobile-nav-link">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 mr-3 opacity-70"
+                class="mobile-nav-icon"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -404,103 +280,57 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="pt-24 relative z-10">
+    <main class="main-content">
       <!-- Home Section -->
-      <section
-        id="home"
-        class="min-h-screen relative overflow-hidden flex items-center"
-      >
-        <!-- Floating Elements Background - Reduced quantity for performance -->
-        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <div
-            class="floating-shape absolute top-20 left-10 w-24 h-24 bg-gradient-to-br from-primary-500/15 to-primary-600/25 rounded-3xl transform rotate-12"
-          ></div>
-          <div
-            class="floating-shape absolute top-40 right-20 w-16 h-16 bg-gradient-to-br from-primary-400/10 to-primary-700/20 rounded-full"
-          ></div>
-          <div
-            class="floating-shape absolute bottom-32 left-1/4 w-12 h-12 bg-gradient-to-br from-primary-600/15 to-primary-500/25 transform rotate-45"
-          ></div>
-        </div>
-
+      <section id="home" class="home-section">
         <!-- Main Content Grid -->
-        <div class="container mx-auto px-6 relative z-10">
-          <div class="grid lg:grid-cols-12 gap-8 items-center min-h-[80vh]">
+        <div class="container content-grid">
+          <div class="home-grid">
             <!-- Left Side: Text Content -->
-            <div class="lg:col-span-7 space-y-6">
+            <div class="home-text-content">
               <!-- Status Badge -->
-              <div
-                class="inline-flex items-center gap-3 px-4 py-2 bg-white/10 dark:bg-gray-900/10 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 rounded-full"
-              >
-                <div class="w-3 h-3 bg-green-500 rounded-full pulse-dot"></div>
-                <span
-                  class="text-sm font-medium text-gray-600 dark:text-gray-400"
-                  >Available for Projects</span
-                >
+              <div class="status-badge">
+                <div class="status-dot"></div>
+                <span class="status-text">Available for Projects</span>
               </div>
 
               <!-- Name with Optimized Typography -->
-              <div class="space-y-2">
-                <h1
-                  class="text-6xl lg:text-8xl font-black leading-[0.85] tracking-tight"
-                >
-                  <div class="overflow-hidden">
-                    <span
-                      class="block slide-up text-gradient-primary"
-                      style="--delay: 0ms"
-                      >SARWAD</span
-                    >
+              <div class="name-section">
+                <h1 class="main-heading">
+                  <div class="name-line">
+                    <span class="slide-up text-gradient-primary" style="--delay: 0ms">SARWAD</span>
                   </div>
-                  <div class="overflow-hidden">
-                    <span
-                      class="block slide-up text-gray-800 dark:text-gray-200"
-                      style="--delay: 100ms"
-                      >HASAN</span
-                    >
+                  <div class="name-line">
+                    <span class="slide-up name-middle" style="--delay: 100ms">HASAN</span>
                   </div>
-                  <div class="overflow-hidden">
-                    <span
-                      class="block slide-up text-gradient-secondary"
-                      style="--delay: 200ms"
-                      >SIDDIQUI</span
-                    >
+                  <div class="name-line">
+                    <span class="slide-up text-gradient-secondary" style="--delay: 200ms">SIDDIQUI</span>
                   </div>
                 </h1>
               </div>
 
               <!-- Role Description -->
-              <div class="space-y-4">
+              <div class="role-section">
                 <!-- Main Tagline -->
                 <div class="slide-up" style="--delay: 300ms">
-                  <h2
-                    class="text-xl lg:text-2xl font-semibold text-gray-700 dark:text-gray-200 leading-snug max-w-md"
-                  >
+                  <h2 class="tagline">
                     Crafting Digital Experiences with
-                    <span class="text-primary-600 dark:text-primary-400"
-                      >Innovation</span
-                    >
+                    <span class="text-accent-red">Innovation</span>
                     &
-                    <span class="text-purple-600 dark:text-purple-400"
-                      >Precision</span
-                    >
+                    <span class="text-accent-orange">Precision</span>
                   </h2>
                 </div>
 
                 <!-- Description -->
                 <div class="slide-up" style="--delay: 400ms">
-                  <p
-                    class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl"
-                  >
+                  <p class="description">
                     Full-stack developer transforming ideas into scalable,
                     user-focused applications.
                   </p>
                 </div>
 
                 <!-- Specialization Tags -->
-                <div
-                  class="flex flex-wrap gap-2 slide-up"
-                  style="--delay: 500ms"
-                >
+                <div class="skill-tags slide-up" style="--delay: 500ms">
                   <span class="skill-tag">Full Stack</span>
                   <span class="skill-tag">Python Enthusiast</span>
                   <span class="skill-tag">React Dev</span>
@@ -509,50 +339,20 @@
               </div>
 
               <!-- Action Buttons -->
-              <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                <a
-                  href="#projects"
-                  class="btn-primary slide-up"
-                  style="--delay: 700ms"
-                  data-magnetic
-                >
+              <div class="action-buttons">
+                <a href="#projects" class="btn-primary slide-up" style="--delay: 700ms" data-magnetic>
                   <span class="btn-content">
                     <span>Explore My Work</span>
-                    <svg
-                      class="btn-arrow"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
+                    <svg class="btn-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </span>
                 </a>
 
-                <a
-                  href="#contact"
-                  class="btn-secondary slide-up"
-                  style="--delay: 750ms"
-                  data-magnetic
-                >
+                <a href="#contact" class="btn-secondary slide-up" style="--delay: 750ms" data-magnetic>
                   <span class="btn-content">
-                    <svg
-                      class="btn-icon"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                      />
+                    <svg class="btn-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                     </svg>
                     <span>Let's Talk</span>
                   </span>
@@ -561,12 +361,10 @@
             </div>
 
             <!-- Right Side: Profile Display -->
-            <div class="lg:col-span-5 flex justify-center lg:justify-end">
-              <div class="relative profile-section">
+            <div class="profile-display">
+              <div class="profile-section-wrapper">
                 <!-- Main Profile Container -->
-                <div
-                  class="profile-container relative w-80 h-80 lg:w-96 lg:h-96"
-                >
+                <div class="profile-container">
                   <!-- Optimized Rotating Ring -->
                   <div class="profile-ring"></div>
                   <div class="profile-ring-inner"></div>
@@ -583,21 +381,6 @@
                     />
                   </div>
 
-                  <!-- Floating Info Cards - Optimized -->
-                  <div class="info-card info-card-1">
-                    <div class="info-card-value">3+ Years</div>
-                    <div class="info-card-label">Experience</div>
-                  </div>
-
-                  <div class="info-card info-card-2">
-                    <div class="info-card-value">15+ Projects</div>
-                    <div class="info-card-label">Completed</div>
-                  </div>
-
-                  <div class="info-card info-card-3">
-                    <div class="info-card-value">Python</div>
-                    <div class="info-card-label">Expert</div>
-                  </div>
                 </div>
 
                 <!-- Social Links -->
@@ -673,94 +456,300 @@
         </div>
       </section>
 
-      <!-- About Section - Remove solid background -->
-      <section id="about" class="min-h-screen flex items-center justify-center">
-        <div
-          class="text-center bg-white/10 dark:bg-gray-900/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 dark:border-gray-700/20"
-        >
-          <h1 class="text-4xl font-bold mb-4">About Me</h1>
-          <p class="text-lg text-gray-600 dark:text-gray-400">
-            Learn more about my background and experience
-          </p>
+      <!-- About Section - Bento Grid Layout -->
+      <section id="about" class="about-section">
+        <div class="about-container">
+          <!-- Section Header -->
+          <div class="about-header">
+            <h2 class="about-title">
+              About Me
+            </h2>
+            <p class="about-description">
+              Discover my journey, passions, and the technologies that drive my
+              creative vision
+            </p>
+          </div>
+
+          <!-- Bento Grid Layout -->
+          <div class="bento-grid">
+            <!-- 1. About Me - Education & Passion (Large Card) -->
+            <div class="bento-card bento-card-large group">
+              <div class="card-content">
+                <div class="card-header">
+                  <div>
+                    <h3 class="card-title">
+                      CSE Undergraduate
+                    </h3>
+                    <p class="card-subtitle">
+                      3rd Year Student at KUET
+                    </p>
+                  </div>
+                </div>
+
+                <p class="card-text card-mb-8">
+                  I'm a dedicated third-year
+                  <span class="text-blue-600 text-semibold">Computer Science & Engineering student at KUET</span>
+                  , currently working as a
+                  <span class="text-purple-600 text-semibold">Software Developer Intern at Algosoft Technologies Ltd</span>.
+                </p>
+
+                <p class="text-large card-mb-8 text-relaxed text-gray-700">
+                  My passion lies in
+                  <span class="text-blue-700 text-semibold">building innovative solutions</span>
+                  that solve real-world problems. I specialize in
+                  <span class="text-cyan-700 text-semibold">full-stack development</span>
+                  using the MERN stack, React Native, Python FastAPI, and
+                  Laravel, combined with my growing expertise in
+                  <span class="text-green-700 text-semibold">machine learning</span>
+                  across Computer Vision, NLP, and Deep Learning.
+                </p>
+
+                <p class="text-large card-mb-8 text-relaxed text-gray-700">
+                  I work with diverse databases including
+                  <span class="text-orange-700 text-semibold">MongoDB, PostgreSQL, MySQL, and Redis</span>, creating performant data solutions. Despite occasional
+                  challenges with CSS flexbox, I find immense satisfaction in
+                  <span class="text-rose-700 text-semibold">building things from scratch and seeing them come to life</span>.
+                </p>
+
+                <p class="text-large card-mb-6 text-relaxed text-gray-700">
+                  My ultimate dream is to work for
+                  <span class="text-indigo-700 text-semibold">NASA</span>
+                  and contribute to space exploration through technology. I
+                  aspire to create solutions that make a meaningful impact,
+                  especially in
+                  <span class="text-violet-700 text-semibold">space exploration and scientific discoveries</span>.
+                  <span class="text-amber-700 text-semibold text-italic">One day, I want my code to reach the stars.</span>
+                </p>
+              </div>
+
+              <!-- Floating Elements -->
+              <div class="floating-element floating-element-1"></div>
+              <div class="floating-element floating-element-2"></div>
+            </div>
+
+            <!-- 2. What I Do - Tech Stack -->
+            <div class="bento-card bento-card-wide group">
+              <div class="card-header-mb-6">
+                <span class="text-small text-gray-500 text-medium text-uppercase text-tracking-wider">What I Do</span>
+                <h3 class="card-title card-mt-1">
+                  Development Arsenal
+                </h3>
+              </div>
+
+              <!-- Skills Grid -->
+              <div class="skills-grid skills-mb-4">
+                <div class="skill-item skill-item-wide">
+                  <div class="skill-name text-blue-700">
+                    React Native
+                  </div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-name text-cyan-700">
+                    React/Next.js
+                  </div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-name text-pink-700">
+                    UI/UX Design
+                  </div>
+                </div>
+                <div class="skill-item skill-item-wide">
+                  <div class="skill-name text-green-700">
+                    FastAPI
+                  </div>
+                </div>
+
+                <div class="skill-item skill-item-wide">
+                  <div class="skill-name text-purple-700">
+                    Machine Learning
+                  </div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-name text-orange-700">
+                    Databases
+                  </div>
+                </div>
+              </div>
+
+              <p class="text-small text-gray-600">
+                Building cross-platform applications with clean, modular, and
+                maintainable code
+              </p>
+            </div>
+
+            <!-- 3. Research Interest -->
+            <div class="bento-card bento-card-wide group">
+              <h3 class="card-title card-mb-4">
+                Research Focus
+              </h3>
+              <div class="research-grid text-small">
+                <div class="research-item research-item-wide">
+                  <span class="research-name text-purple-700">Astronomical Data</span>
+                </div>
+                <div class="research-item">
+                  <span class="research-name text-indigo-700">ML Algorithms</span>
+                </div>
+                <div class="research-item">
+                  <span class="research-name text-teal-700">Deep Learning</span>
+                </div>
+                <div class="research-item research-item-wide">
+                  <span class="research-name text-blue-700">Natural Language Processing</span>
+                </div>
+              </div>
+              <p class="text-extra-small text-gray-500 research-mt-4">
+                Exploring the intersection of space science and AI
+              </p>
+            </div>
+
+            <!-- 4. Future Goals -->
+            <div class="bento-card group">
+              <div>
+                <h3 class="card-title card-mb-4">
+                  Future Goals
+                </h3>
+                <div class="goals-list">
+                  <div class="goal-item">
+                    <span class="goal-dot"></span>
+                    <span class="goal-text">Master AI/ML</span>
+                  </div>
+                  <div class="goal-item">
+                    <span class="goal-dot goal-dot-teal"></span>
+                    <span class="goal-text goal-text-teal">Open Source</span>
+                  </div>
+                  <div class="goal-item">
+                    <span class="goal-dot goal-dot-purple"></span>
+                    <span class="goal-text goal-text-purple">Problem Solving</span>
+                  </div>
+                  <div class="goal-item">
+                    <span class="goal-dot goal-dot-blue"></span>
+                    <span class="goal-text goal-text-blue">Code in Space</span>
+                  </div>
+                </div>
+                <p class="text-extra-small text-gray-500 goals-mt-4">
+                  Creating impactful solutions for humanity
+                </p>
+              </div>
+            </div>
+
+            <!-- 7. Learning Journey -->
+            <div class="bento-card bento-card-wider group">
+              <div class="flex-items-start-justify-between learning-mb-6">
+                <div>
+                  <h3 class="card-title learning-mt-1">
+                    Current Focus Areas
+                  </h3>
+                </div>
+              </div>
+              <div class="learning-grid">
+                <div class="learning-item">
+                  <div class="learning-title text-blue-700">
+                    Advanced AI/ML
+                  </div>
+                  <div class="learning-desc">
+                    Deep Learning & Neural Networks
+                  </div>
+                </div>
+                <div class="learning-item">
+                  <div class="learning-title text-green-700">
+                    Cloud Architecture
+                  </div>
+                  <div class="learning-desc">
+                    AWS, Docker, Kubernetes
+                  </div>
+                </div>
+                <div class="learning-item">
+                  <div class="learning-title text-orange-700">
+                    Data Science
+                  </div>
+                  <div class="learning-desc">
+                    Analytics & Visualization
+                  </div>
+                </div>
+                <div class="learning-item">
+                  <div class="learning-title text-purple-700">
+                    Web3 & Blockchain
+                  </div>
+                  <div class="learning-desc">
+                    Decentralized Applications
+                  </div>
+                </div>
+                <div class="learning-item">
+                  <div class="learning-title text-gray-700">
+                    Cybersecurity
+                  </div>
+                  <div class="learning-desc">
+                    Network Security & Penetration Testing
+                  </div>
+                </div>
+                <div class="learning-item">
+                  <div class="learning-title text-yellow-700">
+                    IoT Development
+                  </div>
+                  <div class="learning-desc">
+                    Smart Devices & Automation
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- Timeline Section -->
-      <section
-        id="timeline"
-        class="min-h-screen flex items-center justify-center"
-      >
-        <div class="text-center">
-          <h1 class="text-4xl font-bold mb-4">Timeline</h1>
-          <p class="text-lg text-gray-600 dark:text-gray-400">
+      <section id="timeline" class="section">
+        <div class="section-center">
+          <h1 class="section-title">Timeline</h1>
+          <p class="section-subtitle">
             My educational and professional journey
           </p>
         </div>
       </section>
 
-      <!-- Skills Section - Remove solid background -->
-      <section
-        id="skills"
-        class="min-h-screen flex items-center justify-center"
-      >
-        <div
-          class="text-center bg-white/10 dark:bg-gray-900/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 dark:border-gray-700/20"
-        >
-          <h1 class="text-4xl font-bold mb-4">Skills</h1>
-          <p class="text-lg text-gray-600 dark:text-gray-400">
+      <!-- Skills Section -->
+      <section id="skills" class="section">
+        <div class="glass-card section-center">
+          <h1 class="section-title">Skills</h1>
+          <p class="section-subtitle">
             Technologies and tools I work with
           </p>
         </div>
       </section>
 
       <!-- Projects Section -->
-      <section
-        id="projects"
-        class="min-h-screen flex items-center justify-center"
-      >
-        <div class="text-center">
-          <h1 class="text-4xl font-bold mb-4">Projects</h1>
-          <p class="text-lg text-gray-600 dark:text-gray-400">
+      <section id="projects" class="section">
+        <div class="section-center">
+          <h1 class="section-title">Projects</h1>
+          <p class="section-subtitle">
             Showcase of my development work
           </p>
         </div>
       </section>
 
-      <!-- Blog Section - Remove solid background -->
-      <section id="blog" class="min-h-screen flex items-center justify-center">
-        <div
-          class="text-center bg-white/10 dark:bg-gray-900/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 dark:border-gray-700/20"
-        >
-          <h1 class="text-4xl font-bold mb-4">Blog</h1>
-          <p class="text-lg text-gray-600 dark:text-gray-400">
+      <!-- Blog Section -->
+      <section id="blog" class="section">
+        <div class="glass-card section-center">
+          <h1 class="section-title">Blog</h1>
+          <p class="section-subtitle">
             Articles and thoughts on development
           </p>
         </div>
       </section>
 
       <!-- GitHub Section -->
-      <section
-        id="github"
-        class="min-h-screen flex items-center justify-center"
-      >
-        <div class="text-center">
-          <h1 class="text-4xl font-bold mb-4">GitHub Stats</h1>
-          <p class="text-lg text-gray-600 dark:text-gray-400">
+      <section id="github" class="section">
+        <div class="section-center">
+          <h1 class="section-title">GitHub Stats</h1>
+          <p class="section-subtitle">
             My coding activity and contributions
           </p>
         </div>
       </section>
 
-      <!-- Contact Section - Remove solid background -->
-      <section
-        id="contact"
-        class="min-h-screen flex items-center justify-center"
-      >
-        <div
-          class="text-center bg-white/10 dark:bg-gray-900/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 dark:border-gray-700/20"
-        >
-          <h1 class="text-4xl font-bold mb-4">Contact</h1>
-          <p class="text-lg text-gray-600 dark:text-gray-400">
+      <!-- Contact Section -->
+      <section id="contact" class="section">
+        <div class="glass-card section-center">
+          <h1 class="section-title">Contact</h1>
+          <p class="section-subtitle">
             Get in touch with me
           </p>
         </div>

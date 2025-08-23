@@ -1,25 +1,22 @@
 {
   "name": "portfolio-website",
   "version": "1.0.0",
-  "description": "Personal portfolio website",
+  "description": "Personal portfolio website built with pure vanilla CSS",
   "main": "index.html",
   "scripts": {
-    "build:css": "tailwindcss -i ./css/input.css -o ./css/styles.css --minify",
-    "watch:css": "tailwindcss -i ./css/input.css -o ./css/styles.css --watch",
-    "dev": "npm run watch:css",
-    "start": "npm run dev"
+    "dev": "live-server --port=3000",
+    "start": "live-server --port=3000"
   },
   "keywords": [
     "portfolio",
     "website",
-    "tailwind",
-    "css"
+    "vanilla-css",
+    "html5",
+    "javascript"
   ],
-  "author": "Your Name",
+  "author": "Sarwad Hasan Siddiqui",
   "license": "MIT",
   "devDependencies": {
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17"
+    "live-server": "^1.2.2"
   }
 }

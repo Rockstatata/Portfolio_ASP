@@ -1,3 +1,31 @@
+// Dark Mode Management
+function initDarkMode() {
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    
+    // Get saved theme from localStorage or default to light
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    
+    // Apply the saved theme
+    if (savedTheme === 'dark') {
+        body.classList.add('dark');
+    } else {
+        body.classList.remove('dark');
+    }
+    
+    // Theme toggle handler
+    themeToggle?.addEventListener('click', () => {
+        body.classList.toggle('dark');
+        const isDark = body.classList.contains('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        
+        // Reinitialize Vanta effect with new theme
+        if (vantaEffect) {
+            initVantaBackground();
+        }
+    });
+}
+
 let vantaEffect = null;
 let observers = [];
 let magneticElements = [];
@@ -10,7 +38,7 @@ const deviceInfo = {
         !window.requestAnimationFrame ||
         (navigator.deviceMemory && navigator.deviceMemory < 4) ||
         (navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4) ||
-        isReducedMotion
+        isReducedMotion || false
     ),
     supportsWebGL: (() => {
         try {
@@ -503,18 +531,28 @@ function initializeFallbackBackground() {
     if (!background) return;
 
     const isDark = document.documentElement.classList.contains('dark');
-    
-    background.style.background = isDark 
-        ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #7209b7 100%)'
-        : 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%)';
-    
+
+    background.style.background = isDark
+        // Elegant dark crimson gradient with a hint of purple
+        ? 'linear-gradient(135deg, #1a1a2e 0%, #2d112b 40%, #dc143c 80%, #6d28d9 100%)'
+        // Soft light crimson-to-white gradient
+        : 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 40%, #dc143c 80%, #f8fafc 100%)';
+
+    // Optional: subtle glassmorphism overlay
+    background.style.backdropFilter = 'blur(8px) saturate(120%)';
+    background.style.webkitBackdropFilter = 'blur(8px) saturate(120%)';
+    background.style.borderRadius = '1.5rem';
+    background.style.boxShadow = isDark
+        ? '0 8px 32px 0 rgba(220, 20, 60, 0.25)'
+        : '0 8px 32px 0 rgba(220, 20, 60, 0.10)';
+
     if (!isReducedMotion) {
-        background.style.animation = 'gradientShift 15s ease infinite';
-        
+        background.style.animation = 'gradientShift 18s ease-in-out infinite';
+
         const keyframes = `
             @keyframes gradientShift {
                 0%, 100% { filter: hue-rotate(0deg) brightness(1); }
-                50% { filter: hue-rotate(20deg) brightness(1.1); }
+                50% { filter: hue-rotate(12deg) brightness(1.06); }
             }
         `;
         const style = document.createElement('style');
@@ -631,6 +669,7 @@ document.addEventListener('DOMContentLoaded', () => {
     injectOptimizedStyles();
     
     // Initialize core features
+    initDarkMode();
     initializeTheme();
     
     // Initialize background (Vanta or fallback)
