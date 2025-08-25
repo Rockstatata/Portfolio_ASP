@@ -298,6 +298,139 @@ function setupScrollIndicator() {
     });
 }
 
+// Navigation Active State Management
+function initActiveNavigation() {
+    const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+    const sections = document.querySelectorAll('section[id]');
+    
+    if (!navLinks.length || !sections.length) return;
+    
+    // Create intersection observer options
+    const observerOptions = {
+        root: null,
+        rootMargin: '-50px 0px -50px 0px', // Trigger when section is 50px from top/bottom
+        threshold: 0.3 // Trigger when 30% of section is visible
+    };
+    
+    // Track current active section
+    let currentActiveSection = null;
+    
+    // Update active navigation links
+    function updateActiveNav(sectionId) {
+        if (currentActiveSection === sectionId) return;
+        
+        // Remove active class from all links
+        navLinks.forEach(link => {
+            link.classList.remove('nav-active');
+            link.removeAttribute('aria-current');
+        });
+        
+        // Add active class to matching links
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === `#${sectionId}`) {
+                link.classList.add('nav-active');
+                link.setAttribute('aria-current', 'page');
+            }
+        });
+        
+        currentActiveSection = sectionId;
+    }
+    
+    // Special handling for home section (brand link)
+    const brandLink = document.querySelector('.brand-link');
+    function updateBrandActive(isHome) {
+        if (brandLink) {
+            if (isHome) {
+                brandLink.classList.add('nav-active');
+                brandLink.setAttribute('aria-current', 'page');
+            } else {
+                brandLink.classList.remove('nav-active');
+                brandLink.removeAttribute('aria-current');
+            }
+        }
+    }
+    
+    // Create intersection observer
+    const observer = new IntersectionObserver((entries) => {
+        let visibleSections = [];
+        
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                visibleSections.push({
+                    id: entry.target.id,
+                    ratio: entry.intersectionRatio,
+                    top: entry.boundingClientRect.top
+                });
+            }
+        });
+        
+        if (visibleSections.length > 0) {
+            // Sort by intersection ratio and proximity to center
+            visibleSections.sort((a, b) => {
+                const aDistance = Math.abs(a.top);
+                const bDistance = Math.abs(b.top);
+                
+                // Prefer section with higher ratio, then closer to top
+                if (Math.abs(a.ratio - b.ratio) < 0.1) {
+                    return aDistance - bDistance;
+                }
+                return b.ratio - a.ratio;
+            });
+            
+            const activeSection = visibleSections[0].id;
+            
+            // Handle home section brand link
+            if (activeSection === 'home') {
+                updateBrandActive(true);
+                updateActiveNav(null); // Clear nav links for home
+            } else {
+                updateBrandActive(false);
+                updateActiveNav(activeSection);
+            }
+        }
+    }, observerOptions);
+    
+    // Observe all sections
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+    
+    // Handle manual navigation clicks
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                const sectionId = href.substring(1);
+                
+                // Small delay to let scroll happen first
+                setTimeout(() => {
+                    if (sectionId === 'home') {
+                        updateBrandActive(true);
+                        updateActiveNav(null);
+                    } else {
+                        updateBrandActive(false);
+                        updateActiveNav(sectionId);
+                    }
+                }, 100);
+            }
+        });
+    });
+    
+    // Handle brand link (home) clicks
+    if (brandLink) {
+        brandLink.addEventListener('click', () => {
+            setTimeout(() => {
+                updateBrandActive(true);
+                updateActiveNav(null);
+            }, 100);
+        });
+    }
+    
+    // Store observer for cleanup
+    observers.push(observer);
+}
+
 // Main initialization - optimized
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Initializing optimized portfolio...');
@@ -321,6 +454,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMobileMenu();
     setupSmoothScrolling();
     setupScrollIndicator();
+    
+    // Initialize navigation active state
+    initActiveNavigation();
     
     // Initialize blog scroll functionality
     initBlogScroll();
