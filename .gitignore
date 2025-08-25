@@ -77,3 +77,5 @@ Desktop.ini
 
 # Git conflict/merge markers
 *.orig
+
+.fake
