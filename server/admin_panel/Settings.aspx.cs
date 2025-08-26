@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace admin_panel
 {
-    public partial class About : Page
+    public partial class Settings : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
