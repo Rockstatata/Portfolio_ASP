@@ -114,6 +114,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\styles.css" />
     <Content Include="CreateAdminUser.sql" />
+    <Content Include="CreateProjectsTable.sql" />
     <Content Include="Database.aspx" />
     <Content Include="DatabaseSetup.sql" />
     <Content Include="Database_Setup.sql" />

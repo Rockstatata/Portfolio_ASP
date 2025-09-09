@@ -205,13 +205,6 @@ namespace admin_panel
             ClientScript.RegisterStartupScript(this.GetType(), "showError", script, true);
         }
 
-        private void ShowSuccess(string message)
-        {
-            string script = $@"
-                showSuccess('{message.Replace("'", "\\'")}');
-            ";
-            
-            ClientScript.RegisterStartupScript(this.GetType(), "showSuccess", script, true);
-        }
+       
     }
 }

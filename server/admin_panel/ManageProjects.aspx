@@ -49,11 +49,8 @@
             </div>
             
             <div class="admin-form-group">
-                <label class="admin-form-label">Status</label>
+                <label class="admin-form-label">Status *</label>
                 <asp:DropDownList ID="ddlStatus" runat="server" CssClass="admin-form-select">
-                    <asp:ListItem Value="Completed" Text="Completed" Selected="True"></asp:ListItem>
-                    <asp:ListItem Value="In Development" Text="In Development"></asp:ListItem>
-                    <asp:ListItem Value="Planning" Text="Planning"></asp:ListItem>
                 </asp:DropDownList>
             </div>
             
@@ -101,7 +98,7 @@
         <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
             <asp:Button ID="btnSave" runat="server" Text="Save Project" 
                        CssClass="admin-btn admin-btn-primary" OnClick="btnSave_Click" 
-                       ValidationGroup="ProjectValidation" />
+                       CausesValidation="false" />
             <asp:Button ID="btnCancel" runat="server" Text="Cancel" 
                        CssClass="admin-btn admin-btn-secondary" OnClick="btnCancel_Click" 
                        CausesValidation="false" />

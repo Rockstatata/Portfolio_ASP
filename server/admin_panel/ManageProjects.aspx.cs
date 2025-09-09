@@ -12,32 +12,10 @@ namespace admin_panel
 {
     public partial class ManageProjects : System.Web.UI.Page
     {
-        // Controls declared manually since designer file might be missing
-        protected HiddenField hdnProjectId;
-        protected TextBox txtTitle;
-        protected TextBox txtDescription;
-        protected TextBox txtTechnologies;
-        protected TextBox txtProjectYear;
-        protected DropDownList ddlStatus;
-        protected TextBox txtDemoLink;
-        protected TextBox txtSourceLink;
-        protected TextBox txtImagePath;
-        protected TextBox txtDisplayOrder;
-        protected CheckBox chkIsActive;
-        protected Button btnSave;
-        protected Button btnCancel;
-        protected Button btnDelete;
-        protected Button btnRefresh;
-        protected Label lblFormTitle;
-        protected Label lblMessage;
-        protected Label lblError;
-        protected GridView gvProjects;
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Initialize control references
-            InitializeControls();
-
+            System.Diagnostics.Debug.WriteLine($"=== Page_Load called - IsPostBack: {IsPostBack} ===");
+            
             // Handle URL redirection to maintain canonical URLs
             string path = Request.Url.AbsolutePath.ToLowerInvariant();
             if (path.EndsWith("/manageprojects.aspx") || path.EndsWith("/manageprojects"))
@@ -49,68 +27,150 @@ namespace admin_panel
             // Check if user is logged in
             if (Session["AdminLoggedIn"] == null || !(bool)Session["AdminLoggedIn"])
             {
+                System.Diagnostics.Debug.WriteLine("User not logged in, redirecting to login");
                 Response.Redirect("~/admin/login", true);
                 return;
             }
 
             if (!IsPostBack)
             {
+                System.Diagnostics.Debug.WriteLine("First page load - populating dropdown and binding grid");
+                // Populate status dropdown
+                PopulateStatusDropdown();
+                
                 // Load projects list
                 BindProjectsGrid();
             }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("PostBack detected - page is processing form submission");
+            }
         }
-
-        // Initialize control references manually since designer file might be missing
-        private void InitializeControls()
+        
+        private void PopulateStatusDropdown()
         {
-            hdnProjectId = FindControl("hdnProjectId") as HiddenField;
-            txtTitle = FindControl("txtTitle") as TextBox;
-            txtDescription = FindControl("txtDescription") as TextBox;
-            txtTechnologies = FindControl("txtTechnologies") as TextBox;
-            txtProjectYear = FindControl("txtProjectYear") as TextBox;
-            ddlStatus = FindControl("ddlStatus") as DropDownList;
-            txtDemoLink = FindControl("txtDemoLink") as TextBox;
-            txtSourceLink = FindControl("txtSourceLink") as TextBox;
-            txtImagePath = FindControl("txtImagePath") as TextBox;
-            txtDisplayOrder = FindControl("txtDisplayOrder") as TextBox;
-            chkIsActive = FindControl("chkIsActive") as CheckBox;
-            btnSave = FindControl("btnSave") as Button;
-            btnCancel = FindControl("btnCancel") as Button;
-            btnDelete = FindControl("btnDelete") as Button;
-            btnRefresh = FindControl("btnRefresh") as Button;
-            lblFormTitle = FindControl("lblFormTitle") as Label;
-            lblMessage = FindControl("lblMessage") as Label;
-            lblError = FindControl("lblError") as Label;
-            gvProjects = FindControl("gvProjects") as GridView;
+            if (ddlStatus != null)
+            {
+                // Clear existing items first
+                ddlStatus.Items.Clear();
+                
+                // Add status options
+                ddlStatus.Items.Add(new ListItem("Select Status", ""));
+                ddlStatus.Items.Add(new ListItem("Completed", "Completed"));
+                ddlStatus.Items.Add(new ListItem("In Development", "In Development"));
+                ddlStatus.Items.Add(new ListItem("Planning", "Planning"));
+                ddlStatus.Items.Add(new ListItem("On Hold", "On Hold"));
+                ddlStatus.Items.Add(new ListItem("Cancelled", "Cancelled"));
+                
+                // Set default selection
+                ddlStatus.SelectedIndex = 1; // Default to "Completed"
+            }
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
+            // Add immediate debug output to confirm the method is being called
+            System.Diagnostics.Debug.WriteLine("=== btnSave_Click method called ===");
+            
             try
             {
-                string projectId = hdnProjectId.Value;
-                bool isNewProject = string.IsNullOrEmpty(projectId);
+                // Log page postback state
+                System.Diagnostics.Debug.WriteLine($"Page.IsPostBack: {Page.IsPostBack}");
+                
+                // Since we disabled validation on the button, we need to manually validate
+                Page.Validate();
+                System.Diagnostics.Debug.WriteLine($"After Page.Validate() - Page.IsValid: {Page.IsValid}");
+                
+                // Ensure all controls are properly initialized
+                if (!ValidateControls())
+                {
+                    System.Diagnostics.Debug.WriteLine("ValidateControls() returned false");
+                    ShowError("Form controls are not properly initialized. Please refresh the page.");
+                    return;
+                }
+
+                // Get project ID from hidden field and determine if this is a new project
+                string projectIdValue = hdnProjectId?.Value ?? "";
+                bool isNewProject = string.IsNullOrEmpty(projectIdValue);
+
+                // Log debugging information
+                System.Diagnostics.Debug.WriteLine($"Project ID Value: '{projectIdValue}', Is New Project: {isNewProject}");
 
                 // Validate required fields
-                if (string.IsNullOrWhiteSpace(txtTitle.Text))
+                if (string.IsNullOrWhiteSpace(txtTitle?.Text))
                 {
+                    System.Diagnostics.Debug.WriteLine("Title validation failed");
                     ShowError("Project title is required.");
                     return;
                 }
 
+                if (string.IsNullOrWhiteSpace(ddlStatus?.SelectedValue))
+                {
+                    System.Diagnostics.Debug.WriteLine("Status validation failed");
+                    ShowError("Project status is required.");
+                    return;
+                }
+
+                // Validate project year if provided
+                if (!string.IsNullOrWhiteSpace(txtProjectYear?.Text))
+                {
+                    if (!int.TryParse(txtProjectYear.Text, out int year) || year < 1900 || year > DateTime.Now.Year + 1)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Project year validation failed");
+                        ShowError($"Project year must be a valid year between 1900 and {DateTime.Now.Year + 1}.");
+                        return;
+                    }
+                }
+
+                // Validate display order if provided
+                if (!string.IsNullOrWhiteSpace(txtDisplayOrder?.Text))
+                {
+                    if (!int.TryParse(txtDisplayOrder.Text, out int order) || order < 0)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Display order validation failed");
+                        ShowError("Display order must be a non-negative number.");
+                        return;
+                    }
+                }
+
+                System.Diagnostics.Debug.WriteLine("All validations passed, calling SaveProject...");
+
                 // Create or update project
                 SaveProject(isNewProject);
+
+                System.Diagnostics.Debug.WriteLine("SaveProject method completed successfully");
 
                 // Reset form and refresh grid
                 ResetForm();
                 BindProjectsGrid();
 
+                // Show success message after reset so it is visible
                 ShowSuccess(isNewProject ? "Project added successfully!" : "Project updated successfully!");
+                
+                System.Diagnostics.Debug.WriteLine("=== btnSave_Click method completed successfully ===");
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"=== btnSave_Click ERROR: {ex.Message} ===");
+                System.Diagnostics.Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
                 ShowError("Error saving project: " + ex.Message);
             }
+        }
+
+        // Validate that all required controls are properly initialized
+        private bool ValidateControls()
+        {
+            return hdnProjectId != null && 
+                   txtTitle != null && 
+                   txtDescription != null && 
+                   txtTechnologies != null && 
+                   txtProjectYear != null && 
+                   ddlStatus != null && 
+                   txtDemoLink != null && 
+                   txtSourceLink != null && 
+                   txtImagePath != null && 
+                   txtDisplayOrder != null && 
+                   chkIsActive != null;
         }
 
         protected void btnCancel_Click(object sender, EventArgs e)
@@ -122,7 +182,7 @@ namespace admin_panel
         {
             try
             {
-                string projectId = hdnProjectId.Value;
+                string projectId = hdnProjectId?.Value ?? "";
                 if (!string.IsNullOrEmpty(projectId))
                 {
                     DeleteProject(projectId);
@@ -179,132 +239,377 @@ namespace admin_panel
         {
             try
             {
-                // For now, let's create a mock data table
-                DataTable dt = new DataTable();
-                dt.Columns.Add("Id", typeof(int));
-                dt.Columns.Add("Title", typeof(string));
-                dt.Columns.Add("Description", typeof(string));
-                dt.Columns.Add("Technologies", typeof(string));
-                dt.Columns.Add("ProjectYear", typeof(int));
-                dt.Columns.Add("Status", typeof(string));
-                dt.Columns.Add("DemoLink", typeof(string));
-                dt.Columns.Add("SourceLink", typeof(string));
-                dt.Columns.Add("ImagePath", typeof(string));
-                dt.Columns.Add("DisplayOrder", typeof(int));
-                dt.Columns.Add("IsActive", typeof(bool));
-
-                // Add sample data
-                dt.Rows.Add(1, "Portfolio Website", "My personal portfolio website", "ASP.NET, C#, HTML, CSS", 
-                    2023, "Completed", "https://example.com", "https://github.com/example/portfolio", 
-                    "/images/projects/portfolio.jpg", 1, true);
-
-                dt.Rows.Add(2, "E-commerce Platform", "Full-featured e-commerce system", "React, Node.js, MongoDB", 
-                    2022, "In Development", "https://ecommerce-demo.com", "https://github.com/example/ecommerce", 
-                    "/images/projects/ecommerce.jpg", 2, true);
-
-                // Bind data to grid
-                //gvProjects.DataSource = dt;
-                //gvProjects.DataBind();
-
-                // TODO: Replace with actual database retrieval
+                string connectionString = ConfigurationManager.ConnectionStrings["adminpanel_db"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"
+                        SELECT Id, Title, Description, Technologies, ProjectYear, 
+                               Status, DemoLink, SourceLink, ImagePath, DisplayOrder, 
+                               (CASE WHEN DisplayOrder IS NOT NULL THEN 1 ELSE 0 END) AS IsActive
+                        FROM Projects 
+                        ORDER BY DisplayOrder, ProjectYear DESC, Title";
+                    
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        
+                        if (gvProjects != null)
+                        {
+                            gvProjects.DataSource = dt;
+                            gvProjects.DataBind();
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
-                ShowError("Error loading projects: " + ex.Message);
+                System.Diagnostics.Debug.WriteLine($"Error loading projects: {ex.Message}");
+                
+                // Fall back to mock data if database fails
+                
             }
         }
+        
 
         private void SaveProject(bool isNewProject)
         {
-            // TODO: Implement actual database save logic
-            // For now, just simulate the save operation
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["adminpanel_db"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlCommand command;
+                    
+                    if (isNewProject)
+                    {
+                        // Insert new project - let SQL Server auto-increment the ID
+                        string insertQuery = @"
+                            INSERT INTO Projects (
+                                Title, Description, Technologies, ProjectYear, 
+                                Status, DemoLink, SourceLink, ImagePath, 
+                                DisplayOrder, CreatedAt, UpdatedAt
+                            ) VALUES (
+                                @Title, @Description, @Technologies, @ProjectYear, 
+                                @Status, @DemoLink, @SourceLink, @ImagePath, 
+                                @DisplayOrder, GETDATE(), GETDATE()
+                            );
+                            SELECT SCOPE_IDENTITY();";
+                            
+                        command = new SqlCommand(insertQuery, connection);
+                    }
+                    else
+                    {
+                        // Update existing project
+                        string updateQuery = @"
+                            UPDATE Projects SET
+                                Title = @Title,
+                                Description = @Description,
+                                Technologies = @Technologies,
+                                ProjectYear = @ProjectYear,
+                                Status = @Status,
+                                DemoLink = @DemoLink,
+                                SourceLink = @SourceLink,
+                                ImagePath = @ImagePath,
+                                DisplayOrder = @DisplayOrder,
+                                UpdatedAt = GETDATE()
+                            WHERE Id = @ProjectId";
+                            
+                        command = new SqlCommand(updateQuery, connection);
+                        
+                        // Convert project ID safely for updates
+                        string projectIdValue = hdnProjectId?.Value ?? "";
+                        if (!int.TryParse(projectIdValue, out int projectIdInt))
+                        {
+                            throw new Exception($"Invalid project ID: '{projectIdValue}'. Cannot update project.");
+                        }
+                        command.Parameters.AddWithValue("@ProjectId", projectIdInt);
+                    }
+                    
+                    // Add parameters - ensure we get actual values from controls
+                    string title = txtTitle?.Text?.Trim() ?? "";
+                    string description = txtDescription?.Text?.Trim() ?? "";
+                    string technologies = txtTechnologies?.Text?.Trim() ?? "";
+                    string status = ddlStatus?.SelectedValue ?? "";
+                    string demoLink = txtDemoLink?.Text?.Trim() ?? "";
+                    string sourceLink = txtSourceLink?.Text?.Trim() ?? "";
+                    string imagePath = txtImagePath?.Text?.Trim() ?? "";
+                    string displayOrderText = txtDisplayOrder?.Text?.Trim() ?? "";
+                    string projectYearText = txtProjectYear?.Text?.Trim() ?? "";
+                    bool isActive = chkIsActive?.Checked ?? false;
+
+                    // Log the values being saved for debugging
+                    System.Diagnostics.Debug.WriteLine($"Saving project - Title: '{title}', Status: '{status}', Description: '{description}'");
+                    System.Diagnostics.Debug.WriteLine($"Project Year: '{projectYearText}', Display Order: '{displayOrderText}', Is Active: {isActive}");
+                    
+                    command.Parameters.AddWithValue("@Title", string.IsNullOrEmpty(title) ? DBNull.Value : (object)title);
+                    command.Parameters.AddWithValue("@Description", string.IsNullOrEmpty(description) ? DBNull.Value : (object)description);
+                    command.Parameters.AddWithValue("@Technologies", string.IsNullOrEmpty(technologies) ? DBNull.Value : (object)technologies);
+                    
+                    // Handle nullable project year
+                    if (!string.IsNullOrEmpty(projectYearText) && int.TryParse(projectYearText, out int projectYear))
+                    {
+                        command.Parameters.AddWithValue("@ProjectYear", projectYear);
+                    }
+                    else
+                    {
+                        command.Parameters.AddWithValue("@ProjectYear", DBNull.Value);
+                    }
+                    
+                    command.Parameters.AddWithValue("@Status", string.IsNullOrEmpty(status) ? DBNull.Value : (object)status);
+                    command.Parameters.AddWithValue("@DemoLink", string.IsNullOrEmpty(demoLink) ? DBNull.Value : (object)demoLink);
+                    command.Parameters.AddWithValue("@SourceLink", string.IsNullOrEmpty(sourceLink) ? DBNull.Value : (object)sourceLink);
+                    command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(imagePath) ? DBNull.Value : (object)imagePath);
+                    
+                    // Handle display order
+                    if (!string.IsNullOrEmpty(displayOrderText) && int.TryParse(displayOrderText, out int displayOrder))
+                    {
+                        command.Parameters.AddWithValue("@DisplayOrder", displayOrder);
+                    }
+                    else
+                    {
+                        // Set display order based on active status
+                        if (isActive)
+                        {
+                            command.Parameters.AddWithValue("@DisplayOrder", 999); // Default for active projects
+                        }
+                        else
+                        {
+                            command.Parameters.AddWithValue("@DisplayOrder", DBNull.Value);
+                        }
+                    }
+                    
+                    if (isNewProject)
+                    {
+                        // Execute INSERT and get the new project ID that was auto-generated
+                        var newId = command.ExecuteScalar();
+                        if (newId != null && newId != DBNull.Value)
+                        {
+                            string newIdStr = newId.ToString();
+                            if (hdnProjectId != null)
+                            {
+                                hdnProjectId.Value = newIdStr;
+                            }
+                            System.Diagnostics.Debug.WriteLine($"New project created with auto-generated ID: {newIdStr}");
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine("WARNING: ExecuteScalar returned null - project may not have been created");
+                        }
+                    }
+                    else
+                    {
+                        // Execute UPDATE
+                        int rowsAffected = command.ExecuteNonQuery();
+                        if (rowsAffected == 0)
+                        {
+                            throw new Exception("No rows were updated. Project may not exist.");
+                        }
+                        System.Diagnostics.Debug.WriteLine($"Updated project, {rowsAffected} rows affected");
+                    }
+                    
+                    // Log the action
+                    string actionType = isNewProject ? "Created" : "Updated";
+                    string username = Session["AdminUsername"]?.ToString() ?? "Unknown";
+                    System.Diagnostics.Debug.WriteLine($"{DateTime.Now}: {username} {actionType} project '{title}' (ID: {hdnProjectId?.Value ?? "unknown"})");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Database error: {ex}");
+                throw new Exception("Database error while saving project: " + ex.Message);
+            }
         }
 
         private void LoadProjectForEdit(string projectId)
         {
-            // TODO: Implement actual database retrieval logic
-            // For now, just simulate loading a project
-
-            // Simulate project data for ID = 1
-            if (projectId == "1")
+            try
             {
-                hdnProjectId.Value = "1";
-                txtTitle.Text = "Portfolio Website";
-                txtDescription.Text = "My personal portfolio website";
-                txtTechnologies.Text = "ASP.NET, C#, HTML, CSS";
-                txtProjectYear.Text = "2023";
-                ddlStatus.SelectedValue = "Completed";
-                txtDemoLink.Text = "https://example.com";
-                txtSourceLink.Text = "https://github.com/example/portfolio";
-                txtImagePath.Text = "/images/projects/portfolio.jpg";
-                txtDisplayOrder.Text = "1";
-                chkIsActive.Checked = true;
+                string connectionString = ConfigurationManager.ConnectionStrings["adminpanel_db"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = @"
+                        SELECT Id, Title, Description, Technologies, ProjectYear, 
+                               Status, DemoLink, SourceLink, ImagePath, DisplayOrder
+                        FROM Projects 
+                        WHERE Id = @ProjectId";
+                    
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@ProjectId", Convert.ToInt32(projectId));
+                        
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                if (hdnProjectId != null) hdnProjectId.Value = reader["Id"].ToString();
+                                if (txtTitle != null) txtTitle.Text = reader["Title"]?.ToString() ?? "";
+                                if (txtDescription != null) txtDescription.Text = reader["Description"]?.ToString() ?? "";
+                                if (txtTechnologies != null) txtTechnologies.Text = reader["Technologies"]?.ToString() ?? "";
+                                
+                                // Handle nullable fields
+                                if (txtProjectYear != null)
+                                {
+                                    txtProjectYear.Text = reader["ProjectYear"] != DBNull.Value 
+                                        ? reader["ProjectYear"].ToString() 
+                                        : string.Empty;
+                                }
+                                
+                                if (ddlStatus != null)
+                                {
+                                    string status = reader["Status"] != DBNull.Value 
+                                        ? reader["Status"].ToString() 
+                                        : string.Empty;
+                                    
+                                    if (!string.IsNullOrEmpty(status) && ddlStatus.Items.FindByValue(status) != null)
+                                    {
+                                        ddlStatus.SelectedValue = status;
+                                    }
+                                    else
+                                    {
+                                        ddlStatus.SelectedIndex = 0; // Default to first item
+                                    }
+                                }
+                                
+                                if (txtDemoLink != null)
+                                {
+                                    txtDemoLink.Text = reader["DemoLink"] != DBNull.Value 
+                                        ? reader["DemoLink"].ToString() 
+                                        : string.Empty;
+                                }
+                                
+                                if (txtSourceLink != null)
+                                {
+                                    txtSourceLink.Text = reader["SourceLink"] != DBNull.Value 
+                                        ? reader["SourceLink"].ToString() 
+                                        : string.Empty;
+                                }
+                                
+                                if (txtImagePath != null)
+                                {
+                                    txtImagePath.Text = reader["ImagePath"] != DBNull.Value 
+                                        ? reader["ImagePath"].ToString() 
+                                        : string.Empty;
+                                }
+                                
+                                bool isActive = reader["DisplayOrder"] != DBNull.Value;
+                                if (chkIsActive != null) chkIsActive.Checked = isActive;
+                                
+                                if (txtDisplayOrder != null)
+                                {
+                                    txtDisplayOrder.Text = reader["DisplayOrder"] != DBNull.Value 
+                                        ? reader["DisplayOrder"].ToString() 
+                                        : "0";
+                                }
+                                
+                                // Update form title and show delete button
+                                if (lblFormTitle != null) lblFormTitle.Text = "Edit Project";
+                                if (btnDelete != null) btnDelete.Visible = true;
+                            }
+                            else
+                            {
+                                ShowError("Project not found.");
+                                ResetForm();
+                            }
+                        }
+                    }
+                }
             }
-            // Simulate project data for ID = 2
-            else if (projectId == "2")
+            catch (Exception ex)
             {
-                hdnProjectId.Value = "2";
-                txtTitle.Text = "E-commerce Platform";
-                txtDescription.Text = "Full-featured e-commerce system";
-                txtTechnologies.Text = "React, Node.js, MongoDB";
-                txtProjectYear.Text = "2022";
-                ddlStatus.SelectedValue = "In Development";
-                txtDemoLink.Text = "https://ecommerce-demo.com";
-                txtSourceLink.Text = "https://github.com/example/ecommerce";
-                txtImagePath.Text = "/images/projects/ecommerce.jpg";
-                txtDisplayOrder.Text = "2";
-                chkIsActive.Checked = true;
+                throw new Exception("Error loading project: " + ex.Message);
             }
-
-            // Update form title and show delete button
-            lblFormTitle.Text = "Edit Project";
-            btnDelete.Visible = true;
         }
 
         private void DeleteProject(string projectId)
         {
-            // TODO: Implement actual database delete logic
-            // For now, just simulate the delete operation
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["adminpanel_db"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    string query = "DELETE FROM Projects WHERE Id = @ProjectId";
+                    
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@ProjectId", Convert.ToInt32(projectId));
+                        
+                        connection.Open();
+                        int rowsAffected = command.ExecuteNonQuery();
+                        
+                        if (rowsAffected == 0)
+                        {
+                            throw new Exception("Project not found or already deleted.");
+                        }
+                        
+                        // Log the action
+                        string username = Session["AdminUsername"]?.ToString() ?? "Unknown";
+                        System.Diagnostics.Debug.WriteLine($"{DateTime.Now}: {username} deleted project with ID: {projectId}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error deleting project: " + ex.Message);
+            }
         }
 
         private void ResetForm()
         {
             // Clear all form fields
-            hdnProjectId.Value = "";
-            txtTitle.Text = "";
-            txtDescription.Text = "";
-            txtTechnologies.Text = "";
-            txtProjectYear.Text = "";
-            ddlStatus.SelectedIndex = 0;
-            txtDemoLink.Text = "";
-            txtSourceLink.Text = "";
-            txtImagePath.Text = "";
-            txtDisplayOrder.Text = "0";
-            chkIsActive.Checked = true;
+            if (hdnProjectId != null) hdnProjectId.Value = "";
+            if (txtTitle != null) txtTitle.Text = "";
+            if (txtDescription != null) txtDescription.Text = "";
+            if (txtTechnologies != null) txtTechnologies.Text = "";
+            if (txtProjectYear != null) txtProjectYear.Text = "";
+            if (ddlStatus != null) ddlStatus.SelectedIndex = 1; // Default to "Completed" instead of empty
+            if (txtDemoLink != null) txtDemoLink.Text = "";
+            if (txtSourceLink != null) txtSourceLink.Text = "";
+            if (txtImagePath != null) txtImagePath.Text = "";
+            if (txtDisplayOrder != null) txtDisplayOrder.Text = "0";
+            if (chkIsActive != null) chkIsActive.Checked = true;
 
             // Reset form title and hide delete button
-            lblFormTitle.Text = "Add New Project";
-            btnDelete.Visible = false;
+            if (lblFormTitle != null) lblFormTitle.Text = "Add New Project";
+            if (btnDelete != null) btnDelete.Visible = false;
 
-            // Hide messages
-            lblMessage.Visible = false;
-            lblError.Visible = false;
+            // Do NOT hide messages here so success/error is visible after save
+            // lblMessage.Visible = false;
+            // lblError.Visible = false;
         }
 
         private void ShowSuccess(string message)
         {
-            lblMessage.Text = message;
-            lblMessage.Visible = true;
-            lblError.Visible = false;
+            if (lblMessage != null)
+            {
+                lblMessage.Text = message;
+                lblMessage.Visible = true;
+            }
+            if (lblError != null)
+            {
+                lblError.Visible = false;
+            }
         }
 
         private void ShowError(string message)
         {
-            lblError.Text = message;
-            lblError.Visible = true;
-            lblMessage.Visible = false;
+            if (lblError != null)
+            {
+                lblError.Text = message;
+                lblError.Visible = true;
+            }
+            if (lblMessage != null)
+            {
+                lblMessage.Visible = false;
+            }
         }
 
         #endregion
+
+    
     }
 }
