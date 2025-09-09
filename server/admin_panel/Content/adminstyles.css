@@ -280,6 +280,58 @@ html, body {
     flex-shrink: 0;
 }
 
+/* Portfolio Button - Styled similarly to logout button but with primary colors */
+.admin-portfolio-btn {
+    background: rgba(209, 77, 114, 0.1);
+    border: 1px solid rgba(209, 77, 114, 0.2);
+    color: var(--accent-light);
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    height: 40px;
+}
+
+.admin-portfolio-btn:hover {
+    background: rgba(209, 77, 114, 0.2);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(209, 77, 114, 0.2);
+    text-decoration: none;
+}
+
+.admin-portfolio-btn i {
+    font-size: 1rem;
+}
+
+.portfolio-text {
+    display: none;
+}
+
+@media (min-width: 1200px) {
+    .portfolio-text {
+        display: inline;
+    }
+}
+
+/* Mobile Portfolio Link */
+.mobile-portfolio-link {
+    border-top: 1px solid var(--border-dark);
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+}
+
+.mobile-portfolio-link:hover {
+    color: var(--color-primary);
+    background-color: rgba(209, 77, 114, 0.1);
+}
+
 /* Navigation Links - Compact design */
 .admin-nav-link {
     position: relative;
@@ -500,6 +552,7 @@ html, body {
     border: 1px solid var(--border-dark);
     border-radius: 1rem;
     padding: 1.5rem;
+    margin-top: 2rem;
     margin-bottom: 2rem;
     transition: all 0.3s ease;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);

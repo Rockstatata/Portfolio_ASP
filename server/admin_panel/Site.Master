@@ -89,6 +89,12 @@
 
                     <!-- User Actions -->
                     <div class="admin-nav-actions">
+                        <div>    
+                                <a href="portfolio.aspx">
+                                    <i class="fas fa-globe-alt">
+                                </a>
+                            </i>
+                        </div>
                         <div class="admin-user-info">
                             <div class="admin-user-avatar">
                                 <%= GetUserInitials() %>

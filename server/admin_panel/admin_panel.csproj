@@ -117,6 +117,7 @@
     <Content Include="CreateProjectsTable.sql" />
     <Content Include="Database.aspx" />
     <Content Include="DatabaseSetup.sql" />
+    <Content Include="Database\HomeSections_Table_Create.sql" />
     <Content Include="Database_Setup.sql" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
