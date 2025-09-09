@@ -11,7 +11,12 @@ namespace admin_panel
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            string path = Request.Url.AbsolutePath.ToLowerInvariant();
+            if (path.EndsWith("/manageexperiences.aspx") || path.EndsWith("/manageexperiences"))
+            {
+                Response.Redirect("~/admin/experience/", true);
+                return;
+            }
         }
     }
 }

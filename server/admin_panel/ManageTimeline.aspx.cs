@@ -11,7 +11,12 @@ namespace admin_panel
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            string path = Request.Url.AbsolutePath.ToLowerInvariant();
+            if (path.EndsWith("/managetimeline.aspx") || path.EndsWith("/managetimeline"))
+            {
+                Response.Redirect("~/admin/timeline/", true);
+                return;
+            }
         }
     }
 }

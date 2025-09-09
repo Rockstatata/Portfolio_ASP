@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -11,7 +12,12 @@ namespace admin_panel
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            string path = Request.Url.AbsolutePath.ToLowerInvariant();
+            if (path.EndsWith("/manageabout.aspx") || path.EndsWith("/manageabout"))
+            {
+                Response.Redirect("~/admin/about/", true);
+                return;
+            }
         }
     }
 }
