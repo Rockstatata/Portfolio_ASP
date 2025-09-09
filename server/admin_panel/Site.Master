@@ -6,16 +6,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %> - Portfolio Admin Panel</title>
-    
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Admin Styles -->
     <link href="~/Content/adminstyles.css" rel="stylesheet" type="text/css" />
-    
+
     <!-- Three.js and Vanta.js for animated background -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/tengbao/vanta/dist/vanta.net.min.js"></script>
@@ -24,13 +24,13 @@
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
-    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 </head>
 <body class="admin-body">
     <!-- Vanta.js Background -->
     <div class="vanta-bg" id="vanta-bg"></div>
-    
+
     <form runat="server">
         <asp:ScriptManager runat="server">
             <Scripts>
@@ -60,32 +60,33 @@
                             <span class="brand-dashboard-text">Dashboard</span>
                         </a>
                     </div>
-                    
+
                     <!-- Desktop Navigation -->
                     <div class="admin-desktop-nav">
+                        <a href='<%=ResolveUrl("~/admin/about") %>' class="admin-nav-link <%=GetNavActiveClass("ManageAbout.aspx") %>">
+                            <i class="fas fa-user"></i><span class="nav-text">About</span>
+                        </a>
                         <a href='<%=ResolveUrl("~/admin/projects") %>' class="admin-nav-link <%=GetNavActiveClass("ManageProjects.aspx") %>">
-                            <i class="fas fa-briefcase"></i> <span class="nav-text">Projects</span>
+                            <i class="fas fa-briefcase"></i><span class="nav-text">Projects</span>
                         </a>
                         <a href='<%=ResolveUrl("~/admin/experience") %>' class="admin-nav-link <%=GetNavActiveClass("ManageExperiences.aspx") %>">
-                            <i class="fas fa-building"></i> <span class="nav-text">Experience</span>
+                            <i class="fas fa-building"></i><span class="nav-text">Experience</span>
                         </a>
                         <a href='<%=ResolveUrl("~/admin/skills") %>' class="admin-nav-link <%=GetNavActiveClass("ManageSkills.aspx") %>">
-                            <i class="fas fa-code"></i> <span class="nav-text">Skills</span>
+                            <i class="fas fa-code"></i><span class="nav-text">Skills</span>
                         </a>
                         <a href='<%=ResolveUrl("~/admin/timeline") %>' class="admin-nav-link <%=GetNavActiveClass("ManageTimeline.aspx") %>">
-                            <i class="fas fa-clock"></i> <span class="nav-text">Timeline</span>
+                            <i class="fas fa-clock"></i><span class="nav-text">Timeline</span>
                         </a>
                         <a href='<%=ResolveUrl("~/admin/blogs") %>' class="admin-nav-link <%=GetNavActiveClass("ManageBlogs.aspx") %>">
-                            <i class="fas fa-blog"></i> <span class="nav-text">Blogs</span>
+                            <i class="fas fa-blog"></i><span class="nav-text">Blogs</span>
                         </a>
                         <a href='<%=ResolveUrl("~/admin/contacts") %>' class="admin-nav-link <%=GetNavActiveClass("ManageContacts.aspx") %>">
-                            <i class="fas fa-envelope"></i> <span class="nav-text">Contacts</span>
+                            <i class="fas fa-envelope"></i><span class="nav-text">Contacts</span>
                         </a>
-                        <a href='<%=ResolveUrl("~/admin/about") %>' class="admin-nav-link <%=GetNavActiveClass("ManageAbout.aspx") %>">
-                            <i class="fas fa-user"></i> <span class="nav-text">About</span>
-                        </a>
+
                     </div>
-                    
+
                     <!-- User Actions -->
                     <div class="admin-nav-actions">
                         <div class="admin-user-info">
@@ -96,41 +97,42 @@
                         <a href="<%= GetLogoutUrl() %>" class="admin-logout-btn">
                             <i class="fas fa-sign-out-alt"></i>
                         </a>
-                        
+
                         <!-- Mobile Menu Toggle -->
                         <button type="button" class="admin-mobile-menu-toggle" onclick="toggleMobileMenu()">
                             <i class="fas fa-bars"></i>
                         </button>
                     </div>
                 </div>
-                
+
                 <!-- Mobile Menu -->
                 <div id="mobile-menu" class="admin-mobile-menu hidden">
                     <div class="mobile-menu-content">
                         <a href='<%=ResolveUrl("~/admin/") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageHome.aspx") %>">
-                            <i class="fas fa-home"></i> Dashboard
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/projects") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageProjects.aspx") %>">
-                            <i class="fas fa-briefcase"></i> Projects
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/experience") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageExperiences.aspx") %>">
-                            <i class="fas fa-building"></i> Experience
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/skills") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageSkills.aspx") %>">
-                            <i class="fas fa-code"></i> Skills
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/timeline") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageTimeline.aspx") %>">
-                            <i class="fas fa-clock"></i> Timeline
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/blogs") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageBlogs.aspx") %>">
-                            <i class="fas fa-blog"></i> Blogs
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/contacts") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageContacts.aspx") %>">
-                            <i class="fas fa-envelope"></i> Contacts
+                            <i class="fas fa-home"></i>Dashboard
                         </a>
                         <a href='<%=ResolveUrl("~/admin/about") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageAbout.aspx") %>">
-                            <i class="fas fa-user"></i> About
+                            <i class="fas fa-user"></i>About
                         </a>
+                        <a href='<%=ResolveUrl("~/admin/projects") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageProjects.aspx") %>">
+                            <i class="fas fa-briefcase"></i>Projects
+                        </a>
+                        <a href='<%=ResolveUrl("~/admin/experience") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageExperiences.aspx") %>">
+                            <i class="fas fa-building"></i>Experience
+                        </a>
+                        <a href='<%=ResolveUrl("~/admin/skills") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageSkills.aspx") %>">
+                            <i class="fas fa-code"></i>Skills
+                        </a>
+                        <a href='<%=ResolveUrl("~/admin/timeline") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageTimeline.aspx") %>">
+                            <i class="fas fa-clock"></i>Timeline
+                        </a>
+                        <a href='<%=ResolveUrl("~/admin/blogs") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageBlogs.aspx") %>">
+                            <i class="fas fa-blog"></i>Blogs
+                        </a>
+                        <a href='<%=ResolveUrl("~/admin/contacts") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageContacts.aspx") %>">
+                            <i class="fas fa-envelope"></i>Contacts
+                        </a>
+
                     </div>
                 </div>
             </div>
@@ -152,11 +154,7 @@
                         <i class="fas fa-chart-line"></i>
                         <span>Portfolio Admin</span>
                     </div>
-                    <div class="admin-footer-links">
-                        <a href='<%=ResolveUrl("~/admin/") %>'>Dashboard</a>
-                        <a href='<%=ResolveUrl("~/admin/projects") %>'>Projects</a>
-                        <a href='<%=ResolveUrl("~/admin/contacts") %>'>Contacts</a>
-                    </div>
+
                     <div class="admin-footer-copyright">
                         <p>&copy; <%: DateTime.Now.Year %> Portfolio Admin Panel. All rights reserved.</p>
                     </div>
@@ -204,18 +202,18 @@
             } catch (error) {
                 console.error('❌ Vanta.js initialization failed:', error);
                 // Fallback background
-                document.getElementById('vanta-bg').style.background = 
+                document.getElementById('vanta-bg').style.background =
                     'linear-gradient(135deg, #1a1625 0%, #2d1b4e 50%, #1a1625 100%)';
             }
         }
 
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             initVantaBackground();
         });
 
         // Resize handler
-        window.addEventListener('resize', function() {
+        window.addEventListener('resize', function () {
             if (window.vantaEffect && typeof window.vantaEffect.resize === 'function') {
                 window.vantaEffect.resize();
             }
@@ -225,15 +223,15 @@
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             const toggle = document.querySelector('.admin-mobile-menu-toggle');
-            
+
             if (menu) {
                 menu.classList.toggle('hidden');
-                
+
                 // Update aria attributes
                 const isOpen = !menu.classList.contains('hidden');
                 toggle.setAttribute('aria-expanded', isOpen);
                 menu.setAttribute('aria-hidden', !isOpen);
-                
+
                 // Close on click outside
                 if (isOpen) {
                     document.addEventListener('click', closeMobileMenuOnOutsideClick);
@@ -246,7 +244,7 @@
         function closeMobileMenuOnOutsideClick(e) {
             const menu = document.getElementById('mobile-menu');
             const toggle = document.querySelector('.admin-mobile-menu-toggle');
-            
+
             if (!menu.contains(e.target) && !toggle.contains(e.target)) {
                 menu.classList.add('hidden');
                 toggle.setAttribute('aria-expanded', 'false');
