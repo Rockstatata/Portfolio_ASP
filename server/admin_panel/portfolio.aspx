@@ -17,6 +17,9 @@
   </head>
 
   <body class="body-base">
+    <!-- Form wrapper for server-side controls -->
+    <form runat="server">
+    
     <!-- VANTA Background -->
     <div id="vanta-background" class="vanta-bg"></div>
 
@@ -197,7 +200,7 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2H5a2 2 0 00-2 2v2M7 7h10"
                 />
               </svg>
               Projects
@@ -215,7 +218,7 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2H5a2 2 0 00-2 2v2M7 7h10"
                 />
               </svg>
               Experience
@@ -273,20 +276,20 @@
               <!-- Status Badge -->
               <div class="status-badge">
                 <div class="status-dot"></div>
-                <span class="status-text">Available for Projects</span>
+                <span class="status-text"><%: GetSetting("status_text", "Available for Projects") %></span>
               </div>
 
               <!-- Name with Optimized Typography -->
               <div class="name-section">
                 <h1 class="main-heading">
                   <div class="name-line">
-                    <span class="slide-up text-gradient-primary" style="--delay: 0ms">SARWAD</span>
+                    <span class="slide-up text-gradient-primary" style="--delay: 0ms"><%: GetSetting("first_name", "SARWAD") %></span>
                   </div>
                   <div class="name-line">
-                    <span class="slide-up name-middle" style="--delay: 100ms">HASAN</span>
+                    <span class="slide-up name-middle" style="--delay: 100ms"><%: GetSetting("middle_name", "HASAN") %></span>
                   </div>
                   <div class="name-line">
-                    <span class="slide-up text-gradient-secondary" style="--delay: 200ms">SIDDIQUI</span>
+                    <span class="slide-up text-gradient-secondary" style="--delay: 200ms"><%: GetSetting("last_name", "SIDDIQUI") %></span>
                   </div>
                 </h1>
               </div>
@@ -296,27 +299,26 @@
                 <!-- Main Tagline -->
                 <div class="slide-up" style="--delay: 300ms">
                   <h2 class="tagline">
-                    Crafting Digital Experiences with
-                    <span class="text-accent-red">Innovation</span>
+                    <%: GetSetting("hero_tagline", "Crafting Digital Experiences with") %>
+                    <span class="text-accent-red"><%: GetSetting("hero_accent_1", "Innovation") %></span>
                     &
-                    <span class="text-accent-orange">Precision</span>
+                    <span class="text-accent-orange"><%: GetSetting("hero_accent_2", "Precision") %></span>
                   </h2>
                 </div>
 
                 <!-- Description -->
                 <div class="slide-up" style="--delay: 400ms">
                   <p class="description">
-                    Full-stack developer transforming ideas into scalable,
-                    user-focused applications.
+                    <%: HeroSection != null ? HeroSection.Content : "Full-stack developer transforming ideas into scalable, user-focused applications." %>
                   </p>
                 </div>
 
                 <!-- Specialization Tags -->
                 <div class="skill-tags slide-up" style="--delay: 500ms">
-                  <span class="skill-tag">Full Stack</span>
-                  <span class="skill-tag">Python Enthusiast</span>
-                  <span class="skill-tag">React Dev</span>
-                  <span class="skill-tag">UI/UX</span>
+                  <span class="skill-tag"><%: GetSetting("skill_tag_1", "Full Stack") %></span>
+                  <span class="skill-tag"><%: GetSetting("skill_tag_2", "Python Enthusiast") %></span>
+                  <span class="skill-tag"><%: GetSetting("skill_tag_3", "React Dev") %></span>
+                  <span class="skill-tag"><%: GetSetting("skill_tag_4", "UI/UX") %></span>
                 </div>
               </div>
 
@@ -354,8 +356,8 @@
                   <!-- Profile Image -->
                   <div class="profile-image-container">
                     <img
-                      src="./Content/assets/Sarwad.jpeg"
-                      alt="Sarwad Hasan Siddiqui"
+                      src="<%: GetSetting("profile_image", "./Content/assets/Sarwad.jpeg") %>"
+                      alt="<%: GetSetting("full_name", "Sarwad Hasan Siddiqui") %>"
                       class="profile-image"
                       loading="lazy"
                       decoding="async"
@@ -367,6 +369,26 @@
 
                 <!-- Social Links -->
                 <div class="social-links">
+                  <% if (SocialLinks != null && SocialLinks.Any()) { %>
+                    <% foreach (var link in SocialLinks.Take(4)) { %>
+                  <a
+                    href="<%: link.URL %>"
+                    target="_blank"
+                    class="social-link"
+                    data-magnetic
+                    aria-label="<%: EncodeAttribute(link.Platform) %> Profile"
+                  >
+                    <% if (!string.IsNullOrEmpty(link.IconClass)) { %>
+                    <i class="<%: link.IconClass %> social-icon"></i>
+                    <% } else { %>
+                    <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 0C5.374 0 0 5.373 0 12s5.374 12 12 12 12-5.373 12-12S18.626 0 12 0z"/>
+                    </svg>
+                    <% } %>
+                  </a>
+                    <% } %>
+                  <% } else { %>
+                  <!-- Fallback social links -->
                   <a
                     href="https://github.com/Rockstatata"
                     target="_blank"
@@ -414,15 +436,16 @@
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
+                      stroke-width="2"
                     >
                       <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
-                        stroke-width="2"
                         d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                       />
                     </svg>
                   </a>
+                  <% } %>
                 </div>
               </div>
             </div>
@@ -691,6 +714,31 @@
           <div class="timeline-content">
             <div class="timeline-line"></div>
             
+            <% 
+            if (AllTimeline != null && AllTimeline.Any()) 
+            {
+                bool isTop = true; // Alternate position
+                foreach (var item in AllTimeline) 
+                { 
+            %>
+            <!-- Timeline Item - <%: item.Title %> -->
+            <div class="timeline-item" data-position="<%: isTop ? "top" : "bottom" %>">
+              <div class="timeline-dot <%: item.Type.ToLower() == "current" || item.YearRange.Contains("Current") ? "timeline-dot-current" : "" %>"></div>
+              <div class="timeline-card">
+                <div class="timeline-year"><%: item.YearRange %></div>
+                <div class="timeline-title"><%: item.Title %></div>
+                <div class="timeline-location"><%: item.Location %></div>
+                <div class="timeline-degree"><%: item.Description %></div>
+              </div>
+            </div>
+            <% 
+                isTop = !isTop; // Toggle position
+                } 
+            } 
+            else 
+            { 
+                // Fallback content when no timeline data is available
+            %>
             <!-- Timeline Item 1 -->
             <div class="timeline-item" data-position="top">
               <div class="timeline-dot"></div>
@@ -745,6 +793,7 @@
                 <div class="timeline-degree">Software Developer Intern</div>
               </div>
             </div>
+            <% } %>
           </div>
         </div>
       </section>
@@ -761,6 +810,67 @@
           
           <!-- Skills Grid -->
           <div class="skills-categories-grid">
+            <% 
+            if (SkillsByCategory != null && SkillsByCategory.Any()) 
+            {
+                var colorAccents = new[] { "text-accent-red", "text-accent-orange", "text-accent-red", "text-accent-orange" };
+                int categoryIndex = 0;
+                
+                foreach (var category in SkillsByCategory) 
+                { 
+                    var accentColor = colorAccents[categoryIndex % colorAccents.Length];
+            %>
+            <!-- <%: category.Key %> Category -->
+            <div class="glass-card skills-category">
+              <div class="card-content">
+                <div class="card-header">
+                  <h3 class="card-title <%: accentColor %>"><%: category.Key %></h3>
+                  <div class="category-icon">
+                    <svg class="skill-category-icon" fill="currentColor" viewBox="0 0 24 24">
+                      <% if (category.Key.ToLower().Contains("frontend") || category.Key.ToLower().Contains("ui")) { %>
+                      <path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 7.996c0-1.107.896-2.004 2.004-2.004s2.004.897 2.004 2.004S11.111 10 10.004 10 8 9.103 8 7.996zM14 18H6v-1.5l2-2 1.5 1.5L12 13l2 2v3z"/>
+                      <% } else if (category.Key.ToLower().Contains("backend") || category.Key.ToLower().Contains("server")) { %>
+                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                      <% } else if (category.Key.ToLower().Contains("tool") || category.Key.ToLower().Contains("devops")) { %>
+                      <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
+                      <% } else { %>
+                      <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 6.5V7.5C15 8.1 14.6 8.5 14 8.5S13 8.1 13 7.5V6.5L12 6.5L11 6.5V7.5C11 8.1 10.6 8.5 10 8.5S9 8.1 9 7.5V6.5L3 7V9C3 10.1 3.9 11 5 11V17C5 18.1 5.9 19 7 19H9C10.1 19 11 18.1 11 17V11C11.4 11 11.7 10.8 11.9 10.4L12 10.5L12.1 10.4C12.3 10.8 12.6 11 13 11V17C13 18.1 13.9 19 15 19H17C18.1 19 19 18.1 19 17V11C20.1 11 21 10.1 21 9Z"/>
+                      <% } %>
+                    </svg>
+                  </div>
+                </div>
+                <div class="skills-grid">
+                  <% foreach (var skill in category.Value.Take(12)) { %>
+                  <div class="skill-tag">
+                    <% if (!string.IsNullOrEmpty(skill.SkillIcon)) { %>
+                      <% if (skill.SkillIcon.StartsWith("http") || skill.SkillIcon.StartsWith("https")) { %>
+                    <img src="<%: skill.SkillIcon %>" alt="<%: EncodeAttribute(skill.SkillName) %>" class="skill-icon">
+                      <% } else if (skill.SkillIcon.StartsWith("devicon-")) { %>
+                    <i class="<%: skill.SkillIcon %> skill-icon"></i>
+                      <% } else { %>
+                    <svg class="skill-icon" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                      <% } %>
+                    <% } else { %>
+                    <svg class="skill-icon" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                    <% } %>
+                    <span><%: skill.SkillName %></span>
+                  </div>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+            <% 
+                categoryIndex++;
+                } 
+            } 
+            else 
+            { 
+                // Fallback content when no skills are available
+            %>
             <!-- Frontend Category -->
             <div class="glass-card skills-category">
               <div class="card-content">
@@ -786,30 +896,8 @@
                     <span>JavaScript</span>
                   </div>
                   <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" class="skill-icon">
-                    <span>TypeScript</span>
-                  </div>
-                  <div class="skill-tag">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" class="skill-icon">
                     <span>React</span>
-                  </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" class="skill-icon">
-                    <span>Next.js</span>
-                  </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind" class="skill-icon">
-                    <span>Tailwind</span>
-                  </div>
-                  <div class="skill-tag">
-                    <svg class="skill-icon" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                    </svg>
-                    <span>ShadCN</span>
-                  </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redux/redux-original.svg" alt="Redux" class="skill-icon">
-                    <span>Redux</span>
                   </div>
                 </div>
               </div>
@@ -832,16 +920,8 @@
                     <span>Node.js</span>
                   </div>
                   <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express" class="skill-icon">
-                    <span>Express</span>
-                  </div>
-                  <div class="skill-tag">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" class="skill-icon">
                     <span>Python</span>
-                  </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" alt="FastAPI" class="skill-icon">
-                    <span>FastAPI</span>
                   </div>
                   <div class="skill-tag">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" class="skill-icon">
@@ -851,129 +931,10 @@
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" class="skill-icon">
                     <span>MySQL</span>
                   </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" alt="SQL Server" class="skill-icon">
-                    <span>SQL Server</span>
-                  </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" alt="Laravel" class="skill-icon">
-                    <span>Laravel</span>
-                  </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP" class="skill-icon">
-                    <span>PHP</span>
-                  </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C" class="skill-icon">
-                    <span>C</span>
-                  </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" class="skill-icon">
-                    <span>C++</span>
-                  </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java" class="skill-icon">
-                    <span>Java</span>
-                  </div>
                 </div>
               </div>
             </div>
-
-            <!-- DevOps & Tools Category -->
-            <div class="glass-card skills-category">
-              <div class="card-content">
-                <div class="card-header">
-                  <h3 class="card-title text-accent-red">DevOps & Tools</h3>
-                  <div class="category-icon">
-                    <svg class="skill-category-icon" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
-                    </svg>
-                  </div>
-                </div>
-                <div class="skills-grid">
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" class="skill-icon">
-                    <span>Figma</span>
-                  </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" class="skill-icon">
-                    <span>Git</span>
-                  </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="Bash" class="skill-icon">
-                    <span>Bash</span>
-                  </div>
-                  <div class="skill-tag">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg" alt="Jira" class="skill-icon">
-                    <span>Jira</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Soft Skills Category -->
-            <div class="glass-card skills-category">
-              <div class="card-content">
-                <div class="card-header">
-                  <h3 class="card-title text-accent-orange">Soft Skills</h3>
-                  <div class="category-icon">
-                    <svg class="skill-category-icon" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 6.5V7.5C15 8.1 14.6 8.5 14 8.5S13 8.1 13 7.5V6.5L12 6.5L11 6.5V7.5C11 8.1 10.6 8.5 10 8.5S9 8.1 9 7.5V6.5L3 7V9C3 10.1 3.9 11 5 11V17C5 18.1 5.9 19 7 19H9C10.1 19 11 18.1 11 17V11C11.4 11 11.7 10.8 11.9 10.4L12 10.5L12.1 10.4C12.3 10.8 12.6 11 13 11V17C13 18.1 13.9 19 15 19H17C18.1 19 19 18.1 19 17V11C20.1 11 21 10.1 21 9Z"/>
-                    </svg>
-                  </div>
-                </div>
-                <div class="skills-grid">
-                  <div class="skill-tag">
-                    <svg class="skill-icon" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                    </svg>
-                    <span>Problem Solving</span>
-                  </div>
-                  <div class="skill-tag">
-                    <svg class="skill-icon" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
-                    </svg>
-                    <span>Leadership</span>
-                  </div>
-                  <div class="skill-tag">
-                    <svg class="skill-icon" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                    </svg>
-                    <span>Creative Thinking</span>
-                  </div>
-                  <div class="skill-tag">
-                    <svg class="skill-icon" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 0 0-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z"/>
-                    </svg>
-                    <span>Team Collaboration</span>
-                  </div>
-                  <div class="skill-tag">
-                    <svg class="skill-icon" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.5 6L12 10.5 8.5 8 12 5.5 15.5 8zM8.5 16L12 13.5 15.5 16 12 18.5 8.5 16z"/>
-                    </svg>
-                    <span>Adaptability</span>
-                  </div>
-                  <div class="skill-tag">
-                    <svg class="skill-icon" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-                    </svg>
-                    <span>Communication</span>
-                  </div>
-                  <div class="skill-tag">
-                    <svg class="skill-icon" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
-                    </svg>
-                    <span>Time Management</span>
-                  </div>
-                  <div class="skill-tag">
-                    <svg class="skill-icon" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
-                    </svg>
-                    <span>Detail Oriented</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <% } %>
           </div>
         </div>
       </section>
@@ -990,13 +951,27 @@
           </div>
 
           <div class="projects-grid">
-            <!-- Project Card 1 - AI Art Generator -->
+            <% 
+                // Use FeaturedProjects if available, otherwise fall back to AllProjects
+                var projectsToShow = FeaturedProjects;
+
+                if (projectsToShow != null && projectsToShow.Any())
+                {
+                    foreach (var project in projectsToShow)
+                    {
+            %>
+            <!-- Project Card - <%: project.Title %> -->
             <article class="glass-card project-card">
               <div class="project-image">
-                <img src="https://picsum.photos/600/300?random=1" alt="AI Art Generator" class="project-img" />
+                <img src="<%: !string.IsNullOrEmpty(project.ImagePath) ? project.ImagePath : "https://picsum.photos/600/300?random=" + project.Id %>" 
+                     alt="<%: EncodeAttribute(project.Title) %>" 
+                     class="project-img" />
+                <% if (!string.IsNullOrEmpty(project.Status) && project.Status.ToLower() != "completed") { %>
+                <div class="project-badge"><%: project.Status %></div>
+                <% } %>
               </div>
               <div class="project-content">
-                <h3 class="project-title">AI Art Generator</h3>
+                <h3 class="project-title"><%: project.Title %></h3>
                 <div class="project-meta">
                   <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -1004,105 +979,38 @@
                     <line x1="8" y1="2" x2="8" y2="6"/>
                     <line x1="3" y1="10" x2="21" y2="10"/>
                   </svg>
-                  <span class="project-year">2023</span>
+                  <span class="project-year"><%: project.ProjectYear.HasValue ? project.ProjectYear.Value.ToString() : DateTime.Now.Year.ToString() %></span>
                 </div>
-                <p class="project-desc">UI, Api Integrations and enhancements in the rendering patterns</p>
+                <p class="project-desc"><%: TruncateText(project.Description, 120) %></p>
 
+                <% if (!string.IsNullOrEmpty(project.Technologies)) { %>
                 <div class="project-tags">
-                  <span class="tag tag-blue">Next.js</span>
-                  <span class="tag tag-orange">Firebase</span>
-                  <span class="tag tag-teal">Tailwind</span>
-                  <span class="tag tag-red">Redis</span>
-                  <span class="tag tag-purple">Cloudflare</span>
-                  <span class="tag tag-gray">stable diffusion</span>
-                  <span class="tag tag-cyan">midjourney</span>
-                  <span class="tag tag-green">flux</span>
+                  <% 
+                  var technologies = GetTechnologies(project.Technologies);
+                  var colorClasses = new[] { "tag-blue", "tag-orange", "tag-teal", "tag-red", "tag-purple", "tag-gray", "tag-cyan", "tag-green" };
+                  
+
+                  for (int i = 0; i < technologies.Length && i < 8; i++) 
+                  { 
+                      var colorClass = colorClasses[i % colorClasses.Length];
+                  %>
+                  <span class="tag <%: colorClass %>"><%: technologies[i] %></span>
+                  <% } %>
                 </div>
+                <% } %>
 
                 <div class="project-actions">
-                  <a class="btn btn-outline" href="#">
-                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                      <polyline points="15,3 21,3 21,9"/>
-                      <line x1="10" y1="14" x2="21" y2="3"/>
-                    </svg>
-                    Demo
-                  </a>
-                </div>
-              </div>
-            </article>
-
-            <!-- Project Card 2 - Rich Text Editor -->
-            <article class="project-card glass-card">
-              <div class="project-image">
-                <img src="https://picsum.photos/600/300?random=2" alt="Rich Text Editor" class="project-img" />
-              </div>
-              <div class="project-content">
-                <h3 class="project-title">Rich Text Editor</h3>
-                <div class="project-meta">
-                  <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                  <span class="project-year">2023</span>
-                </div>
-                <p class="project-desc">A Powerful Modern Rich text Editor with Tiptap and Gemini AI for content writing</p>
-
-                <div class="project-tags">
-                  <span class="tag tag-blue">Next.js</span>
-                  <span class="tag tag-teal">Tiptap</span>
-                  <span class="tag tag-purple">Gemini AI</span>
-                </div>
-
-                <div class="project-actions">
-                  <a class="btn btn-outline" href="#">
-                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                      <polyline points="15,3 21,3 21,9"/>
-                      <line x1="10" y1="14" x2="21" y2="3"/>
-                    </svg>
-                    Demo
-                  </a>
-                </div>
-              </div>
-            </article>
-
-            <!-- Project Card 3 - Dynamic Images Library -->
-            <article class="project-card glass-card">
-              <div class="project-image">
-                <img src="https://picsum.photos/600/300?random=3" alt="Dynamic Images Library" class="project-img" />
-              </div>
-              <div class="project-content">
-                <h3 class="project-title">Dynamic Images Library Nextjs 15</h3>
-                <div class="project-meta">
-                  <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                  <span class="project-year">2024</span>
-                </div>
-                <p class="project-desc">Images library utilizing Unsplash Api, Pixels, and Pixabay. Infinite Scrolling Url with Custom Hook and dynamic blur placeholder</p>
-
-                <div class="project-tags">
-                  <span class="tag tag-blue">Next.js</span>
-                  <span class="tag tag-green">Vercel</span>
-                  <span class="tag tag-purple">Pixabay</span>
-                  <span class="tag tag-orange">Pexels</span>
-                  <span class="tag tag-cyan">Unsplash</span>
-                </div>
-
-                <div class="project-actions">
-                  <a class="btn btn-outline" href="#">
+                  <% if (!string.IsNullOrEmpty(project.SourceLink) && project.SourceLink != "#") { %>
+                  <a class="btn btn-outline" href="<%: project.SourceLink %>" target="_blank" rel="noopener noreferrer">
                     <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
                     </svg>
                     Source
                   </a>
-                  <a class="btn btn-outline" href="#">
+                  <% } %>
+                  
+                  <% if (!string.IsNullOrEmpty(project.DemoLink) && project.DemoLink != "#") { %>
+                  <a class="btn btn-outline" href="<%: project.DemoLink %>" target="_blank" rel="noopener noreferrer">
                     <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                       <polyline points="15,3 21,3 21,9"/>
@@ -1110,70 +1018,56 @@
                     </svg>
                     Demo
                   </a>
-                </div>
-              </div>
-            </article>
-
-            <!-- Project Card 4 - Powerful Next.js SaaS Starterkit -->
-            <article class="project-card glass-card">
-              <div class="project-image">
-                <img src="https://picsum.photos/600/300?random=4" alt="Next.js SaaS Starterkit" class="project-img" />
-                <div class="project-badge">In development</div>
-              </div>
-              <div class="project-content">
-                <h3 class="project-title">Powerful Next.js Saas Starterkit</h3>
-                <div class="project-meta">
-                  <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                  <span class="project-year">2024</span>
-                </div>
-                <p class="project-desc">creating a powerful starterkit for the community, better than a paid template, with enterprise patterns</p>
-
-                <div class="project-tags">
-                  <span class="tag tag-blue">Auth.js</span>
-                  <span class="tag tag-blue">Next.js</span>
-                  <span class="tag tag-purple">TRPC</span>
-                  <span class="tag tag-green">Database Agnostic</span>
-                  <span class="tag tag-orange">Turbo Repo</span>
-                  <span class="tag tag-teal">Stripe</span>
-                  <span class="tag tag-gray">Mail sending</span>
-                </div>
-
-                <div class="project-actions">
-                  <a class="btn btn-outline" href="#">
+                  <% } %>
+                  
+                  <% // If no links available, show a placeholder %>
+                  <% if ((string.IsNullOrEmpty(project.SourceLink) || project.SourceLink == "#") && 
+                         (string.IsNullOrEmpty(project.DemoLink) || project.DemoLink == "#")) { %>
+                  <a class="btn btn-outline" href="#" onclick="return false;" style="opacity: 0.6; cursor: not-allowed;">
                     <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                      <polyline points="15,3 21,3 21,9"/>
+                      <line x1="10" y1="14" x2="21" y2="3"/>
                     </svg>
-                    Source
+                    Coming Soon
                   </a>
+                  <% } %>
                 </div>
               </div>
             </article>
+            <% 
+                } 
+            } 
+            else 
+            { 
+                // Fallback content when no projects are available
+            %>
+            <% } %>
           </div>
         </div>
       </section>
 
-      <section id="experience" class="section experience-section">
-        <div class="experience-container">
-          <div class="experience-header">
+      <!-- Experience Section -->
+      <section id="experience" class="section projects-section">
+        <div class="projects-container">
+          <div class="projects-header">
             <h1 class="section-title">Experience</h1>
             <p class="section-subtitle">
-              A showcase of my professional journey, highlighting key roles and responsibilities.
+              My professional journey and work experience in software development and technology.
             </p>
           </div>
 
           <div class="projects-grid">
-            <!-- Project Card 1 - AI Art Generator -->
+            <% 
+                if (Experiences != null && Experiences.Any())
+                {
+                    foreach (var experience in Experiences)
+                    {
+            %>
+            <!-- Experience Card - <%: experience.Company %> -->
             <article class="glass-card project-card">
-              <div class="project-image">
-                <img src="https://picsum.photos/600/300?random=1" alt="AI Art Generator" class="project-img" />
-              </div>
               <div class="project-content">
-                <h3 class="project-title">AI Art Generator</h3>
+                <h3 class="project-title"><%: experience.Company %></h3>
                 <div class="project-meta">
                   <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -1181,19 +1075,44 @@
                     <line x1="8" y1="2" x2="8" y2="6"/>
                     <line x1="3" y1="10" x2="21" y2="10"/>
                   </svg>
-                  <span class="project-year">2023</span>
+                  <span class="project-year"><%: experience.Position %></span>
                 </div>
-                <p class="project-desc">UI, Api Integrations and enhancements in the rendering patterns</p>
+                <p class="project-desc"><%: !string.IsNullOrEmpty(experience.Duration) ? experience.Duration : "Duration not specified" %></p>
+
+                <% if (!string.IsNullOrEmpty(experience.Description)) { %>
+                <p class="project-desc"><%: experience.Description %></p>
+                <% } %>
+
+                <% if (!string.IsNullOrEmpty(experience.Responsibilities)) { %>
+                <div class="project-tags">
+                  <% 
+                  var responsibilities = experience.Responsibilities.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                  var colorClasses = new[] { "tag-blue", "tag-orange", "tag-teal", "tag-red", "tag-purple", "tag-gray", "tag-cyan", "tag-green" };
+                  
+                  for (int i = 0; i < responsibilities.Length && i < 8; i++) 
+                  { 
+                      var colorClass = colorClasses[i % colorClasses.Length];
+                      var responsibility = responsibilities[i].Trim();
+                      // Take only first few words of each responsibility for tags
+                      var shortResponsibility = responsibility.Length > 25 ? responsibility.Substring(0, 25) + "..." : responsibility;
+                  %>
+                  <span class="tag <%: colorClass %>"><%: shortResponsibility %></span>
+                  <% } %>
+                </div>
+                <% } %>
               </div>
             </article>
-
-            <!-- Project Card 2 - Rich Text Editor -->
-            <article class="project-card glass-card">
-              <div class="project-image">
-                <img src="https://picsum.photos/600/300?random=2" alt="Rich Text Editor" class="project-img" />
-              </div>
+            <% 
+                } 
+            } 
+            else 
+            { 
+                // Fallback content when no experiences are available
+            %>
+            <!-- Fallback Experience Card 1 -->
+            <article class="glass-card project-card">
               <div class="project-content">
-                <h3 class="project-title">Rich Text Editor</h3>
+                <h3 class="project-title">Algosoft Technologies Ltd.</h3>
                 <div class="project-meta">
                   <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -1201,19 +1120,24 @@
                     <line x1="8" y1="2" x2="8" y2="6"/>
                     <line x1="3" y1="10" x2="21" y2="10"/>
                   </svg>
-                  <span class="project-year">2023</span>
+                  <span class="project-year">Software Developer Intern</span>
                 </div>
-                <p class="project-desc">A Powerful Modern Rich text Editor with Tiptap and Gemini AI for content writing</p>
+                <p class="project-desc">2025 - Current</p>
+                <p class="project-desc">Working as a Software Developer Intern, focusing on web development and application architecture.</p>
+                
+                <div class="project-tags">
+                  <span class="tag tag-blue">Web Development</span>
+                  <span class="tag tag-orange">ASP.NET</span>
+                  <span class="tag tag-teal">Team Collaboration</span>
+                  <span class="tag tag-red">Best Practices</span>
+                </div>
               </div>
             </article>
 
-            <!-- Project Card 3 - Dynamic Images Library -->
-            <article class="project-card glass-card">
-              <div class="project-image">
-                <img src="https://picsum.photos/600/300?random=3" alt="Dynamic Images Library" class="project-img" />
-              </div>
+            <!-- Fallback Experience Card 2 -->
+            <article class="glass-card project-card">
               <div class="project-content">
-                <h3 class="project-title">Dynamic Images Library Nextjs 15</h3>
+                <h3 class="project-title">Freelance Work</h3>
                 <div class="project-meta">
                   <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -1221,34 +1145,20 @@
                     <line x1="8" y1="2" x2="8" y2="6"/>
                     <line x1="3" y1="10" x2="21" y2="10"/>
                   </svg>
-                  <span class="project-year">2024</span>
+                  <span class="project-year">Full Stack Developer</span>
                 </div>
-                <p class="project-desc">Images library utilizing Unsplash Api, Pixels, and Pixabay. Infinite Scrolling Url with Custom Hook and dynamic blur placeholder</p>
-
+                <p class="project-desc">2023 - Present</p>
+                <p class="project-desc">Working on various freelance projects, developing websites and applications for clients.</p>
+                
+                <div class="project-tags">
+                  <span class="tag tag-purple">Responsive Design</span>
+                  <span class="tag tag-gray">Client Management</span>
+                  <span class="tag tag-cyan">Database Design</span>
+                  <span class="tag tag-green">API Development</span>
+                </div>
               </div>
             </article>
-
-            <!-- Project Card 4 - Powerful Next.js SaaS Starterkit -->
-            <article class="project-card glass-card">
-              <div class="project-image">
-                <img src="https://picsum.photos/600/300?random=4" alt="Next.js SaaS Starterkit" class="project-img" />
-                <div class="project-badge">In development</div>
-              </div>
-              <div class="project-content">
-                <h3 class="project-title">Powerful Next.js Saas Starterkit</h3>
-                <div class="project-meta">
-                  <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                  <span class="project-year">2024</span>
-                </div>
-                <p class="project-desc">creating a powerful starterkit for the community, better than a paid template, with enterprise patterns</p>
-
-              </div>
-            </article>
+            <% } %>
           </div>
         </div>
       </section>
@@ -1285,7 +1195,66 @@
 
             <!-- Scrollable Blog Grid -->
             <div class="blog-grid-scroll" id="blogGrid">
-              <!-- Blog Post 1 -->
+              <% 
+              if (RecentBlogPosts != null && RecentBlogPosts.Any()) 
+              {
+                  foreach (var post in RecentBlogPosts) 
+                  { 
+              %>
+              <!-- Blog Post - <%: post.Title %> -->
+              <article class="blog-card glass-card">
+                <div class="blog-content">
+                  <% if (!string.IsNullOrEmpty(post.Categories)) { %>
+                  <div class="blog-categories">
+                    <% 
+                    var categories = post.Categories.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    var categoryClasses = new[] { "programming", "frontend", "development", "cloud" };
+                    
+                    for (int i = 0; i < categories.Length && i < 2; i++) 
+                    { 
+                        var categoryClass = categoryClasses[i % categoryClasses.Length];
+                    %>
+                    <span class="blog-category <%: categoryClass %>"><%: categories[i].Trim() %></span>
+                    <% } %>
+                  </div>
+                  <% } %>
+                  
+                  <% if (!string.IsNullOrEmpty(post.Tags)) { %>
+                  <div class="blog-tags">
+                    <% 
+                    var tags = post.Tags.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    
+                    for (int i = 0; i < tags.Length && i < 4; i++) 
+                    { 
+                    %>
+                    <span class="blog-tag"><%: tags[i].Trim() %></span>
+                    <% } %>
+                  </div>
+                  <% } %>
+
+                  <h3 class="blog-post-title"><%: TruncateText(post.Title, 80) %></h3>
+                  <p class="blog-excerpt"><%: TruncateText(!string.IsNullOrEmpty(post.Excerpt) ? post.Excerpt : post.Content, 100) %></p>
+
+                  <div class="blog-meta">
+                    <span class="blog-date"><%: FormatDate(post.PublishDate, "MMM d, yyyy") %></span>
+                    <span class="blog-separator">•</span>
+                    <span class="blog-read-time"><%: post.ReadTime.HasValue ? post.ReadTime.Value.ToString() : "3" %> min read</span>
+                    <div class="blog-arrow">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M7 17l9.2-9.2M17 17V7H7"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </article>
+              <% 
+                  } 
+              } 
+              else 
+              { 
+                  // Fallback content when no blog posts are available
+              %>
+              <!-- Fallback Blog Post 1 -->
               <article class="blog-card glass-card">
                 <div class="blog-content">
                   <div class="blog-categories">
@@ -1299,11 +1268,11 @@
                     <span class="blog-tag">Css</span>
                   </div>
 
-                  <h3 class="blog-post-title">Tailwind CSS v4.0: A Fresh Look at the Future of CSS</h3>
-                  <p class="blog-excerpt">Here's a breakdown of what's new and how you can start experimenting with it.</p>
+                  <h3 class="blog-post-title">Building Modern Web Applications with ASP.NET</h3>
+                  <p class="blog-excerpt">Exploring the latest features and best practices for developing scalable web applications using ASP.NET Web Forms and modern techniques.</p>
 
                   <div class="blog-meta">
-                    <span class="blog-date">Dec 3, 2024</span>
+                    <span class="blog-date"><%: FormatDate(DateTime.Now, "MMM d, yyyy") %></span>
                     <span class="blog-separator">•</span>
                     <span class="blog-read-time">4 min read</span>
                     <div class="blog-arrow">
@@ -1315,7 +1284,7 @@
                 </div>
               </article>
 
-              <!-- Blog Post 2 -->
+              <!-- Fallback Blog Post 2 -->
               <article class="blog-card glass-card">
                 <div class="blog-content">
                   <div class="blog-categories">
@@ -1324,75 +1293,16 @@
                   </div>
                   
                   <div class="blog-tags">
-                    <span class="blog-tag">Microservices</span>
-                    <span class="blog-tag">Event-Driven Architecture</span>
-                    <span class="blog-tag">Scalability</span>
-                    <span class="blog-tag">Software Design</span>
+                    <span class="blog-tag">Database</span>
+                    <span class="blog-tag">SQL Server</span>
+                    <span class="blog-tag">Architecture</span>
                   </div>
 
-                  <h3 class="blog-post-title">Microservices and Event-Driven Architecture: A Perfect Match for Scalable Applications</h3>
-                  <p class="blog-excerpt">Exploring the synergy between microservices and event-driven architecture (EDA) for building scalable and resilient applications.</p>
+                  <h3 class="blog-post-title">Database Design Patterns for Portfolio Applications</h3>
+                  <p class="blog-excerpt">Best practices for designing and implementing database schemas for portfolio and content management systems.</p>
 
                   <div class="blog-meta">
-                    <span class="blog-date">Nov 28, 2024</span>
-                    <span class="blog-separator">•</span>
-                    <span class="blog-read-time">4 min read</span>
-                    <div class="blog-arrow">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M7 17l9.2-9.2M17 17V7H7"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </article>
-
-              <!-- Blog Post 3 -->
-              <article class="blog-card glass-card">
-                <div class="blog-content">
-                  <div class="blog-categories">
-                    <span class="blog-category programming">Programming</span>
-                  </div>
-                  
-                  <div class="blog-tags">
-                    <span class="blog-tag">Python</span>
-                    <span class="blog-tag">JavaScript</span>
-                    <span class="blog-tag">Programming</span>
-                  </div>
-
-                  <h3 class="blog-post-title">Python vs JavaScript: The Unbeaten Champions of Their Domains in 2023-2024</h3>
-                  <p class="blog-excerpt">A detailed comparison of Python and JavaScript in 2023-2024, highlighting their unique strengths and domains of dominance.</p>
-
-                  <div class="blog-meta">
-                    <span class="blog-date">Nov 27, 2024</span>
-                    <span class="blog-separator">•</span>
-                    <span class="blog-read-time">3 min read</span>
-                    <div class="blog-arrow">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M7 17l9.2-9.2M17 17V7H7"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </article>
-
-              <!-- Blog Post 4 (Additional) -->
-              <article class="blog-card glass-card">
-                <div class="blog-content">
-                  <div class="blog-categories">
-                    <span class="blog-category development">Development</span>
-                  </div>
-                  
-                  <div class="blog-tags">
-                    <span class="blog-tag">React</span>
-                    <span class="blog-tag">Performance</span>
-                    <span class="blog-tag">Optimization</span>
-                  </div>
-
-                  <h3 class="blog-post-title">React Performance Optimization: Advanced Techniques for 2024</h3>
-                  <p class="blog-excerpt">Master the latest React performance optimization techniques including concurrent features, server components, and more.</p>
-
-                  <div class="blog-meta">
-                    <span class="blog-date">Nov 25, 2024</span>
+                    <span class="blog-date"><%: FormatDate(DateTime.Now.AddDays(-7), "MMM d, yyyy") %></span>
                     <span class="blog-separator">•</span>
                     <span class="blog-read-time">6 min read</span>
                     <div class="blog-arrow">
@@ -1404,26 +1314,26 @@
                 </div>
               </article>
 
-              <!-- Blog Post 5 (Additional) -->
+              <!-- Fallback Blog Post 3 -->
               <article class="blog-card glass-card">
                 <div class="blog-content">
                   <div class="blog-categories">
-                    <span class="blog-category cloud">Cloud and Database</span>
+                    <span class="blog-category programming">Programming</span>
                   </div>
                   
                   <div class="blog-tags">
-                    <span class="blog-tag">DevOps</span>
-                    <span class="blog-tag">Docker</span>
-                    <span class="blog-tag">Kubernetes</span>
+                    <span class="blog-tag">C#</span>
+                    <span class="blog-tag">Web Development</span>
+                    <span class="blog-tag">Best Practices</span>
                   </div>
 
-                  <h3 class="blog-post-title">Building Scalable Apps with Docker and Kubernetes in 2024</h3>
-                  <p class="blog-excerpt">A comprehensive guide to containerization and orchestration for modern web applications.</p>
+                  <h3 class="blog-post-title">C# Development Tips for Aspiring Developers</h3>
+                  <p class="blog-excerpt">Essential tips and tricks for writing clean, efficient C# code and building robust applications.</p>
 
                   <div class="blog-meta">
-                    <span class="blog-date">Nov 20, 2024</span>
+                    <span class="blog-date"><%: FormatDate(DateTime.Now.AddDays(-14), "MMM d, yyyy") %></span>
                     <span class="blog-separator">•</span>
-                    <span class="blog-read-time">8 min read</span>
+                    <span class="blog-read-time">5 min read</span>
                     <div class="blog-arrow">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M7 17l9.2-9.2M17 17V7H7"/>
@@ -1432,15 +1342,18 @@
                   </div>
                 </div>
               </article>
+              <% } %>
             </div>
 
             <!-- Scroll Indicator -->
             <div class="scroll-indicator-dots">
-              <div class="scroll-dot active" data-index="0"></div>
-              <div class="scroll-dot" data-index="1"></div>
-              <div class="scroll-dot" data-index="2"></div>
-              <div class="scroll-dot" data-index="3"></div>
-              <div class="scroll-dot" data-index="4"></div>
+              <% 
+              var totalPosts = (RecentBlogPosts != null && RecentBlogPosts.Any()) ? RecentBlogPosts.Count : 3;
+              for (int i = 0; i < totalPosts; i++) 
+              { 
+              %>
+              <div class="scroll-dot <%: i == 0 ? "active" : "" %>" data-index="<%: i %>"></div>
+              <% } %>
             </div>
           </div>
         </div>
@@ -1483,59 +1396,64 @@
               <div class="contact-right">
                 <div class="contact-form-section">
                   <h3 class="contact-section-title">Contact Form</h3>
-                  <form class="contact-form" id="contactForm">
+                  <div class="contact-form" id="contactFormDiv">
                     <!-- Name and Email Row -->
                     <div class="form-row">
                       <div class="form-group">
-                        <input 
-                          type="text" 
-                          id="name" 
-                          name="name" 
+                        <asp:TextBox 
+                          ID="txtName" 
+                          runat="server" 
                           placeholder="Your Name *" 
-                          required
-                          class="form-input"
+                          CssClass="form-input"
+                          ClientIDMode="Static"
                         />
                       </div>
                       <div class="form-group">
-                        <input 
-                          type="email" 
-                          id="email" 
-                          name="email" 
+                        <asp:TextBox 
+                          ID="txtEmail" 
+                          runat="server" 
+                          TextMode="Email"
                           placeholder="Your Email *" 
-                          required
-                          class="form-input"
+                          CssClass="form-input"
+                          ClientIDMode="Static"
                         />
                       </div>
                     </div>
 
                     <!-- Subject -->
                     <div class="form-group">
-                      <input 
-                        type="text" 
-                        id="subject" 
-                        name="subject" 
+                      <asp:TextBox 
+                        ID="txtSubject" 
+                        runat="server" 
                         placeholder="Your Subject..." 
-                        class="form-input"
+                        CssClass="form-input"
+                        ClientIDMode="Static"
                       />
                     </div>
 
                     <!-- Message -->
                     <div class="form-group">
-                      <textarea 
-                        id="message" 
-                        name="message" 
+                      <asp:TextBox 
+                        ID="txtMessage" 
+                        runat="server" 
+                        TextMode="MultiLine"
+                        Rows="6"
                         placeholder="Your message..." 
-                        rows="6" 
-                        required
-                        class="form-textarea"
-                      ></textarea>
+                        CssClass="form-textarea"
+                        ClientIDMode="Static"
+                      />
                     </div>
 
                     <!-- Submit Button -->
-                    <button type="submit" class="contact-submit-btn">
-                      SEND
-                    </button>
-                  </form>
+                    <asp:Button 
+                      ID="btnSubmitContact" 
+                      runat="server" 
+                      Text="SEND" 
+                      CssClass="contact-submit-btn" 
+                      OnClick="SubmitContact_Click"
+                      ClientIDMode="Static"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -1559,9 +1477,8 @@
 
                 <!-- Twitter -->
                 <a href="https://x.com/Shspianto" target="_blank" rel="noopener noreferrer" class="social-link-contact" aria-label="Twitter">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                  </svg>
                 </a>
 
                 <!-- Instagram -->
@@ -1588,7 +1505,7 @@
         <div class="container">
           <div class="footer-content">
             <p class="footer-text">
-              © 2025 | All rights reserved | This website is developed by 
+              © <%: CurrentYear %> | All rights reserved | This website is developed by 
               <a href="https://github.com/Rockstatata" target="_blank" rel="noopener noreferrer" class="footer-link">
                 Sarwad Hasan Siddiqui
               </a>
@@ -1597,6 +1514,8 @@
         </div>
       </footer>
     </main>
+    
+    </form><!-- End of server form -->
 
     <!-- Load JavaScript -->
     <script src="./Scripts/script.js"></script>
