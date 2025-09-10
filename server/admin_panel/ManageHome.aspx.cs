@@ -12,6 +12,92 @@ namespace admin_panel
 {
     public partial class ManageHome : AdminBasePage
     {
+        private static readonly TimeZoneInfo UtcPlus6TimeZone = TimeZoneInfo.CreateCustomTimeZone(
+            id: "UTC+6",
+            baseUtcOffset: TimeSpan.FromHours(6),
+            displayName: "UTC+06:00",
+            standardDisplayName: "UTC+06:00"
+        );
+        public string VisitorName
+        {
+            get
+            {
+                HttpCookie cookie = Request.Cookies["PortfolioVisitInfo"];
+                return cookie != null && cookie["VisitorName"] != null ? HttpUtility.UrlDecode(cookie["VisitorName"]) : "—";
+            }
+        }
+
+        public int VisitCount
+        {
+            get
+            {
+                HttpCookie cookie = Request.Cookies["PortfolioVisitInfo"];
+                int count = 0;
+                if (cookie != null && cookie["VisitCount"] != null)
+                {
+                    int.TryParse(cookie["VisitCount"], out count);
+                }
+                return count;
+            }
+        }
+
+        public DateTime? FirstVisitUtc
+        {
+            get
+            {
+                HttpCookie cookie = Request.Cookies["PortfolioVisitInfo"];
+                if (cookie != null && cookie["FirstVisitUtc"] != null && 
+                    DateTime.TryParse(cookie["FirstVisitUtc"], out DateTime dt))
+                {
+                    // Ensure the DateTime is treated as UTC
+                    return DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+                }
+                return null;
+            }
+        }
+
+        public DateTime? LastVisitUtc
+        {
+            get
+            {
+                HttpCookie cookie = Request.Cookies["PortfolioVisitInfo"];
+                if (cookie != null && cookie["LastVisitUtc"] != null && 
+                    DateTime.TryParse(cookie["LastVisitUtc"], out DateTime dt))
+                {
+                    // Ensure the DateTime is treated as UTC
+                    return DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+                }
+                return null;
+            }
+        }   
+
+        public string FormatLocal(DateTime? utc)
+        {
+            if (!utc.HasValue)
+                return "—";
+            
+            try
+            {
+                // Ensure we have a UTC DateTime before conversion
+                DateTime utcDateTime = utc.Value;
+                if (utcDateTime.Kind != DateTimeKind.Utc)
+                {
+                    // If it's not already UTC, assume it should be treated as UTC
+                    utcDateTime = DateTime.SpecifyKind(utcDateTime, DateTimeKind.Utc);
+                }
+                
+                // Convert to local time
+                DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, UtcPlus6TimeZone);
+                return localTime.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error converting UTC to local time: {ex.Message}");
+                // Fallback: just format the original DateTime as-is
+                return utc.Value.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             // Check authentication (inherited from AdminBasePage)

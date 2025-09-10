@@ -10,7 +10,47 @@ namespace admin_panel
     public partial class portfolio : System.Web.UI.Page
     {
         protected PortfolioService portfolioService;
-        
+
+        public string PortfolioVisitorName
+        {
+            get
+            {
+                var cookie = Request.Cookies["PortfolioVisitInfo"];
+                return cookie?["VisitorName"] != null ? HttpUtility.UrlDecode(cookie["VisitorName"]) : "—";
+            }
+        }
+
+        public int PortfolioVisitCount
+        {
+            get
+            {
+                var cookie = Request.Cookies["PortfolioVisitInfo"];
+                return (cookie?["VisitCount"] != null && int.TryParse(cookie["VisitCount"], out int count)) ? count : 0;
+            }
+        }
+
+        public DateTime? PortfolioFirstVisitUtc
+        {
+            get
+            {
+                var cookie = Request.Cookies["PortfolioVisitInfo"];
+                if (DateTime.TryParse(cookie?["FirstVisitUtc"], out DateTime dt))
+                    return dt;
+                return null;
+            }
+        }
+
+        public DateTime? PortfolioLastVisitUtc
+        {
+            get
+            {
+                var cookie = Request.Cookies["PortfolioVisitInfo"];
+                if (DateTime.TryParse(cookie?["LastVisitUtc"], out DateTime dt))
+                    return dt;
+                return null;
+            }
+        }
+
         // Data properties for use in the ASPX page
         public HomeSection HeroSection { get; private set; }
         public HomeSection AboutHomeSection { get; private set; }
@@ -35,21 +75,65 @@ namespace admin_panel
         {
             try
             {
-                // Initialize the portfolio service
-                portfolioService = new PortfolioService();
-                
-                if (!IsPostBack)
-                {
-                    LoadPortfolioData();
-                }
+                // Track visitor data via cookies on every visit.
+                TrackPortfolioVisit();
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error in Portfolio Page_Load: {ex.Message}");
-                // Load default data on error
+                System.Diagnostics.Debug.WriteLine("Error tracking portfolio visit: " + ex.Message);
+            }
+
+            try
+            {
+                portfolioService = new PortfolioService();
+                LoadPortfolioData();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error loading portfolio data: " + ex.Message);
                 LoadDefaultData();
             }
         }
+
+        private void TrackPortfolioVisit()
+        {
+            const string cookieName = "PortfolioVisitInfo";
+            // Use admin username from session, or default to "Guest"
+            string username = Session["AdminUsername"] != null ? Session["AdminUsername"].ToString() : "Guest";
+            DateTime nowUtc = DateTime.UtcNow;
+
+            HttpCookie cookie = Request.Cookies[cookieName];
+            if (cookie == null)
+            {
+                cookie = new HttpCookie(cookieName);
+                cookie.Values["VisitorName"] = HttpUtility.UrlEncode(username);
+                cookie.Values["VisitCount"] = "1";
+                cookie.Values["FirstVisitUtc"] = nowUtc.ToString("o");
+                cookie.Values["LastVisitUtc"] = nowUtc.ToString("o");
+            }
+            else
+            {
+                int count = 0;
+                int.TryParse(cookie.Values["VisitCount"], out count);
+                count++;
+
+                cookie.Values["VisitorName"] = HttpUtility.UrlEncode(username);
+                if (string.IsNullOrEmpty(cookie.Values["FirstVisitUtc"]))
+                {
+                    cookie.Values["FirstVisitUtc"] = nowUtc.ToString("o");
+                }
+                cookie.Values["VisitCount"] = count.ToString();
+                cookie.Values["LastVisitUtc"] = nowUtc.ToString("o");
+            }
+
+            cookie.HttpOnly = false; // So it can be read via client-side if needed
+            cookie.SameSite = SameSiteMode.Lax;
+            cookie.Secure = Request.IsSecureConnection;
+            cookie.Expires = DateTime.UtcNow.AddDays(30);
+
+            Response.Cookies.Set(cookie);
+        }
+
 
         private void LoadPortfolioData()
         {
@@ -110,7 +194,7 @@ namespace admin_panel
                 try { Experiences = portfolioService.GetExperiences() ?? Experiences; } catch { }
                 
                 // Load Blog Posts
-                try { RecentBlogPosts = portfolioService.GetRecentBlogPosts(3) ?? RecentBlogPosts; } catch { }
+                try { RecentBlogPosts = portfolioService.GetRecentBlogPosts(3); System.Diagnostics.Debug.WriteLine("Blogs Count: " + (RecentBlogPosts?.Count ?? 0)); } catch { }
                 
                 // Load Settings
                 try { Settings = portfolioService.GetAllSettings() ?? Settings; } catch { }
@@ -309,6 +393,40 @@ namespace admin_panel
         public string EncodeAttribute(string text)
         {
             return HttpUtility.HtmlAttributeEncode(text ?? "");
+        }
+
+        /// <summary>
+        /// Formats about section content for display (preserves line breaks and basic formatting)
+        /// </summary>
+        public string FormatAboutContent(string content)
+        {
+            if (string.IsNullOrEmpty(content))
+                return "";
+
+            // Replace line breaks with HTML breaks for proper display
+            content = content.Replace("\r\n", "<br />").Replace("\n", "<br />").Replace("\r", "<br />");
+            
+            // Basic HTML encoding for safety
+            return content;
+        }
+
+        /// <summary>
+        /// Gets the first few items from a collection for display
+        /// </summary>
+        public IEnumerable<T> TakeItems<T>(IEnumerable<T> collection, int count)
+        {
+            if (collection == null)
+                return new List<T>();
+                
+            return collection.Take(count);
+        }
+
+        /// <summary>
+        /// Checks if a collection has any items
+        /// </summary>
+        public bool HasItems<T>(IEnumerable<T> collection)
+        {
+            return collection != null && collection.Any();
         }
 
         #endregion

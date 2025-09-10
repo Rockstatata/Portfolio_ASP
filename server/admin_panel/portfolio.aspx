@@ -73,7 +73,7 @@
           <!-- RIGHT SIDE: Theme Toggle & Mobile Menu -->
           <div class="nav-actions">
             <!-- Theme Toggle Button -->
-            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+            <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
               <!-- Sun Icon (visible in dark mode) -->
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -301,7 +301,7 @@
                   <h2 class="tagline">
                     <%: GetSetting("hero_tagline", "Crafting Digital Experiences with") %>
                     <span class="text-accent-red"><%: GetSetting("hero_accent_1", "Innovation") %></span>
-                    &
+                    &amp;
                     <span class="text-accent-orange"><%: GetSetting("hero_accent_2", "Precision") %></span>
                   </h2>
                 </div>
@@ -369,25 +369,6 @@
 
                 <!-- Social Links -->
                 <div class="social-links">
-                  <% if (SocialLinks != null && SocialLinks.Any()) { %>
-                    <% foreach (var link in SocialLinks.Take(4)) { %>
-                  <a
-                    href="<%: link.URL %>"
-                    target="_blank"
-                    class="social-link"
-                    data-magnetic
-                    aria-label="<%: EncodeAttribute(link.Platform) %> Profile"
-                  >
-                    <% if (!string.IsNullOrEmpty(link.IconClass)) { %>
-                    <i class="<%: link.IconClass %> social-icon"></i>
-                    <% } else { %>
-                    <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 0C5.374 0 0 5.373 0 12s5.374 12 12 12 12-5.373 12-12S18.626 0 12 0z"/>
-                    </svg>
-                    <% } %>
-                  </a>
-                    <% } %>
-                  <% } else { %>
                   <!-- Fallback social links -->
                   <a
                     href="https://github.com/Rockstatata"
@@ -445,18 +426,10 @@
                       />
                     </svg>
                   </a>
-                  <% } %>
+                  
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Optimized Scroll Indicator -->
-        <div class="scroll-indicator" data-magnetic>
-          <span class="scroll-text">Scroll</span>
-          <div class="scroll-mouse">
-            <div class="scroll-wheel"></div>
           </div>
         </div>
       </section>
@@ -482,15 +455,37 @@
               <div class="card-content">
                 <div class="card-header">
                   <div>
+                    <% 
+                    var mainAbout = AboutSections?.FirstOrDefault(a => a.SectionType == "Main" || a.SectionType == "Education");
+                    if (mainAbout != null) 
+                    { 
+                    %>
+                    <h3 class="card-title">
+                      <%: mainAbout.Title %>
+                    </h3>
+                    <% if (!string.IsNullOrEmpty(mainAbout.Subtitle)) { %>
+                    <p class="card-subtitle">
+                      <%: mainAbout.Subtitle %>
+                    </p>
+                    <% } %>
+                    <% } else { %>
                     <h3 class="card-title">
                       CSE Undergraduate
                     </h3>
                     <p class="card-subtitle">
                       3rd Year Student at KUET
                     </p>
+                    <% } %>
                   </div>
                 </div>
 
+                <% if (mainAbout != null && !string.IsNullOrEmpty(mainAbout.Content)) { %>
+                <!-- Database Content -->
+                <div class="about-content">
+                  <%= FormatAboutContent(mainAbout.Content) %>
+                </div>
+                <% } else { %>
+                <!-- Fallback Content -->
                 <p class="card-text card-mb-8">
                   I'm a dedicated third-year
                   <span class="text-blue-600 text-semibold">Computer Science & Engineering student at KUET</span>
@@ -525,6 +520,7 @@
                   <span class="text-violet-700 text-semibold">space exploration and scientific discoveries</span>.
                   <span class="text-amber-700 text-semibold text-italic">One day, I want my code to reach the stars.</span>
                 </p>
+                <% } %>
               </div>
 
               <!-- Floating Elements -->
@@ -532,17 +528,51 @@
               <div class="floating-element floating-element-2"></div>
             </div>
 
-            <!-- 2. What I Do - Tech Stack -->
+            <!-- 2. What I Do - Tech Stack (using existing skills from database) -->
             <div class="bento-card bento-card-wide group">
               <div class="card-header-mb-6">
+                <% 
+                var skillsAbout = AboutSections?.FirstOrDefault(a => a.SectionType == "Skills" || a.SectionType == "TechStack");
+                if (skillsAbout != null) 
+                { 
+                %>
+                <span class="text-small text-gray-500 text-medium text-uppercase text-tracking-wider"><%: !string.IsNullOrEmpty(skillsAbout.Subtitle) ? skillsAbout.Subtitle : "What I Do" %></span>
+                <h3 class="card-title card-mt-1">
+                  <%: skillsAbout.Title %>
+                </h3>
+                <% } else { %>
                 <span class="text-small text-gray-500 text-medium text-uppercase text-tracking-wider">What I Do</span>
                 <h3 class="card-title card-mt-1">
                   Development Arsenal
                 </h3>
+                <% } %>
               </div>
 
-              <!-- Skills Grid -->
+              <!-- Skills Grid using Strengths from database -->
               <div class="skills-grid skills-mb-4">
+                <% 
+                if (Strengths != null && Strengths.Any()) 
+                {
+                    var colorClasses = new[] { "text-blue-700", "text-cyan-700", "text-pink-700", "text-green-700", "text-purple-700", "text-orange-700" };
+                    int index = 0;
+                    foreach (var strength in Strengths.Take(6)) 
+                    { 
+                        var colorClass = colorClasses[index % colorClasses.Length];
+                        var skillClass = (index == 0 || index == 3 || index == 4) ? "skill-item skill-item-wide" : "skill-item";
+                %>
+                <div class="<%: skillClass %>">
+                  <div class="skill-name <%: colorClass %>">
+                    <%: strength.Title %>
+                  </div>
+                </div>
+                <% 
+                        index++;
+                    }
+                } 
+                else 
+                { 
+                %>
+                <!-- Fallback skills -->
                 <div class="skill-item skill-item-wide">
                   <div class="skill-name text-blue-700">
                     React Native
@@ -574,20 +604,59 @@
                     Databases
                   </div>
                 </div>
+                <% } %>
               </div>
 
+              <% if (skillsAbout != null && !string.IsNullOrEmpty(skillsAbout.Content)) { %>
+              <p class="text-small text-gray-600">
+                <%: skillsAbout.Content %>
+              </p>
+              <% } else { %>
               <p class="text-small text-gray-600">
                 Building cross-platform applications with clean, modular, and
                 maintainable code
               </p>
+              <% } %>
             </div>
 
-            <!-- 3. Research Interest -->
+            <!-- 3. Research Interest using ResearchAreas from database -->
             <div class="bento-card bento-card-wide group">
+              <% 
+              var researchAbout = AboutSections?.FirstOrDefault(a => a.SectionType == "Research");
+              if (researchAbout != null) 
+              { 
+              %>
+              <h3 class="card-title card-mb-4">
+                <%: researchAbout.Title %>
+              </h3>
+              <% } else { %>
               <h3 class="card-title card-mb-4">
                 Research Focus
               </h3>
+              <% } %>
+              
               <div class="research-grid text-small">
+                <% 
+                if (ResearchAreas != null && ResearchAreas.Any()) 
+                {
+                    var researchColors = new[] { "text-purple-700", "text-indigo-700", "text-teal-700", "text-blue-700" };
+                    int resIndex = 0;
+                    foreach (var research in ResearchAreas.Take(4)) 
+                    { 
+                        var colorClass = researchColors[resIndex % researchColors.Length];
+                        var researchClass = (resIndex == 0 || resIndex == 3) ? "research-item research-item-wide" : "research-item";
+                %>
+                <div class="<%: researchClass %>">
+                  <span class="research-name <%: colorClass %>"><%: research.Title %></span>
+                </div>
+                <% 
+                        resIndex++;
+                    }
+                } 
+                else 
+                { 
+                %>
+                <!-- Fallback research items -->
                 <div class="research-item research-item-wide">
                   <span class="research-name text-purple-700">Astronomical Data</span>
                 </div>
@@ -600,19 +669,61 @@
                 <div class="research-item research-item-wide">
                   <span class="research-name text-blue-700">Natural Language Processing</span>
                 </div>
+                <% } %>
               </div>
+              
+              <% if (researchAbout != null && !string.IsNullOrEmpty(researchAbout.Content)) { %>
+              <p class="text-extra-small text-gray-500 research-mt-4">
+                <%: researchAbout.Content %>
+              </p>
+              <% } else { %>
               <p class="text-extra-small text-gray-500 research-mt-4">
                 Exploring the intersection of space science and AI
               </p>
+              <% } %>
             </div>
 
-            <!-- 4. Future Goals -->
+            <!-- 4. Future Goals using FutureGoals from database -->
             <div class="bento-card group">
               <div>
+                <% 
+                var goalsAbout = AboutSections?.FirstOrDefault(a => a.SectionType == "Goals");
+                if (goalsAbout != null) 
+                { 
+                %>
+                <h3 class="card-title card-mb-4">
+                  <%: goalsAbout.Title %>
+                </h3>
+                <% } else { %>
                 <h3 class="card-title card-mb-4">
                   Future Goals
                 </h3>
+                <% } %>
+                
                 <div class="goals-list">
+                  <% 
+                  if (FutureGoals != null && FutureGoals.Any()) 
+                  {
+                      var goalColors = new[] { "", "goal-dot-teal", "goal-dot-purple", "goal-dot-blue" };
+                      var goalTextColors = new[] { "", "goal-text-teal", "goal-text-purple", "goal-text-blue" };
+                      int goalIndex = 0;
+                      foreach (var goal in FutureGoals.Take(4)) 
+                      { 
+                          var dotColorClass = goalColors[goalIndex % goalColors.Length];
+                          var textColorClass = goalTextColors[goalIndex % goalTextColors.Length];
+                  %>
+                  <div class="goal-item">
+                    <span class="goal-dot <%: dotColorClass %>"></span>
+                    <span class="goal-text <%: textColorClass %>"><%: goal.Title %></span>
+                  </div>
+                  <% 
+                          goalIndex++;
+                      }
+                  } 
+                  else 
+                  { 
+                  %>
+                  <!-- Fallback goals -->
                   <div class="goal-item">
                     <span class="goal-dot"></span>
                     <span class="goal-text">Master AI/ML</span>
@@ -629,23 +740,69 @@
                     <span class="goal-dot goal-dot-blue"></span>
                     <span class="goal-text goal-text-blue">Code in Space</span>
                   </div>
+                  <% } %>
                 </div>
+                
+                <% if (goalsAbout != null && !string.IsNullOrEmpty(goalsAbout.Content)) { %>
+                <p class="text-extra-small text-gray-500 goals-mt-4">
+                  <%: goalsAbout.Content %>
+                </p>
+                <% } else { %>
                 <p class="text-extra-small text-gray-500 goals-mt-4">
                   Creating impactful solutions for humanity
                 </p>
+                <% } %>
               </div>
             </div>
 
-            <!-- 7. Learning Journey -->
+            <!-- 7. Learning Journey using LearningAreas from database -->
             <div class="bento-card bento-card-wider group">
               <div class="flex-items-start-justify-between learning-mb-6">
                 <div>
+                  <% 
+                  var learningAbout = AboutSections?.FirstOrDefault(a => a.SectionType == "Learning");
+                  if (learningAbout != null) 
+                  { 
+                  %>
+                  <h3 class="card-title learning-mt-1">
+                    <%: learningAbout.Title %>
+                  </h3>
+                  <% } else { %>
                   <h3 class="card-title learning-mt-1">
                     Current Focus Areas
                   </h3>
+                  <% } %>
                 </div>
               </div>
+              
               <div class="learning-grid">
+                <% 
+                if (LearningAreas != null && LearningAreas.Any()) 
+                {
+                    var learningColors = new[] { "text-blue-700", "text-green-700", "text-orange-700", "text-purple-700", "text-gray-700", "text-yellow-700" };
+                    int learnIndex = 0;
+                    foreach (var learning in LearningAreas.Take(6)) 
+                    { 
+                        var colorClass = learningColors[learnIndex % learningColors.Length];
+                %>
+                <div class="learning-item">
+                  <div class="learning-title <%: colorClass %>">
+                    <%: learning.Title %>
+                  </div>
+                  <% if (!string.IsNullOrEmpty(learning.Description)) { %>
+                  <div class="learning-desc">
+                    <%: learning.Description %>
+                  </div>
+                  <% } %>
+                </div>
+                <% 
+                        learnIndex++;
+                    }
+                } 
+                else 
+                { 
+                %>
+                <!-- Fallback learning items -->
                 <div class="learning-item">
                   <div class="learning-title text-blue-700">
                     Advanced AI/ML
@@ -694,6 +851,7 @@
                     Smart Devices & Automation
                   </div>
                 </div>
+                <% } %>
               </div>
             </div>
           </div>
@@ -1202,7 +1360,7 @@
                   { 
               %>
               <!-- Blog Post - <%: post.Title %> -->
-              <article class="blog-card glass-card">
+              <article class="blog-card glass-card"  style="cursor: pointer;">
                 <div class="blog-content">
                   <% if (!string.IsNullOrEmpty(post.Categories)) { %>
                   <div class="blog-categories">
@@ -1219,6 +1377,7 @@
                   </div>
                   <% } %>
                   
+
                   <% if (!string.IsNullOrEmpty(post.Tags)) { %>
                   <div class="blog-tags">
                     <% 
@@ -1306,7 +1465,7 @@
                     <span class="blog-separator">•</span>
                     <span class="blog-read-time">6 min read</span>
                     <div class="blog-arrow">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <svg viewBox="0 0 24 24" fill="none, stroke="currentColor" stroke-width="2">
                         <path d="M7 17l9.2-9.2M17 17V7H7"/>
                       </svg>
                     </div>
@@ -1446,6 +1605,7 @@
 
                     <!-- Submit Button -->
                     <asp:Button 
+                      type="button"
                       ID="btnSubmitContact" 
                       runat="server" 
                       Text="SEND" 
@@ -1514,8 +1674,111 @@
         </div>
       </footer>
     </main>
-    
+
+    <!-- Add this modal structure right before the closing </form> tag, around line 1060 -->
+      <!-- Blog Reading Modal -->
+      <div id="blogModal" class="blog-modal" style="display: none;" aria-hidden="true" role="dialog" aria-labelledby="blogModalTitle" aria-describedby="blogModalContent">
+        <div class="blog-modal-backdrop" id="blogModalBackdrop"></div>
+        <div class="blog-modal-container">
+          <div class="blog-modal-content">
+            <!-- Modal Header -->
+            <header class="blog-modal-header">
+              <div class="blog-modal-meta">
+                <div class="blog-modal-categories" id="modalCategories">
+                  <!-- Categories will be populated by JavaScript -->
+                </div>
+                <div class="blog-modal-date-info">
+                  <span class="blog-modal-date" id="modalDate"><!-- Date will be populated --></span>
+                  <span class="blog-modal-separator">•</span>
+                  <span class="blog-modal-read-time" id="modalReadTime"><!-- Read time will be populated --></span>
+                </div>
+              </div>
+              
+              <h1 class="blog-modal-title" id="blogModalTitle">
+                <!-- Title will be populated by JavaScript -->
+              </h1>
+              
+              <div class="blog-modal-tags" id="modalTags">
+                <!-- Tags will be populated by JavaScript -->
+              </div>
+              
+              <button type="button" class="blog-modal-close" id="blogModalClose" aria-label="Close blog modal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </header>
+            
+            <!-- Modal Body -->
+            <main class="blog-modal-body" id="blogModalContent">
+              <div class="blog-modal-excerpt" id="modalExcerpt">
+                <!-- Excerpt will be populated by JavaScript -->
+              </div>
+              
+              <div class="blog-modal-article" id="modalArticle">
+                <!-- Full content will be populated by JavaScript -->
+              </div>
+              
+              <!-- Coming Soon Message for fallback content -->
+              <div class="blog-modal-coming-soon" id="modalComingSoon" style="display: none;">
+                <div class="coming-soon-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                </div>
+                <h3>Full Article Coming Soon</h3>
+                <p>I'm currently working on publishing the complete version of this article. Check back soon for the full content!</p>
+                <div class="coming-soon-actions">
+                  <button type="button" class="btn-notify" id="notifyMeBtn">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                      <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                    Notify Me When Published
+                  </button>
+                </div>
+              </div>
+            </main>
+            
+            <!-- Modal Footer -->
+            <footer class="blog-modal-footer">
+              <div class="blog-modal-actions">
+                <button type="button" class="blog-action-btn share-btn" id="shareBtn" title="Share this article">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                    <polyline points="16,6 12,2 8,6"/>
+                    <line x1="12" y1="2" x2="12" y2="15"/>
+                  </svg>
+                  <span>Share</span>
+                </button>
+                
+                <button type="button" class="blog-action-btn bookmark-btn" id="bookmarkBtn" title="Bookmark this article">
+                  <svg class="bookmark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+                  </svg>
+                  <span>Bookmark</span>
+                </button>
+                
+                <button type="button" class="blog-action-btn like-btn" id="likeBtn" title="Like this article">
+                  <svg class="like-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                  <span>Like</span>
+                </button>
+              </div>
+              
+              <div class="blog-modal-scroll-indicator">
+                <div class="scroll-progress" id="scrollProgress"></div>
+              </div>
+            </footer>
+          </div>
+        </div>
+      </div>
+      
     </form><!-- End of server form -->
+    
+   
 
     <!-- Load JavaScript -->
     <script src="./Scripts/script.js"></script>

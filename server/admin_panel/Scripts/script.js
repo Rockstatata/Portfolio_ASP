@@ -431,48 +431,6 @@ function initActiveNavigation() {
     observers.push(observer);
 }
 
-// Main initialization - optimized
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚀 Initializing optimized portfolio...');
-
-    // Inject styles first
-    injectOptimizedStyles();
-
-    // Initialize core features
-    initDarkMode();
-    initializeTheme();
-
-    // Initialize background (Vanta or fallback)
-    if (deviceInfo.supportsWebGL && !deviceInfo.isLowPerformance && !isReducedMotion) {
-        initializeVantaBackground();
-    } else {
-        initializeFallbackBackground();
-    }
-
-    // Setup interactions
-    setupThemeToggle();
-    setupMobileMenu();
-    setupSmoothScrolling();
-    setupScrollIndicator();
-
-    // Initialize navigation active state
-    initActiveNavigation();
-
-    // Initialize blog scroll functionality
-    initBlogScroll();
-
-    // Initialize contact form
-    initContactForm();
-
-    // Initialize magnetic effect after a brief delay
-    if (!deviceInfo.isMobile && !isReducedMotion) {
-        setTimeout(initializeMagneticEffect, 100);
-    }
-
-    console.log('✅ Portfolio initialized successfully');
-    console.log('📱 Device Info:', deviceInfo);
-});
-
 // Cleanup and resize handlers
 window.addEventListener('resize', () => {
     if (vantaEffect && vantaEffect.resize) {
@@ -884,3 +842,348 @@ function showNotification(message, type = 'info') {
         }
     }, 5000);
 }
+
+// Blog Modal Functionality
+function initBlogModal() {
+    const modal = document.getElementById('blogModal');
+    const modalBackdrop = document.getElementById('blogModalBackdrop');
+    const modalClose = document.getElementById('blogModalClose');
+    const modalTitle = document.getElementById('blogModalTitle');
+    const modalCategories = document.getElementById('modalCategories');
+    const modalTags = document.getElementById('modalTags');
+    const modalDate = document.getElementById('modalDate');
+    const modalReadTime = document.getElementById('modalReadTime');
+    const modalExcerpt = document.getElementById('modalExcerpt');
+    const modalArticle = document.getElementById('modalArticle');
+    const modalComingSoon = document.getElementById('modalComingSoon');
+    const modalBody = document.querySelector('.blog-modal-body');
+    const scrollProgress = document.getElementById('scrollProgress');
+
+    // Action buttons
+    const shareBtn = document.getElementById('shareBtn');
+    const bookmarkBtn = document.getElementById('bookmarkBtn');
+    const likeBtn = document.getElementById('likeBtn');
+    const notifyMeBtn = document.getElementById('notifyMeBtn');
+
+    if (!modal) return;
+
+    let currentBlogData = null;
+
+    // Open modal function
+    function openModal(blogData) {
+        currentBlogData = blogData;
+        populateModal(blogData);
+
+        // Show modal
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden', 'false');
+
+        // Trigger animation
+        requestAnimationFrame(() => {
+            modal.classList.add('active');
+        });
+
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+
+        // Focus management
+        modalClose.focus();
+
+        // Update scroll progress initially
+        updateScrollProgress();
+    }
+
+    // Close modal function
+    function closeModal() {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+
+        setTimeout(() => {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+            currentBlogData = null;
+        }, 300);
+    }
+
+    // Populate modal with blog data
+    function populateModal(blogData) {
+        // Set title
+        modalTitle.textContent = blogData.title || 'Blog Post';
+
+        // Set categories
+        modalCategories.innerHTML = '';
+        if (blogData.categories && blogData.categories.length > 0) {
+            blogData.categories.forEach(category => {
+                const categorySpan = document.createElement('span');
+                categorySpan.className = `blog-category ${getCategoryClass(category)}`;
+                categorySpan.textContent = category;
+                modalCategories.appendChild(categorySpan);
+            });
+        }
+
+        // Set tags
+        modalTags.innerHTML = '';
+        if (blogData.tags && blogData.tags.length > 0) {
+            blogData.tags.forEach(tag => {
+                const tagSpan = document.createElement('span');
+                tagSpan.className = 'blog-tag';
+                tagSpan.textContent = tag;
+                modalTags.appendChild(tagSpan);
+            });
+        }
+
+        // Set date and read time
+        modalDate.textContent = blogData.date || 'Recent';
+        modalReadTime.textContent = `${blogData.readTime || 3} min read`;
+
+        // Set excerpt
+        modalExcerpt.textContent = blogData.excerpt || blogData.content || 'This is an excerpt of the blog post...';
+
+        // Set content or show coming soon
+        if (blogData.fullContent && blogData.fullContent.trim().length > 0) {
+            modalArticle.innerHTML = formatBlogContent(blogData.fullContent);
+            modalArticle.style.display = 'block';
+            modalComingSoon.style.display = 'none';
+        } else {
+            modalArticle.style.display = 'none';
+            modalComingSoon.style.display = 'block';
+        }
+    }
+
+    // Get category class based on category name
+    function getCategoryClass(category) {
+        const categoryLower = category.toLowerCase();
+        if (categoryLower.includes('programming') || categoryLower.includes('code')) return 'programming';
+        if (categoryLower.includes('frontend') || categoryLower.includes('ui')) return 'frontend';
+        if (categoryLower.includes('development') || categoryLower.includes('dev')) return 'development';
+        if (categoryLower.includes('cloud') || categoryLower.includes('database')) return 'cloud';
+        return 'programming'; // default
+    }
+
+    // Format blog content
+    function formatBlogContent(content) {
+        // Basic formatting - you can enhance this based on your needs
+        return content
+            .replace(/\n\n/g, '</p><p>')
+            .replace(/^\s*/, '<p>')
+            .replace(/\s*$/, '</p>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+            .replace(/`(.*?)`/g, '<code>$1</code>');
+    }
+
+    // Update scroll progress
+    function updateScrollProgress() {
+        if (!modalBody) return;
+
+        const scrollTop = modalBody.scrollTop;
+        const scrollHeight = modalBody.scrollHeight - modalBody.clientHeight;
+        const scrollPercent = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+
+        if (scrollProgress) {
+            scrollProgress.style.width = `${Math.min(scrollPercent, 100)}%`;
+        }
+    }
+
+    // Extract blog data from card element
+    function extractBlogData(cardElement) {
+        const titleElement = cardElement.querySelector('.blog-post-title');
+        const excerptElement = cardElement.querySelector('.blog-excerpt');
+        const dateElement = cardElement.querySelector('.blog-date');
+        const readTimeElement = cardElement.querySelector('.blog-read-time');
+        const categoryElements = cardElement.querySelectorAll('.blog-category');
+        const tagElements = cardElement.querySelectorAll('.blog-tag');
+
+        return {
+            title: titleElement ? titleElement.textContent.trim() : 'Blog Post',
+            excerpt: excerptElement ? excerptElement.textContent.trim() : '',
+            date: dateElement ? dateElement.textContent.trim() : '',
+            readTime: readTimeElement ? readTimeElement.textContent.replace(' min read', '') : '3',
+            categories: Array.from(categoryElements).map(el => el.textContent.trim()),
+            tags: Array.from(tagElements).map(el => el.textContent.trim()),
+            fullContent: '', // This would come from your database in a real implementation
+        };
+    }
+
+    // Event listeners for opening modal
+    document.addEventListener('click', (e) => {
+        // Check if clicked element is a blog arrow or blog card
+        const blogArrow = e.target.closest('.blog-arrow');
+        const blogCard = e.target.closest('.blog-card');
+
+        if (blogArrow && blogCard) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const blogData = extractBlogData(blogCard);
+            openModal(blogData);
+        }
+    });
+
+    // Event listeners for closing modal
+    modalClose?.addEventListener('click', closeModal);
+    modalBackdrop?.addEventListener('click', closeModal);
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // Scroll progress tracking
+    modalBody?.addEventListener('scroll', updateScrollProgress);
+
+    // Action button handlers
+    shareBtn?.addEventListener('click', () => {
+        if (currentBlogData && navigator.share) {
+            navigator.share({
+                title: currentBlogData.title,
+                text: currentBlogData.excerpt,
+                url: window.location.href
+            }).catch(console.error);
+        } else {
+            // Fallback: copy to clipboard
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                showNotification('Link copied to clipboard!', 'success');
+            }).catch(() => {
+                showNotification('Unable to copy link', 'error');
+            });
+        }
+    });
+
+    bookmarkBtn?.addEventListener('click', () => {
+        const isBookmarked = bookmarkBtn.classList.contains('active');
+
+        if (isBookmarked) {
+            bookmarkBtn.classList.remove('active');
+            showNotification('Bookmark removed', 'info');
+        } else {
+            bookmarkBtn.classList.add('active');
+            showNotification('Article bookmarked!', 'success');
+        }
+
+        // Here you would typically save to localStorage or send to server
+        if (currentBlogData) {
+            const bookmarks = JSON.parse(localStorage.getItem('blogBookmarks') || '[]');
+            if (isBookmarked) {
+                const index = bookmarks.findIndex(b => b.title === currentBlogData.title);
+                if (index > -1) bookmarks.splice(index, 1);
+            } else {
+                bookmarks.push(currentBlogData);
+            }
+            localStorage.setItem('blogBookmarks', JSON.stringify(bookmarks));
+        }
+    });
+
+    likeBtn?.addEventListener('click', () => {
+        const isLiked = likeBtn.classList.contains('active');
+
+        if (isLiked) {
+            likeBtn.classList.remove('active');
+            showNotification('Like removed', 'info');
+        } else {
+            likeBtn.classList.add('active');
+            showNotification('Thanks for the like! ❤️', 'success');
+        }
+
+        // Here you would typically send to server
+        // For demo purposes, just store in localStorage
+        if (currentBlogData) {
+            const likes = JSON.parse(localStorage.getItem('blogLikes') || '[]');
+            if (isLiked) {
+                const index = likes.findIndex(l => l.title === currentBlogData.title);
+                if (index > -1) likes.splice(index, 1);
+            } else {
+                likes.push(currentBlogData);
+            }
+            localStorage.setItem('blogLikes', JSON.stringify(likes));
+        }
+    });
+
+    notifyMeBtn?.addEventListener('click', () => {
+        // Show a simple form or just notify for now
+        const email = prompt('Enter your email to be notified when this article is published:');
+        if (email && validateEmail(email)) {
+            showNotification('Thank you! We\'ll notify you when this article is published.', 'success');
+            // Here you would send the email to your server
+        } else if (email) {
+            showNotification('Please enter a valid email address.', 'error');
+        }
+    });
+
+    // Load saved states
+    function loadSavedStates() {
+        if (!currentBlogData) return;
+
+        const bookmarks = JSON.parse(localStorage.getItem('blogBookmarks') || '[]');
+        const likes = JSON.parse(localStorage.getItem('blogLikes') || '[]');
+
+        const isBookmarked = bookmarks.some(b => b.title === currentBlogData.title);
+        const isLiked = likes.some(l => l.title === currentBlogData.title);
+
+        if (isBookmarked) bookmarkBtn?.classList.add('active');
+        if (isLiked) likeBtn?.classList.add('active');
+    }
+
+    // Validate email function
+    function validateEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // Initialize saved states when modal opens
+    const originalOpenModal = openModal;
+    openModal = function (blogData) {
+        originalOpenModal(blogData);
+        setTimeout(loadSavedStates, 100);
+    };
+
+    console.log('✅ Blog Modal initialized');
+}
+
+// Update the main initialization to include blog modal
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Initializing optimized portfolio...');
+
+    // Inject styles first
+    injectOptimizedStyles();
+
+    // Initialize core features
+    initDarkMode();
+    initializeTheme();
+
+    // Initialize background (Vanta or fallback)
+    if (deviceInfo.supportsWebGL && !deviceInfo.isLowPerformance && !isReducedMotion) {
+        initializeVantaBackground();
+    } else {
+        initializeFallbackBackground();
+    }
+
+    // Setup interactions
+    setupThemeToggle();
+    setupMobileMenu();
+    setupSmoothScrolling();
+    setupScrollIndicator();
+
+    // Initialize navigation active state
+    initActiveNavigation();
+
+    // Initialize blog scroll functionality
+    initBlogScroll();
+
+    // Initialize blog modal functionality
+    initBlogModal();
+
+    // Initialize contact form
+    initContactForm();
+
+    // Initialize magnetic effect after a brief delay
+    if (!deviceInfo.isMobile && !isReducedMotion) {
+        setTimeout(initializeMagneticEffect, 100);
+    }
+
+    console.log('✅ Portfolio initialized successfully');
+    console.log('📱 Device Info:', deviceInfo);
+});

@@ -142,7 +142,7 @@ namespace admin_panel
         public DateTime UpdatedDate { get; set; }
     }
 
-    // Contacts Model
+    // Contacts Model - Updated to match database schema
     public class Contact
     {
         public int Id { get; set; }
@@ -150,9 +150,9 @@ namespace admin_panel
         public string Email { get; set; }
         public string Subject { get; set; }
         public string Message { get; set; }
-        public DateTime ReceivedDate { get; set; }
+        public DateTime? ReceivedDate { get; set; }
         public bool IsRead { get; set; }
-        public bool IsArchived { get; set; }
+        public bool Responded { get; set; }
     }
 
     // Portfolio Settings Model

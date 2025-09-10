@@ -378,7 +378,7 @@ namespace admin_panel
                     Message = message,
                     ReceivedDate = DateTime.Now,
                     IsRead = false,
-                    IsArchived = false
+                    Responded = false
                 };
 
                 return _dataService.SaveContact(contact);

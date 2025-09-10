@@ -12,7 +12,7 @@
                 <i class="fas fa-chart-line"></i>
             </div>
         </div>
-        
+
         <!-- Dashboard Stats -->
         <div class="admin-dashboard-grid">
             <div class="admin-stat-card">
@@ -22,7 +22,7 @@
                 <div class="admin-stat-value" id="projectsCount">0</div>
                 <div class="admin-stat-label">Projects</div>
             </div>
-            
+
             <div class="admin-stat-card">
                 <div class="admin-stat-icon">
                     <i class="fas fa-building"></i>
@@ -30,7 +30,7 @@
                 <div class="admin-stat-value" id="experienceCount">0</div>
                 <div class="admin-stat-label">Experiences</div>
             </div>
-            
+
             <div class="admin-stat-card">
                 <div class="admin-stat-icon">
                     <i class="fas fa-code"></i>
@@ -38,7 +38,7 @@
                 <div class="admin-stat-value" id="skillsCount">0</div>
                 <div class="admin-stat-label">Skills</div>
             </div>
-            
+
             <div class="admin-stat-card">
                 <div class="admin-stat-icon">
                     <i class="fas fa-envelope"></i>
@@ -46,9 +46,21 @@
                 <div class="admin-stat-value" id="contactsCount">0</div>
                 <div class="admin-stat-label">Messages</div>
             </div>
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="admin-stat-value" id="VisitCount">
+                    <p class="visitor-paragraph">Visitor Name: <%= VisitorName %></p>
+                    <p class="visitor-paragraph">Visit Count: <%= VisitCount %></p>
+                    <p class="visitor-paragraph">First Visit (Local): <%= FormatLocal(FirstVisitUtc) %></p>
+                    <p class="visitor-paragraph">Last Visit (Local): <%= FormatLocal(LastVisitUtc) %></p>
+                </div>
+                <div class="admin-stat-label">Visits</div>
+            </div>
         </div>
     </div>
-    
+
     <!-- Quick Actions -->
     <div class="admin-card">
         <div class="admin-card-header">
@@ -60,7 +72,7 @@
                 <i class="fas fa-rocket"></i>
             </div>
         </div>
-        
+
         <div class="admin-dashboard-grid">
             <a href='<%=ResolveUrl("~/admin/projects") %>' class="admin-stat-card admin-action-card">
                 <div class="admin-stat-icon">
@@ -68,35 +80,35 @@
                 </div>
                 <div class="admin-stat-label">Add New Project</div>
             </a>
-            
+
             <a href='<%=ResolveUrl("~/admin/experience") %>' class="admin-stat-card admin-action-card">
                 <div class="admin-stat-icon">
                     <i class="fas fa-briefcase"></i>
                 </div>
                 <div class="admin-stat-label">Update Experience</div>
             </a>
-            
+
             <a href='<%=ResolveUrl("~/admin/skills") %>' class="admin-stat-card admin-action-card">
                 <div class="admin-stat-icon">
                     <i class="fas fa-cogs"></i>
                 </div>
                 <div class="admin-stat-label">Manage Skills</div>
             </a>
-            
+
             <a href='<%=ResolveUrl("~/admin/blogs") %>' class="admin-stat-card admin-action-card">
                 <div class="admin-stat-icon">
                     <i class="fas fa-blog"></i>
                 </div>
                 <div class="admin-stat-label">Write Blog Post</div>
             </a>
-            
+
             <a href='<%=ResolveUrl("~/admin/contacts") %>' class="admin-stat-card admin-action-card">
                 <div class="admin-stat-icon">
                     <i class="fas fa-eye"></i>
                 </div>
                 <div class="admin-stat-label">View Messages</div>
             </a>
-            
+
             <a href='<%=ResolveUrl("~/admin/about") %>' class="admin-stat-card admin-action-card">
                 <div class="admin-stat-icon">
                     <i class="fas fa-user-edit"></i>
@@ -105,7 +117,7 @@
             </a>
         </div>
     </div>
-    
+
     <!-- Home Page Sections Management -->
     <div class="admin-card">
         <div class="admin-card-header">
@@ -117,7 +129,7 @@
                 <i class="fas fa-home"></i>
             </div>
         </div>
-        
+
         <div class="admin-table-container">
             <asp:GridView ID="gvHomeSections" runat="server" AutoGenerateColumns="False"
                 OnRowEditing="gvHomeSections_RowEditing" OnRowUpdating="gvHomeSections_RowUpdating"
@@ -133,8 +145,8 @@
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="txtContent" runat="server" Text='<%# Eval("Content") %>'
-                                TextMode="MultiLine" Rows="4" CssClass="admin-form-textarea" 
-                                style="width: 100%; min-width: 300px;"></asp:TextBox>
+                                TextMode="MultiLine" Rows="4" CssClass="admin-form-textarea"
+                                Style="width: 100%; min-width: 300px;"></asp:TextBox>
                         </EditItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Image Path">
@@ -160,9 +172,9 @@
                                 (Eval("CreatedDate") != DBNull.Value ? Convert.ToDateTime(Eval("CreatedDate")).ToString("MMM dd, yyyy") : "N/A") %>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:CommandField ShowEditButton="True" HeaderText="Actions" 
-                        EditText="<i class='fas fa-edit'></i>" 
-                        UpdateText="<i class='fas fa-save'></i>" 
+                    <asp:CommandField ShowEditButton="True" HeaderText="Actions"
+                        EditText="<i class='fas fa-edit'></i>"
+                        UpdateText="<i class='fas fa-save'></i>"
                         CancelText="<i class='fas fa-times'></i>" />
                 </Columns>
                 <EmptyDataTemplate>
@@ -180,7 +192,7 @@
 
     <script type="text/javascript">
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Animate stats on page load
             setTimeout(() => {
                 animateValue('projectsCount', 0, <%= GetProjectsCount() %>, 1000);
@@ -189,11 +201,11 @@
                 animateValue('contactsCount', 0, <%= GetContactsCount() %>, 1600);
             }, 500);
         });
-        
+
         function animateValue(id, start, end, duration) {
             const element = document.getElementById(id);
             if (!element) return;
-            
+
             const range = end - start;
             const minTimer = 50;
             let stepTime = Math.abs(Math.floor(duration / range));
@@ -201,7 +213,7 @@
             const startTime = new Date().getTime();
             const endTime = startTime + duration;
             let timer;
-            
+
             function run() {
                 const now = new Date().getTime();
                 const remaining = Math.max((endTime - now) / duration, 0);
@@ -211,57 +223,62 @@
                     clearInterval(timer);
                 }
             }
-            
+
             timer = setInterval(run, stepTime);
             run();
         }
     </script>
 
     <style>
-        .text-success { color: #10b981 !important; }
-        .text-muted { color: var(--text-muted-dark) !important; }
-        
+        .text-success {
+            color: #10b981 !important;
+        }
+
+        .text-muted {
+            color: var(--text-muted-dark) !important;
+        }
+
         .admin-pager {
             text-align: center;
             padding: 1rem;
             background: rgba(255, 255, 255, 0.05);
         }
-        
-        .admin-pager table {
-            margin: 0 auto;
-        }
-        
-        .admin-pager td {
-            padding: 0.5rem;
-        }
-        
-        .admin-pager a,
-        .admin-pager span {
-            display: inline-block;
-            padding: 0.5rem 0.75rem;
-            margin: 0 0.25rem;
-            border-radius: 0.375rem;
-            text-decoration: none;
-            color: var(--text-secondary-dark);
-            border: 1px solid var(--border-dark);
-        }
-        
-        .admin-pager a:hover {
-            background: var(--bg-glass-dark);
-            color: var(--color-primary);
-        }
-        
-        .admin-pager span {
-            background: var(--color-primary);
-            color: white;
-            border-color: var(--color-primary);
-        }
-        
+
+            .admin-pager table {
+                margin: 0 auto;
+            }
+
+            .admin-pager td {
+                padding: 0.5rem;
+            }
+
+            .admin-pager a,
+            .admin-pager span {
+                display: inline-block;
+                padding: 0.5rem 0.75rem;
+                margin: 0 0.25rem;
+                border-radius: 0.375rem;
+                text-decoration: none;
+                color: var(--text-secondary-dark);
+                border: 1px solid var(--border-dark);
+            }
+
+                .admin-pager a:hover {
+                    background: var(--bg-glass-dark);
+                    color: var(--color-primary);
+                }
+
+            .admin-pager span {
+                background: var(--color-primary);
+                color: white;
+                border-color: var(--color-primary);
+            }
+
         .admin-textarea {
             min-height: 100px;
             resize: vertical;
         }
-        
+
         /* Custom styling for command field buttons */
         .admin-table a[href*="Edit"] {
             background: var(--bg-glass-dark);
@@ -275,13 +292,13 @@
             font-size: 0.75rem;
             transition: all 0.3s ease;
         }
-        
-        .admin-table a[href*="Edit"]:hover {
-            background: var(--color-primary);
-            color: white;
-            transform: translateY(-1px);
-        }
-        
+
+            .admin-table a[href*="Edit"]:hover {
+                background: var(--color-primary);
+                color: white;
+                transform: translateY(-1px);
+            }
+
         .admin-table a[href*="Update"] {
             background: rgba(16, 185, 129, 0.1);
             border: 1px solid rgba(16, 185, 129, 0.2);
@@ -294,12 +311,12 @@
             font-size: 0.75rem;
             transition: all 0.3s ease;
         }
-        
-        .admin-table a[href*="Update"]:hover {
-            background: rgba(16, 185, 129, 0.2);
-            transform: translateY(-1px);
-        }
-        
+
+            .admin-table a[href*="Update"]:hover {
+                background: rgba(16, 185, 129, 0.2);
+                transform: translateY(-1px);
+            }
+
         .admin-table a[href*="Cancel"] {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.2);
@@ -312,10 +329,17 @@
             font-size: 0.75rem;
             transition: all 0.3s ease;
         }
-        
-        .admin-table a[href*="Cancel"]:hover {
-            background: rgba(239, 68, 68, 0.2);
-            transform: translateY(-1px);
+
+            .admin-table a[href*="Cancel"]:hover {
+                background: rgba(239, 68, 68, 0.2);
+                transform: translateY(-1px);
+            }
+
+        .visitor-paragraph {
+            font-size: 0.82rem; /* adjust to taste (e.g. 0.75rem — 0.95rem) */
+            line-height: 1.15;
+            margin: 0.12rem 0;
+            color: var(--text-muted-dark);
         }
     </style>
 </asp:Content>

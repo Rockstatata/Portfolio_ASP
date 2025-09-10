@@ -16,6 +16,34 @@
     <!-- Admin Styles -->
     <link href="~/Content/adminstyles.css" rel="stylesheet" type="text/css" />
 
+    <!-- Small local styles for the new root button -->
+    <style type="text/css">
+        /* Small globe button placed in the admin nav actions */
+        .admin-root-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            margin: 0 0.5rem;
+            border-radius: 6px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-secondary-dark);
+            text-decoration: none;
+            transition: all 0.15s ease;
+            font-size: 0.95rem;
+        }
+
+        .admin-root-btn:hover,
+        .admin-root-btn:focus {
+            background: rgba(255,255,255,0.03);
+            color: var(--color-primary);
+            transform: translateY(-1px);
+            outline: none;
+        }
+    </style>
+
     <!-- Three.js and Vanta.js for animated background -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/tengbao/vanta/dist/vanta.net.min.js"></script>
@@ -89,17 +117,18 @@
 
                     <!-- User Actions -->
                     <div class="admin-nav-actions">
-                        <div>    
-                                <a href="portfolio.aspx">
-                                    <i class="fas fa-globe-alt">
-                                </a>
-                            </i>
-                        </div>
+                        
                         <div class="admin-user-info">
                             <div class="admin-user-avatar">
                                 <%= GetUserInitials() %>
                             </div>
                         </div>
+
+                        <!-- Root site button (globe icon) -->
+                        <a href='<%= ResolveUrl("~/") %>' class="admin-root-btn" title="View Site" aria-label="View Site">
+                            <i class="fas fa-globe"></i>
+                        </a>
+
                         <a href="<%= GetLogoutUrl() %>" class="admin-logout-btn">
                             <i class="fas fa-sign-out-alt"></i>
                         </a>

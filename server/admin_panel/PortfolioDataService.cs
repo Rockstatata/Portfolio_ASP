@@ -149,6 +149,7 @@ namespace admin_panel
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
+                     
                         while (reader.Read())
                         {
                             sections.Add(new AboutSection
@@ -380,7 +381,7 @@ namespace admin_panel
                     var cmd = new SqlCommand(@"
                         SELECT Id, YearRange, Title, Location, Description, Type, DisplayOrder 
                         FROM Timeline 
-                        ORDER BY DisplayOrder DESC", conn);
+                        ORDER BY DisplayOrder ASC", conn);
                     
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
@@ -419,7 +420,7 @@ namespace admin_panel
                         SELECT Id, YearRange, Title, Location, Description, Type, DisplayOrder 
                         FROM Timeline 
                         WHERE Type = @Type 
-                        ORDER BY DisplayOrder DESC", conn);
+                        ORDER BY DisplayOrder ASC", conn);
                     
                     cmd.Parameters.AddWithValue("@Type", type);
                     conn.Open();
@@ -635,7 +636,6 @@ namespace admin_panel
                     var cmd = new SqlCommand($@"
                         SELECT TOP {count} Id, Title, Content, Excerpt, Categories, Tags, PublishDate, ReadTime, ImagePath, Status 
                         FROM BlogPosts 
-                        WHERE Status = 'Published'
                         ORDER BY PublishDate DESC", conn);
                     
                     conn.Open();
@@ -671,6 +671,214 @@ namespace admin_panel
 
         #region Contacts
 
+        public List<Contact> GetAllContacts()
+        {
+            var contacts = new List<Contact>();
+            try
+            {
+                using (var conn = new SqlConnection(_connectionString))
+                {
+                    var cmd = new SqlCommand(@"
+                        SELECT Id, Name, Email, Subject, Message, ReceivedDate, IsRead, Responded
+                        FROM Contacts 
+                        ORDER BY ReceivedDate DESC", conn);
+                    
+                    conn.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            contacts.Add(new Contact
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Name = reader["Name"] as string ?? string.Empty,
+                                Email = reader["Email"] as string ?? string.Empty,
+                                Subject = reader["Subject"] as string ?? string.Empty,
+                                Message = reader["Message"] as string ?? string.Empty,
+                                ReceivedDate = reader["ReceivedDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReceivedDate"]),
+                                IsRead = reader["IsRead"] == DBNull.Value ? false : Convert.ToBoolean(reader["IsRead"]),
+                                Responded = reader["Responded"] == DBNull.Value ? false : Convert.ToBoolean(reader["Responded"])
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting contacts: {ex.Message}");
+            }
+            return contacts;
+        }
+
+        public Contact GetContactById(int id)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(_connectionString))
+                {
+                    var cmd = new SqlCommand(@"
+                        SELECT Id, Name, Email, Subject, Message, ReceivedDate, IsRead, Responded
+                        FROM Contacts 
+                        WHERE Id = @Id", conn);
+                    
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    conn.Open();
+                    
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Contact
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Name = reader["Name"] as string ?? string.Empty,
+                                Email = reader["Email"] as string ?? string.Empty,
+                                Subject = reader["Subject"] as string ?? string.Empty,
+                                Message = reader["Message"] as string ?? string.Empty,
+                                ReceivedDate = reader["ReceivedDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReceivedDate"]),
+                                IsRead = reader["IsRead"] == DBNull.Value ? false : Convert.ToBoolean(reader["IsRead"]),
+                                Responded = reader["Responded"] == DBNull.Value ? false : Convert.ToBoolean(reader["Responded"])
+                            };
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting contact by ID: {ex.Message}");
+            }
+            return null;
+        }
+
+        public bool MarkContactAsRead(int id)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(_connectionString))
+                {
+                    var cmd = new SqlCommand(@"
+                        UPDATE Contacts 
+                        SET IsRead = 1
+                        WHERE Id = @Id", conn);
+                    
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    conn.Open();
+                    
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error marking contact as read: {ex.Message}");
+                return false;
+            }
+        }
+
+        public bool MarkContactAsResponded(int id)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(_connectionString))
+                {
+                    var cmd = new SqlCommand(@"
+                        UPDATE Contacts 
+                        SET Responded = 1
+                        WHERE Id = @Id", conn);
+                    
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    conn.Open();
+                    
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error marking contact as responded: {ex.Message}");
+                return false;
+            }
+        }
+
+        public bool DeleteContact(int id)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(_connectionString))
+                {
+                    var cmd = new SqlCommand(@"
+                        DELETE FROM Contacts 
+                        WHERE Id = @Id", conn);
+                    
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    conn.Open();
+                    
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error deleting contact: {ex.Message}");
+                return false;
+            }
+        }
+
+        public List<Contact> GetUnreadContacts()
+        {
+            var contacts = new List<Contact>();
+            try
+            {
+                using (var conn = new SqlConnection(_connectionString))
+                {
+                    var cmd = new SqlCommand(@"
+                        SELECT Id, Name, Email, Subject, Message, ReceivedDate, IsRead, Responded
+                        FROM Contacts 
+                        WHERE IsRead = 0 OR IsRead IS NULL
+                        ORDER BY ReceivedDate DESC", conn);
+                    
+                    conn.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            contacts.Add(new Contact
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Name = reader["Name"] as string ?? string.Empty,
+                                Email = reader["Email"] as string ?? string.Empty,
+                                Subject = reader["Subject"] as string ?? string.Empty,
+                                Message = reader["Message"] as string ?? string.Empty,
+                                ReceivedDate = reader["ReceivedDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ReceivedDate"]),
+                                IsRead = reader["IsRead"] == DBNull.Value ? false : Convert.ToBoolean(reader["IsRead"]),
+                                Responded = reader["Responded"] == DBNull.Value ? false : Convert.ToBoolean(reader["Responded"])
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting unread contacts: {ex.Message}");
+            }
+            return contacts;
+        }
+
+        public int GetContactsCount()
+        {
+            try
+            {
+                using (var conn = new SqlConnection(_connectionString))
+                {
+                    var cmd = new SqlCommand("SELECT COUNT(*) FROM Contacts", conn);
+                    conn.Open();
+                    return Convert.ToInt32(cmd.ExecuteScalar());
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting contacts count: {ex.Message}");
+                return 0;
+            }
+        }
+
         public bool SaveContact(Contact contact)
         {
             try
@@ -678,16 +886,16 @@ namespace admin_panel
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     var cmd = new SqlCommand(@"
-                        INSERT INTO Contacts (Name, Email, Subject, Message, ReceivedDate, IsRead, IsArchived)
-                        VALUES (@Name, @Email, @Subject, @Message, @ReceivedDate, @IsRead, @IsArchived)", conn);
+                        INSERT INTO Contacts (Name, Email, Subject, Message, ReceivedDate, IsRead, Responded)
+                        VALUES (@Name, @Email, @Subject, @Message, @ReceivedDate, @IsRead, @Responded)", conn);
                     
                     cmd.Parameters.AddWithValue("@Name", contact.Name ?? string.Empty);
                     cmd.Parameters.AddWithValue("@Email", contact.Email ?? string.Empty);
                     cmd.Parameters.AddWithValue("@Subject", contact.Subject ?? string.Empty);
                     cmd.Parameters.AddWithValue("@Message", contact.Message ?? string.Empty);
-                    cmd.Parameters.AddWithValue("@ReceivedDate", DateTime.Now);
-                    cmd.Parameters.AddWithValue("@IsRead", false);
-                    cmd.Parameters.AddWithValue("@IsArchived", false);
+                    cmd.Parameters.AddWithValue("@ReceivedDate", contact.ReceivedDate ?? DateTime.Now);
+                    cmd.Parameters.AddWithValue("@IsRead", contact.IsRead);
+                    cmd.Parameters.AddWithValue("@Responded", contact.Responded);
                     
                     conn.Open();
                     return cmd.ExecuteNonQuery() > 0;
