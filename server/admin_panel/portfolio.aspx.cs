@@ -139,39 +139,161 @@ namespace admin_panel
         {
             try
             {
-                // Initialize with default data first
-                LoadDefaultData();
+                // Load Hero and About sections - Don't initialize defaults first
+                try 
+                { 
+                    HeroSection = portfolioService.GetHeroSection();
+                    System.Diagnostics.Debug.WriteLine($"Hero Section loaded: {(HeroSection != null ? HeroSection.SectionName : "NULL")}");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading hero section: {ex.Message}");
+                    HeroSection = null;
+                }
                 
-                // Load Hero and About sections
-                try { HeroSection = portfolioService.GetHeroSection() ?? HeroSection; } catch { }
-                try { AboutHomeSection = portfolioService.GetAboutHomeSection() ?? AboutHomeSection; } catch { }
+                try 
+                { 
+                    AboutHomeSection = portfolioService.GetAboutHomeSection();
+                    System.Diagnostics.Debug.WriteLine($"About Home Section loaded: {(AboutHomeSection != null ? AboutHomeSection.SectionName : "NULL")}");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading about home section: {ex.Message}");
+                    AboutHomeSection = null;
+                }
                 
                 // Load Social Links
-                try { SocialLinks = portfolioService.GetSocialLinks() ?? SocialLinks; } catch { }
+                try 
+                { 
+                    SocialLinks = portfolioService.GetSocialLinks();
+                    System.Diagnostics.Debug.WriteLine($"Social Links loaded: {SocialLinks?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading social links: {ex.Message}");
+                    SocialLinks = new List<SocialLink>();
+                }
                 
                 // Load About sections
-                try { AboutSections = portfolioService.GetAllAboutSections() ?? AboutSections; } catch { }
+                try 
+                { 
+                    AboutSections = portfolioService.GetAllAboutSections();
+                    System.Diagnostics.Debug.WriteLine($"About Sections loaded: {AboutSections?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading about sections: {ex.Message}");
+                    AboutSections = new List<AboutSection>();
+                }
                 
                 // Load Strengths & Interests
-                try { Strengths = portfolioService.GetStrengths() ?? Strengths; } catch { }
-                try { Interests = portfolioService.GetInterests() ?? Interests; } catch { }
-                try { ResearchAreas = portfolioService.GetResearchAreas() ?? ResearchAreas; } catch { }
-                try { FutureGoals = portfolioService.GetFutureGoals() ?? FutureGoals; } catch { }
-                try { LearningAreas = portfolioService.GetLearningAreas() ?? LearningAreas; } catch { }
+                try 
+                { 
+                    Strengths = portfolioService.GetStrengths();
+                    System.Diagnostics.Debug.WriteLine($"Strengths loaded: {Strengths?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading strengths: {ex.Message}");
+                    Strengths = new List<StrengthInterest>();
+                }
+                
+                try 
+                { 
+                    Interests = portfolioService.GetInterests();
+                    System.Diagnostics.Debug.WriteLine($"Interests loaded: {Interests?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading interests: {ex.Message}");
+                    Interests = new List<StrengthInterest>();
+                }
+                
+                try 
+                { 
+                    ResearchAreas = portfolioService.GetResearchAreas();
+                    System.Diagnostics.Debug.WriteLine($"Research Areas loaded: {ResearchAreas?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading research areas: {ex.Message}");
+                    ResearchAreas = new List<StrengthInterest>();
+                }
+                
+                try 
+                { 
+                    FutureGoals = portfolioService.GetFutureGoals();
+                    System.Diagnostics.Debug.WriteLine($"Future Goals loaded: {FutureGoals?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading future goals: {ex.Message}");
+                    FutureGoals = new List<StrengthInterest>();
+                }
+                
+                try 
+                { 
+                    LearningAreas = portfolioService.GetLearningAreas();
+                    System.Diagnostics.Debug.WriteLine($"Learning Areas loaded: {LearningAreas?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading learning areas: {ex.Message}");
+                    LearningAreas = new List<StrengthInterest>();
+                }
                 
                 // Load Skills
-                try { SkillsByCategory = portfolioService.GetSkillsByCategory() ?? SkillsByCategory; } catch { }
+                try 
+                { 
+                    SkillsByCategory = portfolioService.GetSkillsByCategory();
+                    System.Diagnostics.Debug.WriteLine($"Skills loaded: {SkillsByCategory?.Count ?? 0} categories");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading skills: {ex.Message}");
+                    SkillsByCategory = new Dictionary<string, List<Skill>>();
+                }
                 
                 // Load Timeline
-                try { EducationTimeline = portfolioService.GetEducationTimeline() ?? EducationTimeline; } catch { }
-                try { WorkTimeline = portfolioService.GetWorkTimeline() ?? WorkTimeline; } catch { }
-                try { AllTimeline = portfolioService.GetAllTimeline() ?? AllTimeline; } catch { }
+                try 
+                { 
+                    EducationTimeline = portfolioService.GetEducationTimeline();
+                    System.Diagnostics.Debug.WriteLine($"Education Timeline loaded: {EducationTimeline?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading education timeline: {ex.Message}");
+                    EducationTimeline = new List<TimelineItem>();
+                }
+                
+                try 
+                { 
+                    WorkTimeline = portfolioService.GetWorkTimeline();
+                    System.Diagnostics.Debug.WriteLine($"Work Timeline loaded: {WorkTimeline?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading work timeline: {ex.Message}");
+                    WorkTimeline = new List<TimelineItem>();
+                }
+                
+                try 
+                { 
+                    AllTimeline = portfolioService.GetAllTimeline();
+                    System.Diagnostics.Debug.WriteLine($"All Timeline loaded: {AllTimeline?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading all timeline: {ex.Message}");
+                    AllTimeline = new List<TimelineItem>();
+                }
                 
                 // Load Projects - ensure they're never null
                 try 
                 { 
                     var featuredProjects = portfolioService.GetFeaturedProjects(6);
                     FeaturedProjects = featuredProjects ?? new List<Project>();
+                    System.Diagnostics.Debug.WriteLine($"Featured Projects loaded: {FeaturedProjects.Count} items");
                 } 
                 catch (Exception ex)
                 {
@@ -183,6 +305,7 @@ namespace admin_panel
                 { 
                     var allProjects = portfolioService.GetAllProjects();
                     AllProjects = allProjects ?? new List<Project>();
+                    System.Diagnostics.Debug.WriteLine($"All Projects loaded: {AllProjects.Count} items");
                 } 
                 catch (Exception ex)
                 {
@@ -191,40 +314,57 @@ namespace admin_panel
                 }
                 
                 // Load Experience
-                try { Experiences = portfolioService.GetExperiences() ?? Experiences; } catch { }
+                try 
+                { 
+                    Experiences = portfolioService.GetExperiences();
+                    System.Diagnostics.Debug.WriteLine($"Experiences loaded: {Experiences?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading experiences: {ex.Message}");
+                    Experiences = new List<Experience>();
+                }
                 
                 // Load Blog Posts
-                try { RecentBlogPosts = portfolioService.GetRecentBlogPosts(3); System.Diagnostics.Debug.WriteLine("Blogs Count: " + (RecentBlogPosts?.Count ?? 0)); } catch { }
+                try 
+                { 
+                    RecentBlogPosts = portfolioService.GetRecentBlogPosts(3);
+                    System.Diagnostics.Debug.WriteLine($"Recent Blog Posts loaded: {RecentBlogPosts?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading recent blog posts: {ex.Message}");
+                    RecentBlogPosts = new List<BlogPost>();
+                }
                 
                 // Load Settings
-                try { Settings = portfolioService.GetAllSettings() ?? Settings; } catch { }
+                try 
+                { 
+                    Settings = portfolioService.GetAllSettings();
+                    System.Diagnostics.Debug.WriteLine($"Settings loaded: {Settings?.Count ?? 0} items");
+                } 
+                catch (Exception ex) 
+                { 
+                    System.Diagnostics.Debug.WriteLine($"Error loading settings: {ex.Message}");
+                    Settings = new Dictionary<string, string>();
+                }
                 
-                System.Diagnostics.Debug.WriteLine("Portfolio data loaded successfully");
+                System.Diagnostics.Debug.WriteLine("=== Portfolio data loading completed ===");
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error loading portfolio data: {ex.Message}");
-                // LoadDefaultData was already called, so we're safe
+                // Initialize with empty data if there's a general error
+                LoadDefaultData();
             }
         }
 
         private void LoadDefaultData()
         {
-            // Initialize with empty or default data to prevent null reference errors
-            HeroSection = new HomeSection
-            {
-                SectionName = "Hero Section",
-                Content = "Welcome to my portfolio! I'm a passionate developer creating innovative digital solutions.",
-                ImagePath = "/images/hero-bg.jpg"
-            };
-
-            AboutHomeSection = new HomeSection
-            {
-                SectionName = "About Section",
-                Content = "I am a dedicated software developer with expertise in modern web technologies.",
-                ImagePath = "/images/about-bg.jpg"
-            };
-
+            // Initialize with empty data to prevent null reference errors
+            // Don't put fallback content here - let the ASPX handle that with proper checks
+            HeroSection = null;
+            AboutHomeSection = null;
             SocialLinks = new List<SocialLink>();
             AboutSections = new List<AboutSection>();
             Strengths = new List<StrengthInterest>();

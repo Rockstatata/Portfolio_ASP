@@ -891,6 +891,46 @@ function initBlogModal() {
 
         // Update scroll progress initially
         updateScrollProgress();
+
+        // If we have an id and no preloaded fullContent, fetch directly from server (Content column)
+        if (blogData.id && (!blogData.fullContent || blogData.fullContent.trim().length === 0)) {
+            // show a small loading indicator in the modal area
+            if (modalComingSoon) {
+                modalComingSoon.style.display = 'block';
+                modalComingSoon.textContent = 'Loading article...';
+            }
+            if (modalArticle) modalArticle.style.display = 'none';
+
+            fetch('/portfolio.aspx/GetBlogContent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+                },
+                body: JSON.stringify({ id: parseInt(blogData.id, 10) })
+            })
+                .then(res => res.json())
+                .then(json => {
+                    const payload = (json && json.d) ? json.d : json;
+                    if (payload && payload.success) {
+                        const contentHtml = payload.content || '';
+                        // Insert content directly (Content column holds HTML)
+                        if (modalArticle) {
+                            modalArticle.innerHTML = contentHtml;
+                            modalArticle.style.display = 'block';
+                        }
+                        if (modalComingSoon) modalComingSoon.style.display = 'none';
+                    } else {
+                        if (modalComingSoon) modalComingSoon.textContent = payload && payload.message ? payload.message : 'Article not available.';
+                        if (modalArticle) modalArticle.style.display = 'none';
+                    }
+                    updateScrollProgress();
+                })
+                .catch(err => {
+                    console.error('Error fetching blog content:', err);
+                    if (modalComingSoon) modalComingSoon.textContent = 'Failed to load article. Please try again later.';
+                    showNotification('Unable to load full article from server.', 'error');
+                });
+        }
     }
 
     // Close modal function
@@ -941,12 +981,22 @@ function initBlogModal() {
 
         // Set content or show coming soon
         if (blogData.fullContent && blogData.fullContent.trim().length > 0) {
-            modalArticle.innerHTML = formatBlogContent(blogData.fullContent);
+            // If the server returned HTML in the Content column, insert it directly
+            modalArticle.innerHTML = blogData.fullContent;
             modalArticle.style.display = 'block';
-            modalComingSoon.style.display = 'none';
+            if (modalComingSoon) modalComingSoon.style.display = 'none';
         } else {
-            modalArticle.style.display = 'none';
-            modalComingSoon.style.display = 'block';
+            // We'll fetch by id in openModal when available. If no id, show placeholder.
+            if (!blogData.id) {
+                modalArticle.style.display = 'none';
+                if (modalComingSoon) {
+                    modalComingSoon.style.display = 'block';
+                    modalComingSoon.textContent = 'This article will be available soon.';
+                }
+            } else {
+                modalArticle.style.display = 'none';
+                if (modalComingSoon) modalComingSoon.style.display = 'none';
+            }
         }
     }
 
@@ -995,14 +1045,26 @@ function initBlogModal() {
         const categoryElements = cardElement.querySelectorAll('.blog-category');
         const tagElements = cardElement.querySelectorAll('.blog-tag');
 
+        // Try to find blog id in data attribute or href query string
+        let blogId = cardElement.dataset.blogId || cardElement.getAttribute('data-blog-id') || '';
+        if (!blogId) {
+            const link = cardElement.querySelector('a[href*="id="]');
+            if (link) {
+                const href = link.getAttribute('href');
+                const match = href.match(/[?&]id=([^&]+)/);
+                if (match) blogId = decodeURIComponent(match[1]);
+            }
+        }
+
         return {
+            id: blogId || '',
             title: titleElement ? titleElement.textContent.trim() : 'Blog Post',
             excerpt: excerptElement ? excerptElement.textContent.trim() : '',
             date: dateElement ? dateElement.textContent.trim() : '',
             readTime: readTimeElement ? readTimeElement.textContent.replace(' min read', '') : '3',
             categories: Array.from(categoryElements).map(el => el.textContent.trim()),
             tags: Array.from(tagElements).map(el => el.textContent.trim()),
-            fullContent: '', // This would come from your database in a real implementation
+            fullContent: '' // not preloaded; will be fetched from server
         };
     }
 

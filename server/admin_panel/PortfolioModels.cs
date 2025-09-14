@@ -13,7 +13,7 @@ namespace admin_panel
         public DateTime CreatedDate { get; set; }
     }
 
-    // Home Sections Model
+    // Home Sections Model - Updated to match database schema
     public class HomeSection
     {
         public int Id { get; set; }
@@ -21,12 +21,10 @@ namespace admin_panel
         public string Content { get; set; }
         public string ImagePath { get; set; }
         public int DisplayOrder { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        // Removed IsActive, CreatedDate, UpdatedDate as they might not exist in actual database
     }
 
-    // Social Links Model
+    // Social Links Model - Updated to match database schema
     public class SocialLink
     {
         public int Id { get; set; }
@@ -34,39 +32,36 @@ namespace admin_panel
         public string URL { get; set; }
         public string IconClass { get; set; }
         public int DisplayOrder { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
+        // Removed IsActive, CreatedDate as they might not exist in actual database
     }
 
-    // About Sections Model
+    // About Sections Model - Updated to match database schema
     public class AboutSection
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string Subtitle { get; set; }
+        // Removed Subtitle as it's not in the database query
         public string Content { get; set; }
         public string SectionType { get; set; }
         public int DisplayOrder { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        // Removed IsActive, CreatedDate, UpdatedDate as they might not exist in actual database
     }
 
-    // Strengths & Interests Model
+    // Strengths & Interests Model - Updated to match database schema
     public class StrengthInterest
     {
         public int Id { get; set; }
         public string Category { get; set; }
-        public string Title { get; set; }
+        // Removed Title as it's not in the database query - using Description instead
         public string Description { get; set; }
-        public string ColorClass { get; set; }
-        public string Icon { get; set; }
         public int DisplayOrder { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
+        // Removed ColorClass, Icon, IsActive, CreatedDate as they might not exist in actual database
+        
+        // Property to use Description as Title for display purposes
+        public string Title => Description;
     }
 
-    // Skills Model
+    // Skills Model - Updated to match database schema
     public class Skill
     {
         public int Id { get; set; }
@@ -75,11 +70,10 @@ namespace admin_panel
         public string SkillIcon { get; set; }
         public int Proficiency { get; set; }
         public int DisplayOrder { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
+        // Removed IsActive, CreatedDate as they might not exist in actual database
     }
 
-    // Timeline Model
+    // Timeline Model - Updated to match database schema
     public class TimelineItem
     {
         public int Id { get; set; }
@@ -89,11 +83,10 @@ namespace admin_panel
         public string Description { get; set; }
         public string Type { get; set; }
         public int DisplayOrder { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
+        // Removed IsActive, CreatedDate as they might not exist in actual database
     }
 
-    // Projects Model
+    // Projects Model - Updated to match database schema
     public class Project
     {
         public int Id { get; set; }
@@ -106,11 +99,10 @@ namespace admin_panel
         public string SourceLink { get; set; }
         public string Status { get; set; }
         public int DisplayOrder { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
+        // Removed IsActive, CreatedDate as they might not exist in actual database
     }
 
-    // Experience Model
+    // Experience Model - Updated to match database schema
     public class Experience
     {
         public int Id { get; set; }
@@ -120,11 +112,10 @@ namespace admin_panel
         public string Description { get; set; }
         public string Responsibilities { get; set; }
         public int DisplayOrder { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
+        // Removed IsActive, CreatedDate as they might not exist in actual database
     }
 
-    // Blog Posts Model
+    // Blog Posts Model - Updated to match database schema
     public class BlogPost
     {
         public int Id { get; set; }
@@ -137,9 +128,7 @@ namespace admin_panel
         public int? ReadTime { get; set; }
         public string ImagePath { get; set; }
         public string Status { get; set; }
-        public bool IsActive { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        // Removed IsActive, CreatedDate, UpdatedDate as they might not exist in actual database
     }
 
     // Contacts Model - Updated to match database schema

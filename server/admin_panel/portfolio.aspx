@@ -309,7 +309,11 @@
                 <!-- Description -->
                 <div class="slide-up" style="--delay: 400ms">
                   <p class="description">
-                    <%: HeroSection != null ? HeroSection.Content : "Full-stack developer transforming ideas into scalable, user-focused applications." %>
+                    <% if (HeroSection != null && !string.IsNullOrEmpty(HeroSection.Content)) { %>
+                      <%: HeroSection.Content %>
+                    <% } else { %>
+                      Full-stack developer transforming ideas into scalable, user-focused applications.
+                    <% } %>
                   </p>
                 </div>
 
@@ -369,6 +373,7 @@
 
                 <!-- Social Links -->
                 <div class="social-links">
+
                   <!-- Fallback social links -->
                   <a
                     href="https://github.com/Rockstatata"
@@ -463,18 +468,10 @@
                     <h3 class="card-title">
                       <%: mainAbout.Title %>
                     </h3>
-                    <% if (!string.IsNullOrEmpty(mainAbout.Subtitle)) { %>
-                    <p class="card-subtitle">
-                      <%: mainAbout.Subtitle %>
-                    </p>
-                    <% } %>
                     <% } else { %>
                     <h3 class="card-title">
                       CSE Undergraduate
                     </h3>
-                    <p class="card-subtitle">
-                      3rd Year Student at KUET
-                    </p>
                     <% } %>
                   </div>
                 </div>
@@ -536,7 +533,7 @@
                 if (skillsAbout != null) 
                 { 
                 %>
-                <span class="text-small text-gray-500 text-medium text-uppercase text-tracking-wider"><%: !string.IsNullOrEmpty(skillsAbout.Subtitle) ? skillsAbout.Subtitle : "What I Do" %></span>
+                <span class="text-small text-gray-500 text-medium text-uppercase text-tracking-wider">What I Do</span>
                 <h3 class="card-title card-mt-1">
                   <%: skillsAbout.Title %>
                 </h3>
@@ -1643,7 +1640,7 @@
 
                 <!-- Instagram -->
                 <a href="https://instagram.com/pianto._" target="_blank" rel="noopener noreferrer" class="social-link-contact" aria-label="Instagram">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                   </svg>
                 </a>
@@ -1675,7 +1672,6 @@
       </footer>
     </main>
 
-    <!-- Add this modal structure right before the closing </form> tag, around line 1060 -->
       <!-- Blog Reading Modal -->
       <div id="blogModal" class="blog-modal" style="display: none;" aria-hidden="true" role="dialog" aria-labelledby="blogModalTitle" aria-describedby="blogModalContent">
         <div class="blog-modal-backdrop" id="blogModalBackdrop"></div>
@@ -1732,8 +1728,8 @@
                 <div class="coming-soon-actions">
                   <button type="button" class="btn-notify" id="notifyMeBtn">
                     <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                      <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                      <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                      <path d="M13.73 21a2 2 0 01-3.46 0"/>
                     </svg>
                     Notify Me When Published
                   </button>

@@ -435,10 +435,7 @@ namespace admin_panel
                 SectionName = "Hero Section",
                 Content = "Welcome to my portfolio! I'm a passionate developer creating innovative digital solutions.",
                 ImagePath = "/images/hero-bg.jpg",
-                DisplayOrder = 1,
-                IsActive = true,
-                CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now
+                DisplayOrder = 1
             };
         }
 
@@ -450,10 +447,7 @@ namespace admin_panel
                 SectionName = "About Section",
                 Content = "I am a dedicated software developer with expertise in modern web technologies and a passion for creating innovative solutions.",
                 ImagePath = "/images/about-bg.jpg",
-                DisplayOrder = 2,
-                IsActive = true,
-                CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now
+                DisplayOrder = 2
             };
         }
 
@@ -461,10 +455,10 @@ namespace admin_panel
         {
             return new List<SocialLink>
             {
-                new SocialLink { Id = 1, Platform = "GitHub", URL = "#", IconClass = "fab fa-github", DisplayOrder = 1, IsActive = true, CreatedDate = DateTime.Now },
-                new SocialLink { Id = 2, Platform = "LinkedIn", URL = "#", IconClass = "fab fa-linkedin", DisplayOrder = 2, IsActive = true, CreatedDate = DateTime.Now },
-                new SocialLink { Id = 3, Platform = "Twitter", URL = "#", IconClass = "fab fa-twitter", DisplayOrder = 3, IsActive = true, CreatedDate = DateTime.Now },
-                new SocialLink { Id = 4, Platform = "Email", URL = "mailto:your@email.com", IconClass = "fas fa-envelope", DisplayOrder = 4, IsActive = true, CreatedDate = DateTime.Now }
+                new SocialLink { Id = 1, Platform = "GitHub", URL = "#", IconClass = "fab fa-github", DisplayOrder = 1 },
+                new SocialLink { Id = 2, Platform = "LinkedIn", URL = "#", IconClass = "fab fa-linkedin", DisplayOrder = 2 },
+                new SocialLink { Id = 3, Platform = "Twitter", URL = "#", IconClass = "fab fa-twitter", DisplayOrder = 3 },
+                new SocialLink { Id = 4, Platform = "Email", URL = "mailto:your@email.com", IconClass = "fas fa-envelope", DisplayOrder = 4 }
             };
         }
 
@@ -474,20 +468,20 @@ namespace admin_panel
             {
                 ["Programming Languages"] = new List<Skill>
                 {
-                    new Skill { Id = 1, Category = "Programming Languages", SkillName = "C#", SkillIcon = "devicon-csharp-plain", Proficiency = 90, DisplayOrder = 1, IsActive = true, CreatedDate = DateTime.Now },
-                    new Skill { Id = 2, Category = "Programming Languages", SkillName = "JavaScript", SkillIcon = "devicon-javascript-plain", Proficiency = 85, DisplayOrder = 2, IsActive = true, CreatedDate = DateTime.Now },
-                    new Skill { Id = 3, Category = "Programming Languages", SkillName = "Python", SkillIcon = "devicon-python-plain", Proficiency = 80, DisplayOrder = 3, IsActive = true, CreatedDate = DateTime.Now }
+                    new Skill { Id = 1, Category = "Programming Languages", SkillName = "C#", SkillIcon = "devicon-csharp-plain", Proficiency = 90, DisplayOrder = 1 },
+                    new Skill { Id = 2, Category = "Programming Languages", SkillName = "JavaScript", SkillIcon = "devicon-javascript-plain", Proficiency = 85, DisplayOrder = 2 },
+                    new Skill { Id = 3, Category = "Programming Languages", SkillName = "Python", SkillIcon = "devicon-python-plain", Proficiency = 80, DisplayOrder = 3 }
                 },
                 ["Web Technologies"] = new List<Skill>
                 {
-                    new Skill { Id = 4, Category = "Web Technologies", SkillName = "ASP.NET", SkillIcon = "devicon-dot-net-plain", Proficiency = 90, DisplayOrder = 1, IsActive = true, CreatedDate = DateTime.Now },
-                    new Skill { Id = 5, Category = "Web Technologies", SkillName = "HTML5", SkillIcon = "devicon-html5-plain", Proficiency = 95, DisplayOrder = 2, IsActive = true, CreatedDate = DateTime.Now },
-                    new Skill { Id = 6, Category = "Web Technologies", SkillName = "CSS3", SkillIcon = "devicon-css3-plain", Proficiency = 90, DisplayOrder = 3, IsActive = true, CreatedDate = DateTime.Now }
+                    new Skill { Id = 4, Category = "Web Technologies", SkillName = "ASP.NET", SkillIcon = "devicon-dot-net-plain", Proficiency = 90, DisplayOrder = 1 },
+                    new Skill { Id = 5, Category = "Web Technologies", SkillName = "HTML5", SkillIcon = "devicon-html5-plain", Proficiency = 95, DisplayOrder = 2 },
+                    new Skill { Id = 6, Category = "Web Technologies", SkillName = "CSS3", SkillIcon = "devicon-css3-plain", Proficiency = 90, DisplayOrder = 3 }
                 },
                 ["Databases"] = new List<Skill>
                 {
-                    new Skill { Id = 7, Category = "Databases", SkillName = "SQL Server", SkillIcon = "devicon-microsoftsqlserver-plain", Proficiency = 85, DisplayOrder = 1, IsActive = true, CreatedDate = DateTime.Now },
-                    new Skill { Id = 8, Category = "Databases", SkillName = "MySQL", SkillIcon = "devicon-mysql-plain", Proficiency = 80, DisplayOrder = 2, IsActive = true, CreatedDate = DateTime.Now }
+                    new Skill { Id = 7, Category = "Databases", SkillName = "SQL Server", SkillIcon = "devicon-microsoftsqlserver-plain", Proficiency = 85, DisplayOrder = 1 },
+                    new Skill { Id = 8, Category = "Databases", SkillName = "MySQL", SkillIcon = "devicon-mysql-plain", Proficiency = 80, DisplayOrder = 2 }
                 }
             };
 
@@ -509,9 +503,7 @@ namespace admin_panel
                     DemoLink = "#",
                     SourceLink = "#",
                     Status = "Completed",
-                    DisplayOrder = 1,
-                    IsActive = true,
-                    CreatedDate = DateTime.Now
+                    DisplayOrder = 1
                 },
                 new Project
                 {
@@ -524,9 +516,7 @@ namespace admin_panel
                     DemoLink = "#",
                     SourceLink = "#",
                     Status = "Completed",
-                    DisplayOrder = 2,
-                    IsActive = true,
-                    CreatedDate = DateTime.Now
+                    DisplayOrder = 2
                 }
             };
         }

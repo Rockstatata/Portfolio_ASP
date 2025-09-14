@@ -28,7 +28,7 @@ namespace admin_panel
                         SELECT Id, SectionName, Content, ImagePath, DisplayOrder 
                         FROM HomeSections 
                         ORDER BY DisplayOrder", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -63,10 +63,10 @@ namespace admin_panel
                         SELECT TOP 1 Id, SectionName, Content, ImagePath, DisplayOrder 
                         FROM HomeSections 
                         WHERE SectionName = @SectionName", conn);
-                    
+
                     cmd.Parameters.AddWithValue("@SectionName", sectionName);
                     conn.Open();
-                    
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -105,7 +105,7 @@ namespace admin_panel
                         SELECT Id, Platform, URL, IconClass, DisplayOrder 
                         FROM SocialLinks 
                         ORDER BY DisplayOrder", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -145,11 +145,11 @@ namespace admin_panel
                         SELECT Id, Title, Content, SectionType, DisplayOrder 
                         FROM AboutSections 
                         ORDER BY DisplayOrder", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
-                     
+
                         while (reader.Read())
                         {
                             sections.Add(new AboutSection
@@ -182,10 +182,10 @@ namespace admin_panel
                         FROM AboutSections 
                         WHERE SectionType = @SectionType 
                         ORDER BY DisplayOrder", conn);
-                    
+
                     cmd.Parameters.AddWithValue("@SectionType", sectionType);
                     conn.Open();
-                    
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -224,7 +224,7 @@ namespace admin_panel
                         SELECT Id, Category, Description, DisplayOrder 
                         FROM StrengthsInterests 
                         ORDER BY DisplayOrder", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -260,10 +260,10 @@ namespace admin_panel
                         FROM StrengthsInterests 
                         WHERE Category = @Category 
                         ORDER BY DisplayOrder", conn);
-                    
+
                     cmd.Parameters.AddWithValue("@Category", category);
                     conn.Open();
-                    
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -301,7 +301,7 @@ namespace admin_panel
                         SELECT Id, Category, SkillName, SkillIcon, Proficiency, DisplayOrder 
                         FROM Skills 
                         ORDER BY Category, DisplayOrder", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -339,10 +339,10 @@ namespace admin_panel
                         FROM Skills 
                         WHERE Category = @Category 
                         ORDER BY DisplayOrder", conn);
-                    
+
                     cmd.Parameters.AddWithValue("@Category", category);
                     conn.Open();
-                    
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -382,7 +382,7 @@ namespace admin_panel
                         SELECT Id, YearRange, Title, Location, Description, Type, DisplayOrder 
                         FROM Timeline 
                         ORDER BY DisplayOrder ASC", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -421,10 +421,10 @@ namespace admin_panel
                         FROM Timeline 
                         WHERE Type = @Type 
                         ORDER BY DisplayOrder ASC", conn);
-                    
+
                     cmd.Parameters.AddWithValue("@Type", type);
                     conn.Open();
-                    
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -465,7 +465,7 @@ namespace admin_panel
                         SELECT Id, Title, Description, ImagePath, Technologies, ProjectYear, DemoLink, SourceLink, Status, DisplayOrder 
                         FROM Projects 
                         ORDER BY DisplayOrder DESC", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -507,7 +507,7 @@ namespace admin_panel
                         SELECT TOP {count} Id, Title, Description, ImagePath, Technologies, ProjectYear, DemoLink, SourceLink, Status, DisplayOrder 
                         FROM Projects 
                         ORDER BY DisplayOrder DESC", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -553,7 +553,7 @@ namespace admin_panel
                         SELECT Id, Company, Position, Duration, Description, Responsibilities, DisplayOrder 
                         FROM Experience 
                         ORDER BY DisplayOrder DESC", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -596,7 +596,7 @@ namespace admin_panel
                         FROM BlogPosts 
                         WHERE Status = 'Published'
                         ORDER BY PublishDate DESC", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -637,7 +637,7 @@ namespace admin_panel
                         SELECT TOP {count} Id, Title, Content, Excerpt, Categories, Tags, PublishDate, ReadTime, ImagePath, Status 
                         FROM BlogPosts 
                         ORDER BY PublishDate DESC", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -667,6 +667,51 @@ namespace admin_panel
             return posts;
         }
 
+        /// <summary>
+        /// Gets a single blog post by id (including Content column)
+        /// </summary>
+        public BlogPost GetBlogPostById(int id)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(_connectionString))
+                {
+                    var cmd = new SqlCommand(@"
+                        SELECT TOP 1 Id, Title, Content, Excerpt, Categories, Tags, PublishDate, ReadTime, ImagePath, Status 
+                        FROM BlogPosts 
+                        WHERE Id = @Id", conn);
+
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    conn.Open();
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new BlogPost
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Title = reader["Title"] as string ?? string.Empty,
+                                Content = reader["Content"] as string ?? string.Empty,
+                                Excerpt = reader["Excerpt"] as string ?? string.Empty,
+                                Categories = reader["Categories"] as string ?? string.Empty,
+                                Tags = reader["Tags"] as string ?? string.Empty,
+                                PublishDate = reader["PublishDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["PublishDate"]),
+                                ReadTime = reader["ReadTime"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["ReadTime"]),
+                                ImagePath = reader["ImagePath"] as string ?? string.Empty,
+                                Status = reader["Status"] as string ?? string.Empty
+                            };
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error getting blog post by id: {ex.Message}");
+            }
+            return null;
+        }
+
         #endregion
 
         #region Contacts
@@ -682,7 +727,7 @@ namespace admin_panel
                         SELECT Id, Name, Email, Subject, Message, ReceivedDate, IsRead, Responded
                         FROM Contacts 
                         ORDER BY ReceivedDate DESC", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -720,10 +765,10 @@ namespace admin_panel
                         SELECT Id, Name, Email, Subject, Message, ReceivedDate, IsRead, Responded
                         FROM Contacts 
                         WHERE Id = @Id", conn);
-                    
+
                     cmd.Parameters.AddWithValue("@Id", id);
                     conn.Open();
-                    
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -760,10 +805,10 @@ namespace admin_panel
                         UPDATE Contacts 
                         SET IsRead = 1
                         WHERE Id = @Id", conn);
-                    
+
                     cmd.Parameters.AddWithValue("@Id", id);
                     conn.Open();
-                    
+
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
@@ -784,10 +829,10 @@ namespace admin_panel
                         UPDATE Contacts 
                         SET Responded = 1
                         WHERE Id = @Id", conn);
-                    
+
                     cmd.Parameters.AddWithValue("@Id", id);
                     conn.Open();
-                    
+
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
@@ -807,10 +852,10 @@ namespace admin_panel
                     var cmd = new SqlCommand(@"
                         DELETE FROM Contacts 
                         WHERE Id = @Id", conn);
-                    
+
                     cmd.Parameters.AddWithValue("@Id", id);
                     conn.Open();
-                    
+
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
@@ -833,7 +878,7 @@ namespace admin_panel
                         FROM Contacts 
                         WHERE IsRead = 0 OR IsRead IS NULL
                         ORDER BY ReceivedDate DESC", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -888,7 +933,7 @@ namespace admin_panel
                     var cmd = new SqlCommand(@"
                         INSERT INTO Contacts (Name, Email, Subject, Message, ReceivedDate, IsRead, Responded)
                         VALUES (@Name, @Email, @Subject, @Message, @ReceivedDate, @IsRead, @Responded)", conn);
-                    
+
                     cmd.Parameters.AddWithValue("@Name", contact.Name ?? string.Empty);
                     cmd.Parameters.AddWithValue("@Email", contact.Email ?? string.Empty);
                     cmd.Parameters.AddWithValue("@Subject", contact.Subject ?? string.Empty);
@@ -896,7 +941,7 @@ namespace admin_panel
                     cmd.Parameters.AddWithValue("@ReceivedDate", contact.ReceivedDate ?? DateTime.Now);
                     cmd.Parameters.AddWithValue("@IsRead", contact.IsRead);
                     cmd.Parameters.AddWithValue("@Responded", contact.Responded);
-                    
+
                     conn.Open();
                     return cmd.ExecuteNonQuery() > 0;
                 }
@@ -916,16 +961,23 @@ namespace admin_panel
         {
             try
             {
+                // First check if PortfolioSettings table exists
+                if (!IsTableExists("PortfolioSettings"))
+                {
+                    System.Diagnostics.Debug.WriteLine("PortfolioSettings table does not exist, returning default value");
+                    return defaultValue;
+                }
+
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     var cmd = new SqlCommand(@"
                         SELECT SettingValue 
                         FROM PortfolioSettings 
                         WHERE SettingKey = @SettingKey", conn);
-                    
+
                     cmd.Parameters.AddWithValue("@SettingKey", key);
                     conn.Open();
-                    
+
                     var result = cmd.ExecuteScalar();
                     return result?.ToString() ?? defaultValue;
                 }
@@ -942,12 +994,19 @@ namespace admin_panel
             var settings = new Dictionary<string, string>();
             try
             {
+                // First check if PortfolioSettings table exists
+                if (!IsTableExists("PortfolioSettings"))
+                {
+                    System.Diagnostics.Debug.WriteLine("PortfolioSettings table does not exist, returning empty dictionary");
+                    return settings;
+                }
+
                 using (var conn = new SqlConnection(_connectionString))
                 {
                     var cmd = new SqlCommand(@"
                         SELECT SettingKey, SettingValue 
                         FROM PortfolioSettings", conn);
-                    
+
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
@@ -955,7 +1014,7 @@ namespace admin_panel
                         {
                             var key = reader["SettingKey"] as string ?? string.Empty;
                             var value = reader["SettingValue"] as string ?? string.Empty;
-                            
+
                             if (!string.IsNullOrEmpty(key))
                             {
                                 settings[key] = value;
@@ -985,10 +1044,10 @@ namespace admin_panel
                         SELECT COUNT(*) 
                         FROM INFORMATION_SCHEMA.TABLES 
                         WHERE TABLE_NAME = @TableName", conn);
-                    
+
                     cmd.Parameters.AddWithValue("@TableName", tableName);
                     conn.Open();
-                    
+
                     var count = Convert.ToInt32(cmd.ExecuteScalar());
                     return count > 0;
                 }

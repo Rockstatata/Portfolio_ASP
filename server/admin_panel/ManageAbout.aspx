@@ -20,12 +20,13 @@
             <div class="admin-form-group">
                 <label class="admin-form-label">Section Type *</label>
                 <asp:DropDownList ID="ddlSectionType" runat="server" CssClass="admin-form-select">
-                    <asp:ListItem Value="">Select Section Type</asp:ListItem>
-                    <asp:ListItem Value="intro">Introduction</asp:ListItem>
-                    <asp:ListItem Value="passion">Passion</asp:ListItem>
-                    <asp:ListItem Value="skills">Skills Overview</asp:ListItem>
-                    <asp:ListItem Value="databases">Database Experience</asp:ListItem>
-                    <asp:ListItem Value="dream">Dream & Goals</asp:ListItem>
+                    <asp:ListItem Value="" cssClass="admin-form-select-item">Select Section Type</asp:ListItem>
+                    <asp:ListItem Value="Main" cssClass="admin-form-select-item">Main/Introduction</asp:ListItem>
+                    <asp:ListItem Value="Education" cssClass="admin-form-select-item">Education & Background</asp:ListItem>
+                    <asp:ListItem Value="Skills" cssClass="admin-form-select-item">Skills & Tech Stack</asp:ListItem>
+                    <asp:ListItem Value="Research" cssClass="admin-form-select-item">Research Interests</asp:ListItem>
+                    <asp:ListItem Value="Goals" cssClass="admin-form-select-item">Future Goals</asp:ListItem>
+                    <asp:ListItem Value="Learning" cssClass="admin-form-select-item">Learning Areas</asp:ListItem>
                 </asp:DropDownList>
                 <asp:RequiredFieldValidator ID="rfvSectionType" runat="server" 
                     ControlToValidate="ddlSectionType" ErrorMessage="Section type is required" 

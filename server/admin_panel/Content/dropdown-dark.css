@@ -1,0 +1,222 @@
+/* Dropdown Dark Mode Fixes - Enhanced for all ASP.NET DropDownList controls */
+
+/* Force dark styling for all dropdown lists */
+select, 
+.admin-form-select,
+select[class*="admin-form"],
+select[class*="form-select"],
+asp\\:DropDownList,
+input[type="select-one"] {
+    background: var(--bg-primary-dark) !important;
+    background-color: #1a1625 !important;
+    color: white !important;
+    border: 1px solid rgba(255, 171, 171, 0.2) !important;
+    border-radius: 0.5rem !important;
+    padding: 0.875rem 1rem !important;
+    font-size: 1rem !important;
+    font-family: inherit !important;
+    
+    /* Custom dropdown arrow for dark mode */
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.75rem center !important;
+    background-size: 1rem !important;
+    padding-right: 2.5rem !important;
+}
+
+/* Option styling for dark mode */
+select option,
+.admin-form-select option {
+    background: #1a1625 !important;
+    background-color: #1a1625 !important;
+    color: white !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 1rem !important;
+    border: none !important;
+}
+
+/* Selected and hover states for options */
+select option:checked,
+select option:hover,
+select option:focus,
+select option:active,
+.admin-form-select option:checked,
+.admin-form-select option:hover,
+.admin-form-select option:focus,
+.admin-form-select option:active {
+    background: rgb(209, 77, 114) !important;
+    background-color: rgb(209, 77, 114) !important;
+    color: white !important;
+}
+
+/* Focus states for dropdowns */
+select:focus,
+.admin-form-select:focus {
+    border-color: rgb(209, 77, 114) !important;
+    box-shadow: 0 0 0 3px rgba(209, 77, 114, 0.1) !important;
+    outline: none !important;
+    background: #1a1625 !important;
+}
+
+/* WebKit specific fixes for Chrome/Safari */
+select::-webkit-scrollbar {
+    width: 8px;
+}
+
+select::-webkit-scrollbar-track {
+    background: #1a1625;
+}
+
+select::-webkit-scrollbar-thumb {
+    background: rgb(209, 77, 114);
+    border-radius: 4px;
+}
+
+select::-webkit-scrollbar-thumb:hover {
+    background: rgb(255, 171, 171);
+}
+
+/* Firefox specific fixes */
+@-moz-document url-prefix() {
+    select {
+        background: #1a1625 !important;
+        color: white !important;
+        border: 1px solid rgba(255, 171, 171, 0.2) !important;
+    }
+    
+    select option {
+        background: #1a1625 !important;
+        color: white !important;
+    }
+    
+    select option:hover {
+        background: rgb(209, 77, 114) !important;
+        color: white !important;
+    }
+}
+
+/* Internet Explorer / Edge legacy fixes */
+select::-ms-expand {
+    display: none;
+}
+
+/* Ensure all dropdown variants are covered */
+.form-control,
+.form-select,
+select.form-control,
+select.form-select {
+    background: #1a1625 !important;
+    color: white !important;
+    border: 1px solid rgba(255, 171, 171, 0.2) !important;
+}
+
+/* High specificity rules to override any other styles */
+body select,
+body .admin-form-select,
+body select[class],
+body select[id] {
+    background: #1a1625 !important;
+    color: white !important;
+    border: 1px solid rgba(255, 171, 171, 0.2) !important;
+}
+
+body select option,
+body .admin-form-select option,
+body select[class] option,
+body select[id] option {
+    background: #1a1625 !important;
+    color: white !important;
+}
+
+/* Disabled state styling */
+select:disabled,
+.admin-form-select:disabled {
+    background: rgba(26, 22, 37, 0.5) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    cursor: not-allowed !important;
+    opacity: 0.6 !important;
+}
+
+/* Multi-select styling */
+select[multiple] {
+    background: #1a1625 !important;
+    color: white !important;
+    padding: 0.5rem !important;
+}
+
+select[multiple] option {
+    background: #1a1625 !important;
+    color: white !important;
+    padding: 0.25rem 0.5rem !important;
+}
+
+select[multiple] option:checked {
+    background: rgb(209, 77, 114) !important;
+    color: white !important;
+}
+
+/* Ensure dropdown works on mobile devices */
+@media (max-width: 768px) {
+    select,
+    .admin-form-select {
+        font-size: 16px !important; /* Prevents zoom on iOS */
+        background: #1a1625 !important;
+        color: white !important;
+    }
+    
+    select option,
+    .admin-form-select option {
+        background: #1a1625 !important;
+        color: white !important;
+        font-size: 16px !important;
+    }
+}
+
+/* Additional high-priority overrides */
+html select,
+html .admin-form-select {
+    background: #1a1625 !important;
+    color: white !important;
+}
+
+html select option,
+html .admin-form-select option {
+    background: #1a1625 !important;
+    color: white !important;
+}
+
+/* Bootstrap dropdown overrides if present */
+.dropdown-menu {
+    background: #1a1625 !important;
+    border: 1px solid rgba(255, 171, 171, 0.2) !important;
+}
+
+.dropdown-item {
+    color: white !important;
+    background: transparent !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background: rgb(209, 77, 114) !important;
+    color: white !important;
+}
+
+/* ASP.NET specific dropdown rendering fixes */
+select[name*="ddl"],
+select[id*="ddl"],
+select[class*="ddl"] {
+    background: #1a1625 !important;
+    color: white !important;
+    border: 1px solid rgba(255, 171, 171, 0.2) !important;
+}
+
+select[name*="ddl"] option,
+select[id*="ddl"] option,
+select[class*="ddl"] option {
+    background: #1a1625 !important;
+    color: white !important;
+}

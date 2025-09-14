@@ -15,6 +15,9 @@
 
     <!-- Admin Styles -->
     <link href="~/Content/adminstyles.css" rel="stylesheet" type="text/css" />
+    
+    <!-- Dropdown Dark Mode Fixes -->
+    <link href="~/Content/dropdown-dark.css" rel="stylesheet" type="text/css" />
 
     <!-- Small local styles for the new root button -->
     <style type="text/css">
@@ -41,6 +44,14 @@
             color: var(--color-primary);
             transform: translateY(-1px);
             outline: none;
+        }
+
+        /* Hide avatar and root button inside nav-actions on small screens to move them into mobile menu */
+        @media (max-width: 899px) {
+            .admin-nav-actions .admin-user-info,
+            .admin-nav-actions .admin-root-btn {
+                display: none;
+            }
         }
     </style>
 
@@ -134,41 +145,50 @@
                         </a>
 
                         <!-- Mobile Menu Toggle -->
-                        <button type="button" class="admin-mobile-menu-toggle" onclick="toggleMobileMenu()">
+                        <button type="button" class="admin-mobile-menu-toggle" onclick="toggleMobileMenu(event)" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
                             <i class="fas fa-bars"></i>
                         </button>
                     </div>
                 </div>
+            </div>
 
-                <!-- Mobile Menu -->
-                <div id="mobile-menu" class="admin-mobile-menu hidden">
-                    <div class="mobile-menu-content">
-                        <a href='<%=ResolveUrl("~/admin/") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageHome.aspx") %>">
-                            <i class="fas fa-home"></i>Dashboard
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/about") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageAbout.aspx") %>">
-                            <i class="fas fa-user"></i>About
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/projects") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageProjects.aspx") %>">
-                            <i class="fas fa-briefcase"></i>Projects
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/experience") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageExperiences.aspx") %>">
-                            <i class="fas fa-building"></i>Experience
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/skills") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageSkills.aspx") %>">
-                            <i class="fas fa-code"></i>Skills
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/timeline") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageTimeline.aspx") %>">
-                            <i class="fas fa-clock"></i>Timeline
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/blogs") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageBlogs.aspx") %>">
-                            <i class="fas fa-blog"></i>Blogs
-                        </a>
-                        <a href='<%=ResolveUrl("~/admin/contacts") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageContacts.aspx") %>">
-                            <i class="fas fa-envelope"></i>Contacts
-                        </a>
+            <!-- Mobile Menu (moved outside admin-navbar-content so it isn't clipped by overflow:hidden) -->
+            <div id="mobile-menu" class="admin-mobile-menu hidden" aria-hidden="true" role="menu">
+                <div class="mobile-menu-content">
+                    <a href='<%=ResolveUrl("~/admin/") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageHome.aspx") %>" role="menuitem">
+                        <i class="fas fa-home"></i>Dashboard
+                    </a>
+                    <a href='<%=ResolveUrl("~/admin/about") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageAbout.aspx") %>" role="menuitem">
+                        <i class="fas fa-user"></i>About
+                    </a>
+                    <a href='<%=ResolveUrl("~/admin/projects") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageProjects.aspx") %>" role="menuitem">
+                        <i class="fas fa-briefcase"></i>Projects
+                    </a>
+                    <a href='<%=ResolveUrl("~/admin/experience") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageExperiences.aspx") %>" role="menuitem">
+                        <i class="fas fa-building"></i>Experience
+                    </a>
+                    <a href='<%=ResolveUrl("~/admin/skills") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageSkills.aspx") %>" role="menuitem">
+                        <i class="fas fa-code"></i>Skills
+                    </a>
+                    <a href='<%=ResolveUrl("~/admin/timeline") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageTimeline.aspx") %>" role="menuitem">
+                        <i class="fas fa-clock"></i>Timeline
+                    </a>
+                    <a href='<%=ResolveUrl("~/admin/blogs") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageBlogs.aspx") %>" role="menuitem">
+                        <i class="fas fa-blog"></i>Blogs
+                    </a>
+                    <a href='<%=ResolveUrl("~/admin/contacts") %>' class="mobile-nav-link <%=GetNavActiveClass("ManageContacts.aspx") %>" role="menuitem">
+                        <i class="fas fa-envelope"></i>Contacts
+                    </a>
 
+                    <!-- Divider -->
+                    <div class="mobile-portfolio-link" style="margin-top:8px;">
+                        <!-- Add avatar and root site link inside mobile menu for smaller screens -->
+                        <div style="display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0;">
+                            <div class="admin-user-avatar" style="width:36px;height:36px;font-size:0.875rem;"> <%= GetUserInitials() %> </div>
+                            <a href='<%= ResolveUrl("~/") %>' class="admin-root-btn" title="View Site" aria-label="View Site" style="width:auto;height:36px;padding:0.5rem;"> <i class="fas fa-globe"></i> <span style="margin-left:8px;">View Site</span></a>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -242,10 +262,47 @@
             }
         }
 
+        // Fix dropdown styling for ASP.NET server controls
+        function fixDropdownStyling() {
+            // Get all select elements (including ASP.NET DropDownList)
+            const dropdowns = document.querySelectorAll('select, .admin-form-select');
+            
+            dropdowns.forEach(function(dropdown) {
+                // Force dark mode styling
+                dropdown.style.backgroundColor = '#1a1625';
+                dropdown.style.color = '#ffffff';
+                dropdown.style.border = '1px solid rgba(255, 171, 171, 0.2)';
+                
+                // Apply styling to all options
+                const options = dropdown.querySelectorAll('option');
+                options.forEach(function(option) {
+                    option.style.backgroundColor = '#1a1625';
+                    option.style.color = '#ffffff';
+                });
+                
+                // Add event listeners for hover effects
+                dropdown.addEventListener('focus', function() {
+                    this.style.borderColor = 'rgb(209, 77, 114)';
+                    this.style.boxShadow = '0 0 0 3px rgba(209, 77, 114, 0.1)';
+                });
+                
+                dropdown.addEventListener('blur', function() {
+                    this.style.borderColor = 'rgba(255, 171, 171, 0.2)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+        }
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function () {
             initVantaBackground();
+            fixDropdownStyling();
         });
+
+        // Also run after any postback (for ASP.NET WebForms)
+        function pageLoad() {
+            fixDropdownStyling();
+        }
 
         // Resize handler
         window.addEventListener('resize', function () {
@@ -255,7 +312,10 @@
         });
 
         // Toggle mobile menu
-        function toggleMobileMenu() {
+        function toggleMobileMenu(e) {
+            // Prevent click from bubbling to document and immediately closing the menu
+            if (e && e.stopPropagation) e.stopPropagation();
+
             const menu = document.getElementById('mobile-menu');
             const toggle = document.querySelector('.admin-mobile-menu-toggle');
 
@@ -264,12 +324,13 @@
 
                 // Update aria attributes
                 const isOpen = !menu.classList.contains('hidden');
-                toggle.setAttribute('aria-expanded', isOpen);
+                if (toggle) toggle.setAttribute('aria-expanded', isOpen);
                 menu.setAttribute('aria-hidden', !isOpen);
 
                 // Close on click outside
                 if (isOpen) {
-                    document.addEventListener('click', closeMobileMenuOnOutsideClick);
+                    // add listener on next event loop tick to avoid immediate close
+                    setTimeout(function() { document.addEventListener('click', closeMobileMenuOnOutsideClick); }, 0);
                 } else {
                     document.removeEventListener('click', closeMobileMenuOnOutsideClick);
                 }
@@ -280,6 +341,9 @@
             const menu = document.getElementById('mobile-menu');
             const toggle = document.querySelector('.admin-mobile-menu-toggle');
 
+            if (!menu || !toggle) return;
+
+            // If the click target is not inside the menu or the toggle, close it
             if (!menu.contains(e.target) && !toggle.contains(e.target)) {
                 menu.classList.add('hidden');
                 toggle.setAttribute('aria-expanded', 'false');
