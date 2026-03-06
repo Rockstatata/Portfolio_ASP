@@ -1,9 +1,10 @@
+import type { Metadata } from 'next';
 import AnimatedSection from '@/components/AnimatedSection';
 import SectionHeading from '@/components/SectionHeading';
 import SkillBar from '@/components/SkillBar';
 import { sampleAboutSections, sampleSkills, sampleExperiences } from '@/data/sampleData';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'About | Portfolio',
   description: 'Learn more about my background, skills, and professional experience.',
 };

@@ -1,10 +1,11 @@
+import type { Metadata } from 'next';
 import SectionHeading from '@/components/SectionHeading';
 import ContactForm from '@/components/ContactForm';
 import AnimatedSection from '@/components/AnimatedSection';
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa';
 import { FiMapPin, FiPhone } from 'react-icons/fi';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Contact | Portfolio',
   description: 'Get in touch with me for collaboration or inquiries.',
 };
