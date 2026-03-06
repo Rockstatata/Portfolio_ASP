@@ -64,8 +64,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-white prose-a:text-[#DC143C]">
               {/* Render content as simple paragraphs for now */}
-              {post.content.split('\n\n').map((paragraph) => (
-                <p key={paragraph.substring(0, 40)} className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+              {post.content.split('\n\n').map((paragraph, idx) => (
+                <p key={idx} className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                   {paragraph}
                 </p>
               ))}

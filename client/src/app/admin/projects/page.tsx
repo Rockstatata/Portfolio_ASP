@@ -64,7 +64,7 @@ export default function AdminProjectsPage() {
       toast.success('Project updated');
     } else {
       const newProject: Project = {
-        id: String(Date.now()),
+        id: crypto.randomUUID(),
         ...formData,
         demo_url: formData.demo_url || null,
         github_url: formData.github_url || null,

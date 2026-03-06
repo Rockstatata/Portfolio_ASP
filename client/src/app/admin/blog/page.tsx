@@ -55,7 +55,7 @@ export default function AdminBlogPage() {
       toast.success('Post updated');
     } else {
       const newPost: BlogPost = {
-        id: String(Date.now()),
+        id: crypto.randomUUID(),
         ...formData,
         slug: generateSlug(formData.title),
         read_time: Math.max(1, Math.ceil(formData.content.split(/\s+/).length / 200)),
