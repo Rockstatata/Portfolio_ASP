@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata minClientVersion="2.0">
+    <id>JetBrains.Platform.Core.IisExpress</id>
+    <version>233.0.20240606.111243</version>
+    <title>JetBrains Platform Core IisExpress Package Version 233.0.20240606.111243</title>
+    <authors>JetBrains</authors>
+    <owners>JetBrains</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">License\resharper_sdk_license.md</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <projectUrl>https://www.jetbrains.com/</projectUrl>
+    <description>JetBrains Platform Core IisExpress Package Version 233.0.20240606.111243</description>
+    <releaseNotes>##SpecStart{"ProductInfo":null,"Spec":null,"ZoningSpec":{"Activates":null,"Requires":[],"ZoneDefs":[]}}##SpecEnd</releaseNotes>
+    <copyright>JetBrains</copyright>
+    <dependencies>
+      <dependency id="JetBrains.Platform.Core.Shell" version="[233.0.20240606.110126, 233.1.0.0)" />
+      <dependency id="JetBrains.Platform.RdProtocol" version="[233.0.20240606.111243, 233.1.0.0)" />
+      <dependency id="Wave" version="[233.0.0.0]" />
+      <dependency id="JetBrains.Annotations" version="[2023.3.0]" />
+      <dependency id="JetBrains.Lifetimes" version="[2023.3.0]" />
+      <dependency id="JetBrains.RdFramework" version="[2023.3.0]" />
+      <dependency id="JetBrains.RdFramework.Reflection" version="[2023.3.0]" />
+      <dependency id="Newtonsoft.Json" version="[13.0.1]" />
+    </dependencies>
+  </metadata>
+</package>

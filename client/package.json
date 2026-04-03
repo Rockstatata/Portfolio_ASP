@@ -1,22 +1,41 @@
 {
-  "name": "portfolio-website",
-  "version": "1.0.0",
-  "description": "Personal portfolio website built with pure vanilla CSS",
-  "main": "index.html",
-  "scripts": {
-    "dev": "live-server --port=3000",
-    "start": "live-server --port=3000"
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0"
   },
-  "keywords": [
-    "portfolio",
-    "website",
-    "vanilla-css",
-    "html5",
-    "javascript"
-  ],
-  "author": "Sarwad Hasan Siddiqui",
-  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "db:check": "node scripts/seed-supabase.mjs --check",
+    "seed": "node scripts/seed-supabase.mjs",
+    "seed:force": "node scripts/seed-supabase.mjs --force"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.9.0",
+    "@supabase/supabase-js": "^2.101.1",
+    "date-fns": "^4.1.0",
+    "framer-motion": "^12.35.0",
+    "next": "^16.2.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-hot-toast": "^2.6.0",
+    "react-icons": "^5.6.0",
+    "react-markdown": "^10.1.0",
+    "rehype-highlight": "^7.0.2",
+    "remark-gfm": "^4.0.1"
+  },
   "devDependencies": {
-    "live-server": "^1.2.0"
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }

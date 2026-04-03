@@ -1,217 +1,111 @@
-# Portfolio Website - Pure Vanilla CSS
+﻿## Portfolio Next.js Client
 
-A modern, responsive portfolio website built entirely with vanilla HTML, CSS, and JavaScript. **No frameworks, no build processes, no dependencies!**
+This is the production frontend for the portfolio and admin panel.
 
-## ✨ Features
+## Requirements
 
-- **🚀 Zero Dependencies**: Pure vanilla CSS, HTML, and JavaScript
-- **📱 Fully Responsive**: Mobile-first design that works on all devices
-- **🎨 Easy Customization**: Simple CSS variables for color themes
-- **🌗 Dark Mode**: Built-in dark/light theme toggle
-- **⚡ Fast Loading**: No framework overhead, optimized performance
-- **🛠️ Deploy Anywhere**: Works on any web server without build tools
+- Node.js 20+
+- npm 10+
+- A Supabase project
 
-## 🎯 What We Accomplished
+## 1. Install Dependencies
 
-### ✅ Complete Tailwind CSS Removal
-- Converted all Tailwind utility classes to semantic vanilla CSS
-- Removed all Tailwind dependencies and configuration files
-- Created comprehensive vanilla CSS solution
-
-### ✅ Clean Architecture
-- Single CSS file: `css/complete-vanilla.css`
-- Semantic class names for maintainability
-- Well-organized code structure
-
-### ✅ Easy Color Customization
-All colors are controlled by CSS variables at the top of `complete-vanilla.css`:
-
-```css
-:root {
-  /* Primary Colors - Change these for instant theme updates */
-  --color-primary: #2563eb;
-  --color-primary-dark: #60a5fa;
-  --color-secondary: #9333ea;
-  --color-secondary-dark: #a78bfa;
-  
-  /* Background Colors */
-  --bg-primary: white;
-  --bg-primary-dark: #111827;
-  
-  /* Text Colors */
-  --text-primary: #111827;
-  --text-primary-dark: white;
-  
-  /* Accent Colors - Easy to customize */
-  --accent-blue: #2563eb;
-  --accent-green: #16a34a;
-  --accent-purple: #9333ea;
-  /* ...more colors */
-}
-```
-
-## 🎨 Quick Theme Changes
-
-### Purple Theme
-```css
-:root {
-  --color-primary: #8b5cf6;
-  --color-secondary: #06b6d4;
-}
-```
-
-### Green Theme
-```css
-:root {
-  --color-primary: #10b981;
-  --color-secondary: #f59e0b;
-}
-```
-
-### Red Theme
-```css
-:root {
-  --color-primary: #ef4444;
-  --color-secondary: #8b5cf6;
-}
-```
-
-## 🚀 Getting Started
-
-### Option 1: Simple Python Server
 ```bash
-cd /path/to/portfolio
-python3 -m http.server 8000
-# Visit http://localhost:8000
+npm install
 ```
 
-### Option 2: Live Server (if installed)
+## 2. Configure Environment Variables
+
+Create `.env.local` (or update `.env`) with these values:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your_supabase_publishable_key
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+ADMIN_PASSKEY=replace_with_a_long_random_passkey
+ADMIN_SESSION_SECRET=replace_with_a_minimum_32_char_random_secret
+ADMIN_SESSION_TTL_SECONDS=28800
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_NAME=Portfolio
+```
+
+Notes:
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` is the preferred frontend key.
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` is kept as a compatibility fallback.
+- `SUPABASE_SERVICE_ROLE_KEY` is required for server-side admin resource APIs and seed scripts.
+- `ADMIN_SESSION_SECRET` must be at least 32 characters.
+- `ADMIN_PASSKEY` must be at least 12 characters.
+
+## 3. Prepare Supabase Schema
+
+1. Open Supabase SQL Editor.
+2. Run `supabase/schema.sql`.
+3. In Supabase Dashboard go to Project Settings -> API.
+4. Ensure `public` is included in Exposed Schemas.
+5. Keep Row Level Security enabled on portfolio tables in production.
+
+If `public` is not exposed, all table requests fail with `PGRST205`.
+
+## 4. Validate DB Access + Seed Data
+
 ```bash
-npm install -g live-server
-cd /path/to/portfolio
-live-server --port=3000
+npm run db:check
+npm run seed
 ```
 
-### Option 3: Any Web Server
-Simply upload the files to any web hosting service - no build process needed!
+Optional reset seed (re-inserts seeded rows by known IDs):
 
-## 📁 Clean File Structure
-
-```
-portfolio/
-├── index.html                 # Main HTML file
-├── css/
-│   └── complete-vanilla.css   # Single CSS file with everything
-├── js/
-│   └── script.js             # JavaScript functionality
-├── assets/
-│   ├── fonts/                # Custom fonts
-│   ├── icons/                # Icon assets
-│   └── images/               # Image assets
-└── package.json              # Optional, for development server only
+```bash
+npm run seed:force
 ```
 
-## ✨ What's Included
+## 5. Run Locally
 
-### Responsive Sections
-- **Navbar**: Glassmorphism design with smooth animations
-- **Home**: Hero section with animated profile and social links
-- **About**: Bento grid layout showcasing skills and journey
-- **Timeline**: Educational and professional milestones
-- **Skills**: Technology stack visualization
-- **Projects**: Portfolio showcase
-- **Blog**: Article listings
-- **GitHub Stats**: Coding activity display
-- **Contact**: Get in touch section
-
-### Advanced Features
-- Smooth scroll navigation
-- Animated transitions
-- Glass morphism effects
-- Interactive hover states
-- Responsive design patterns
-- Accessibility-friendly markup
-- SEO optimized structure
-
-## 🛠️ Customization Guide
-
-### Adding New Colors
-1. Open `css/complete-vanilla.css`
-2. Add your color to the `:root` section:
-```css
-:root {
-  --my-custom-color: #your-color-here;
-}
-```
-3. Use it anywhere: `color: var(--my-custom-color);`
-
-### Adding New Sections
-1. Add HTML structure to `index.html`
-2. Create corresponding CSS classes in `complete-vanilla.css`
-3. Follow the existing naming convention
-
-### Modifying Responsive Breakpoints
-```css
-/* Tablet */
-@media (min-width: 768px) { /* Your styles */ }
-
-/* Desktop */
-@media (min-width: 1024px) { /* Your styles */ }
-
-/* Large Desktop */
-@media (min-width: 1280px) { /* Your styles */ }
+```bash
+npm run dev
 ```
 
-## 🎯 Benefits Achieved
+## Admin Access
 
-### ✅ No Build Process
-- Edit CSS and see changes instantly
-- No compilation or watching required
-- Direct deployment to any server
+- URL: `/admin`
+- Passkey: value from `ADMIN_PASSKEY`
 
-### ✅ Easy Maintenance
-- Semantic class names instead of utility classes
-- Clear code organization
-- No framework updates to worry about
+## Vercel Deployment Guide
 
-### ✅ Performance
-- Minimal CSS bundle
-- No framework overhead
-- Fast loading times
+1. Import repository into Vercel.
+2. Set Root Directory to `client`.
+3. Framework Preset: Next.js.
+4. Add Environment Variables in Vercel Project Settings:
+	 - `NEXT_PUBLIC_SUPABASE_URL`
+	 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY`
+	 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (optional fallback)
+	 - `SUPABASE_SERVICE_ROLE_KEY`
+	 - `ADMIN_PASSKEY`
+	 - `ADMIN_SESSION_SECRET`
+	 - `ADMIN_SESSION_TTL_SECONDS` (optional)
+	 - `NEXT_PUBLIC_SITE_URL` (your Vercel production URL)
+	 - `NEXT_PUBLIC_SITE_NAME`
+5. Deploy.
 
-### ✅ Flexibility
-- Easy to modify and extend
-- No framework constraints
-- Full control over styling
+After deploy, verify:
+- `/` loads home sections and portfolio data.
+- `/blog`, `/projects`, `/about`, `/contact` load data.
+- `/admin` accepts the configured passkey.
+- Admin CRUD pages can read/write data.
 
-## 🚀 Deployment
+## Troubleshooting
 
-### Static Hosting (Recommended)
-- **Netlify**: Drag and drop the folder
-- **Vercel**: Connect GitHub repository
-- **GitHub Pages**: Push to repository
-- **Firebase Hosting**: `firebase deploy`
+- `PGRST205 Could not find table ... in schema cache`
+	- Run `supabase/schema.sql` again.
+	- Ensure `public` is exposed in Supabase API settings.
+	- Confirm URL and keys belong to the same Supabase project.
 
-### Traditional Hosting
-- Upload files via FTP
-- Works on shared hosting
-- No server requirements
+- Admin pages load but writes fail
+	- Verify `SUPABASE_SERVICE_ROLE_KEY` is set in runtime environment.
+	- Confirm key role is `service_role` and belongs to the same project ref as `NEXT_PUBLIC_SUPABASE_URL`.
 
-## 📝 Development Notes
-
-- **No Node.js required** for production
-- **CSS Variables** used for easy theming
-- **Mobile-first** responsive design
-- **Semantic HTML** for accessibility
-- **Modern CSS** features (Grid, Flexbox, Custom Properties)
-
-## 🎉 Success!
-
-Your portfolio is now:
-- ✅ **Tailwind-free**
-- ✅ **Easy to customize**
-- ✅ **Quick to deploy**
-- ✅ **Fast loading**
-- ✅ **Maintainable**
-
-Ready to deploy anywhere without any build processes! 🚀
+- `/admin` always rejects passkey
+	- Confirm `ADMIN_PASSKEY` is set and at least 12 characters long.
+	- Confirm `ADMIN_SESSION_SECRET` is set and at least 32 characters long.
+	- Redeploy after updating env variables.
