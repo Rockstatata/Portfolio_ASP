@@ -1,91 +1,163 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { FiHome, FiFolder, FiFileText, FiMail, FiLogOut, FiMenu, FiX, FiBarChart2 } from 'react-icons/fi';
+import { usePathname, useRouter } from 'next/navigation';
+import {
+  FaBlog,
+  FaBriefcase,
+  FaChartLine,
+  FaClock,
+  FaCode,
+  FaEnvelope,
+  FaGlobe,
+  FaHome,
+  FaSignOutAlt,
+  FaUser,
+} from 'react-icons/fa';
+import { HiMenu, HiX } from 'react-icons/hi';
+import './admin.css';
 
 const adminLinks = [
-  { href: '/admin/dashboard', label: 'Dashboard', icon: FiHome },
-  { href: '/admin/projects', label: 'Projects', icon: FiFolder },
-  { href: '/admin/blog', label: 'Blog Posts', icon: FiFileText },
-  { href: '/admin/messages', label: 'Messages', icon: FiMail },
+  { href: '/admin', label: 'Dashboard', icon: FaHome },
+  { href: '/admin/about', label: 'About', icon: FaUser },
+  { href: '/admin/projects', label: 'Projects', icon: FaBriefcase },
+  { href: '/admin/experience', label: 'Experience', icon: FaBriefcase },
+  { href: '/admin/skills', label: 'Skills', icon: FaCode },
+  { href: '/admin/timeline', label: 'Timeline', icon: FaClock },
+  { href: '/admin/blogs', label: 'Blogs', icon: FaBlog },
+  { href: '/admin/contacts', label: 'Contacts', icon: FaEnvelope },
 ];
+
+function isActivePath(currentPath: string, href: string) {
+  if (href === '/admin') {
+    return currentPath === '/admin' || currentPath === '/admin/dashboard';
+  }
+
+  return currentPath === href || currentPath.startsWith(`${href}/`);
+}
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const router = useRouter();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  // Don't show admin layout for login page
-  if (pathname === '/admin/login') {
+  const initials = useMemo(() => 'AD', []);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldUseDark = storedTheme ? storedTheme === 'dark' : prefersDark;
+    document.documentElement.classList.toggle('dark', shouldUseDark);
+  }, []);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await fetch('/api/admin/session', { method: 'DELETE' });
+    } catch {
+      // noop
+    } finally {
+      setIsLoggingOut(false);
+      router.push('/admin');
+      router.refresh();
+    }
+  };
+
+  if (pathname === '/admin' || pathname === '/admin/login') {
     return <>{children}</>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-16">
-      {/* Mobile sidebar toggle */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="lg:hidden fixed top-20 left-4 z-50 p-2 bg-white dark:bg-gray-800 rounded-lg shadow-md"
-        aria-label="Toggle sidebar"
-      >
-        {sidebarOpen ? <FiX className="w-5 h-5" /> : <FiMenu className="w-5 h-5" />}
-      </button>
+    <div className="admin-root">
+      <div className="admin-navbar-container">
+        <div className="admin-navbar-content">
+          <div className="admin-navbar-flex">
+            <div className="admin-navbar-brand">
+              <Link
+                href="/admin"
+                className={`admin-brand-dashboard-link ${isActivePath(pathname, '/admin') ? 'nav-active' : ''}`}
+              >
+                <FaChartLine className="brand-icon" />
+                <span className="brand-dashboard-text">Dashboard</span>
+              </Link>
+            </div>
 
-      {/* Sidebar */}
-      <aside
-        className={`fixed left-0 top-16 bottom-0 w-64 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 z-40 transform transition-transform lg:translate-x-0 ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
-        <div className="p-6">
-          <div className="flex items-center gap-2 mb-8">
-            <FiBarChart2 className="w-6 h-6 text-[#DC143C]" />
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">Admin Panel</h2>
+            <div className="admin-desktop-nav">
+              {adminLinks.slice(1).map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`admin-nav-link ${isActivePath(pathname, link.href) ? 'nav-active' : ''}`}
+                >
+                  <link.icon />
+                  <span>{link.label}</span>
+                </Link>
+              ))}
+            </div>
+
+            <div className="admin-nav-actions">
+              <div className="admin-user-avatar">{initials}</div>
+              <Link className="admin-root-btn" href="/" title="View Site" aria-label="View Site">
+                <FaGlobe />
+              </Link>
+              <button
+                type="button"
+                className="admin-logout-btn"
+                title="Logout"
+                aria-label="Logout"
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+              >
+                <FaSignOutAlt />
+              </button>
+              <button
+                type="button"
+                className="admin-mobile-menu-toggle"
+                aria-label="Toggle admin navigation"
+                onClick={() => setMobileMenuOpen((prev) => !prev)}
+              >
+                {mobileMenuOpen ? <HiX /> : <HiMenu />}
+              </button>
+            </div>
           </div>
+        </div>
 
-          <nav className="space-y-1">
+        <div className={`admin-mobile-menu ${mobileMenuOpen ? '' : 'hidden'}`}>
+          <div className="mobile-menu-content">
             {adminLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={() => setSidebarOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                  pathname === link.href
-                    ? 'bg-red-50 dark:bg-red-900/20 text-[#DC143C]'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                }`}
+                className={`mobile-nav-link ${isActivePath(pathname, link.href) ? 'nav-active' : ''}`}
               >
-                <link.icon className="w-5 h-5" />
-                {link.label}
+                <link.icon />
+                <span>{link.label}</span>
               </Link>
             ))}
-          </nav>
+          </div>
         </div>
+      </div>
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-200 dark:border-gray-800">
-          <Link
-            href="/"
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          >
-            <FiLogOut className="w-5 h-5" />
-            Back to Site
-          </Link>
-        </div>
-      </aside>
-
-      {/* Overlay */}
-      {sidebarOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-30"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Main content */}
-      <main className="lg:ml-64 p-6 lg:p-8">
-        {children}
+      <main className="admin-main-content">
+        <div className="admin-container">{children}</div>
       </main>
+
+      <footer className="admin-footer">
+        <div className="admin-container">
+          <div className="admin-footer-content">
+            <div>
+              <FaChartLine className="brand-icon" /> Portfolio Admin
+            </div>
+            <p>Consistent with the ASP.NET admin panel design.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

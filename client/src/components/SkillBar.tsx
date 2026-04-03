@@ -18,17 +18,16 @@ export default function SkillBar({ skill, index }: SkillBarProps) {
       className="space-y-2"
     >
       <div className="flex justify-between items-center">
-        <span className="text-sm font-medium text-gray-900 dark:text-white">{skill.skill_name}</span>
-        <span className="text-xs text-gray-500 dark:text-gray-400">{skill.proficiency}%</span>
+        <span className="text-sm font-medium app-heading">{skill.skill_name}</span>
+        <span className="text-xs app-muted">{skill.proficiency}%</span>
       </div>
-      <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+      <div className="h-2 app-progress-track rounded-full overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${skill.proficiency}%` }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: index * 0.05 + 0.2, ease: 'easeOut' }}
-          className="h-full rounded-full"
-          style={{ backgroundColor: '#DC143C' }}
+          className="h-full rounded-full app-progress-fill"
         />
       </div>
     </motion.div>

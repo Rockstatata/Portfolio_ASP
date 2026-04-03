@@ -16,15 +16,15 @@ export default function SectionHeading({ title, subtitle }: SectionHeadingProps)
       transition={{ duration: 0.5 }}
       className="text-center mb-12"
     >
-      <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white">
+      <h2 className="text-3xl sm:text-4xl font-bold app-heading">
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-3 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        <p className="mt-3 text-lg app-muted max-w-2xl mx-auto">
           {subtitle}
         </p>
       )}
-      <div className="mt-4 mx-auto w-20 h-1 rounded-full" style={{ backgroundColor: '#DC143C' }} />
+      <div className="mt-4 mx-auto w-20 h-1 rounded-full app-accent-bg" />
     </motion.div>
   );
 }

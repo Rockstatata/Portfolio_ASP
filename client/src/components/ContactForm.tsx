@@ -1,9 +1,10 @@
-'use client';
+﻿'use client';
 
 import { useState, type FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { FiSend, FiUser, FiMail, FiMessageSquare } from 'react-icons/fi';
+import { createContact } from '@/lib/database';
 
 export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -16,7 +17,7 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.email || !formData.message) {
       toast.error('Please fill in all required fields');
       return;
@@ -24,9 +25,13 @@ export default function ContactForm() {
 
     setIsSubmitting(true);
     try {
-      // In production, this would call the Supabase API
-      // For now, simulate a submission
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await createContact({
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        subject: formData.subject.trim(),
+        message: formData.message.trim(),
+      });
+
       toast.success('Message sent successfully!');
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch {
@@ -47,7 +52,7 @@ export default function ContactForm() {
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium app-heading mb-2">
             <FiUser className="inline w-4 h-4 mr-1" />
             Name *
           </label>
@@ -56,12 +61,12 @@ export default function ContactForm() {
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             required
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#DC143C] focus:border-transparent outline-none transition-all"
+            className="app-input px-4 py-3 rounded-lg"
             placeholder="Your name"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium app-heading mb-2">
             <FiMail className="inline w-4 h-4 mr-1" />
             Email *
           </label>
@@ -70,27 +75,27 @@ export default function ContactForm() {
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             required
-            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#DC143C] focus:border-transparent outline-none transition-all"
+            className="app-input px-4 py-3 rounded-lg"
             placeholder="your@email.com"
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium app-heading mb-2">
           Subject
         </label>
         <input
           type="text"
           value={formData.subject}
           onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#DC143C] focus:border-transparent outline-none transition-all"
+          className="app-input px-4 py-3 rounded-lg"
           placeholder="What's this about?"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+        <label className="block text-sm font-medium app-heading mb-2">
           <FiMessageSquare className="inline w-4 h-4 mr-1" />
           Message *
         </label>
@@ -99,7 +104,7 @@ export default function ContactForm() {
           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
           required
           rows={5}
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#DC143C] focus:border-transparent outline-none transition-all resize-none"
+          className="app-input px-4 py-3 rounded-lg resize-none"
           placeholder="Your message..."
         />
       </div>
@@ -107,8 +112,7 @@ export default function ContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="inline-flex items-center gap-2 px-8 py-3 text-white font-medium rounded-full transition-all hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-        style={{ backgroundColor: '#DC143C' }}
+        className="app-btn-primary inline-flex items-center gap-2 px-8 py-3 font-medium rounded-full hover:shadow-lg hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
       >
         {isSubmitting ? (
           <>

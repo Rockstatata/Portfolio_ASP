@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import ScrollToTop from '@/components/ScrollToTop';
+import AppShell from '@/components/AppShell';
 import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
@@ -18,15 +16,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="bg-white dark:bg-gray-950 text-gray-900 dark:text-white antialiased">
-        <Navbar />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        <ScrollToTop />
+      <body className="antialiased">
+        <AppShell>{children}</AppShell>
         <Toaster
           position="bottom-right"
           toastOptions={{
-            className: 'dark:bg-gray-800 dark:text-white',
+            className: 'border border-[var(--app-border)] bg-[var(--app-bg-elevated)] text-[var(--app-text)]',
             duration: 4000,
           }}
         />

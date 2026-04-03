@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Reference Include="JetBrains.Platform.RdFramework.Actions">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(MSBuildThisFileDirectory)..\..\DotFiles\JetBrains.Platform.RdFramework.Actions.dll</HintPath>
+      <Private>$(JetReferencesPrivate)</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.RdFramework.Shell">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(MSBuildThisFileDirectory)..\..\DotFiles\JetBrains.Platform.RdFramework.Shell.dll</HintPath>
+      <Private>$(JetReferencesPrivate)</Private>
+    </Reference>
+    <Reference Include="JetBrains.Platform.RdProtocol">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(MSBuildThisFileDirectory)..\..\DotFiles\JetBrains.Platform.RdProtocol.dll</HintPath>
+      <Private>$(JetReferencesPrivate)</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

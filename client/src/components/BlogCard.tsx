@@ -21,22 +21,24 @@ export default function BlogCard({ post, index }: BlogCardProps) {
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
       whileHover={{ y: -4 }}
-      className="group bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:shadow-xl transition-shadow duration-300"
+      className="group app-surface p-6 hover:shadow-xl transition-shadow duration-300"
     >
-      <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-        <time dateTime={post.published_at}>{formatDate(post.published_at)}</time>
+      <div className="app-muted flex items-center gap-3 text-sm">
+        <time dateTime={post.published_at ?? ''}>
+          {post.published_at ? formatDate(post.published_at) : 'Unpublished'}
+        </time>
         <span className="flex items-center gap-1">
           <FiClock className="w-3.5 h-3.5" />
           {post.read_time} min read
         </span>
       </div>
 
-      <h3 className="mt-3 text-xl font-semibold text-gray-900 dark:text-white group-hover:text-[#DC143C] transition-colors">
+      <h3 className="mt-3 text-xl font-semibold app-heading group-hover:text-(--app-accent) transition-colors">
         <Link href={`/blog/${post.slug}`}>{post.title}</Link>
       </h3>
 
-      <p className="mt-2 text-gray-600 dark:text-gray-400 text-sm line-clamp-3">
-        {post.excerpt}
+      <p className="mt-2 app-muted text-sm line-clamp-3">
+        {post.excerpt ?? ''}
       </p>
 
       {/* Tags */}
@@ -44,7 +46,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
         {tags.map((tag) => (
           <span
             key={tag}
-            className="px-2.5 py-0.5 text-xs font-medium rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+            className="app-chip-neutral px-2.5 py-0.5 text-xs font-medium rounded-full"
           >
             {tag}
           </span>
@@ -53,7 +55,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
 
       <Link
         href={`/blog/${post.slug}`}
-        className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-[#DC143C] hover:underline"
+        className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium app-accent hover:underline"
       >
         Read more
         <FiArrowRight className="w-3.5 h-3.5" />

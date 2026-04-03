@@ -1,7 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  --color-primary: #DC143C;
+  --color-primary: #dc143c;
+  --app-accent: #dc143c;
+  --app-accent-soft: rgba(220, 20, 60, 0.12);
+  --app-bg: #f6f4f9;
+  --app-bg-elevated: #ffffff;
+  --app-bg-soft: #f0edf6;
+  --app-text: #1a1625;
+  --app-text-muted: #625b74;
+  --app-border: rgba(26, 22, 37, 0.12);
+  --app-shadow: 0 10px 30px rgba(26, 22, 37, 0.08);
+  --app-ring: rgba(220, 20, 60, 0.24);
+  color-scheme: light;
+}
+
+html.dark {
+  --app-accent: #ff5a7b;
+  --app-accent-soft: rgba(255, 90, 123, 0.2);
+  --app-bg: #14121c;
+  --app-bg-elevated: #1d1a29;
+  --app-bg-soft: #272235;
+  --app-text: #f4f2ff;
+  --app-text-muted: #c8bfd9;
+  --app-border: rgba(244, 242, 255, 0.14);
+  --app-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  --app-ring: rgba(255, 90, 123, 0.35);
+  color-scheme: dark;
 }
 
 html {
@@ -10,6 +35,145 @@ html {
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--app-bg);
+  color: var(--app-text);
+  transition: background-color 0.24s ease, color 0.24s ease;
+}
+
+.app-shell {
+  background-color: var(--app-bg);
+  color: var(--app-text);
+  min-height: 100vh;
+}
+
+.app-nav-shell {
+  background: color-mix(in srgb, var(--app-bg-elevated) 85%, transparent);
+  border-bottom: 1px solid var(--app-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.app-footer-shell {
+  background: color-mix(in srgb, var(--app-bg-elevated) 92%, transparent);
+  border-top: 1px solid var(--app-border);
+}
+
+.app-surface {
+  background: var(--app-bg-elevated);
+  border: 1px solid var(--app-border);
+  border-radius: 0.75rem;
+  box-shadow: var(--app-shadow);
+}
+
+.app-surface-soft {
+  background: var(--app-bg-soft);
+}
+
+.app-heading {
+  color: var(--app-text);
+}
+
+.app-muted {
+  color: var(--app-text-muted);
+}
+
+.app-accent {
+  color: var(--app-accent);
+}
+
+.app-accent-bg {
+  background-color: var(--app-accent);
+}
+
+.app-link {
+  color: var(--app-text-muted);
+  transition: color 0.2s ease;
+}
+
+.app-link:hover {
+  color: var(--app-accent);
+}
+
+.app-chip {
+  background: var(--app-accent-soft);
+  color: var(--app-accent);
+}
+
+.app-chip-neutral {
+  background: var(--app-bg-soft);
+  color: var(--app-text-muted);
+}
+
+.app-input {
+  width: 100%;
+  border: 1px solid var(--app-border);
+  background: var(--app-bg-elevated);
+  color: var(--app-text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.app-input::placeholder {
+  color: color-mix(in srgb, var(--app-text-muted) 85%, transparent);
+}
+
+.app-input:focus {
+  outline: none;
+  border-color: var(--app-accent);
+  box-shadow: 0 0 0 3px var(--app-ring);
+}
+
+.app-btn-primary {
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--app-accent), #f24b6d);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.app-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(220, 20, 60, 0.28);
+}
+
+.app-btn-secondary {
+  border: 1px solid var(--app-border);
+  background: transparent;
+  color: var(--app-text);
+}
+
+.app-filter-btn {
+  color: var(--app-text-muted);
+  background: var(--app-bg-soft);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.app-filter-btn:hover {
+  border-color: var(--app-border);
+}
+
+.app-filter-btn.is-active {
+  color: #fff;
+  background: var(--app-accent);
+  box-shadow: 0 10px 24px rgba(220, 20, 60, 0.28);
+}
+
+.app-icon-button {
+  color: var(--app-text-muted);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.app-icon-button:hover {
+  color: var(--app-accent);
+  border-color: var(--app-border);
+  background: var(--app-bg-soft);
+}
+
+.app-progress-track {
+  background: color-mix(in srgb, var(--app-border) 88%, transparent);
+}
+
+.app-progress-fill {
+  background: var(--app-accent);
 }
 
 /* Scrollbar styling */
@@ -22,12 +186,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #a0a0a0;
+  background: color-mix(in srgb, var(--app-text-muted) 45%, transparent);
   border-radius: 4px;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #4a4a4a;
+  background: color-mix(in srgb, var(--app-text-muted) 55%, transparent);
 }
 
 /* Line clamp utility */

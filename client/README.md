@@ -1,36 +1,111 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+﻿## Portfolio Next.js Client
 
-## Getting Started
+This is the production frontend for the portfolio and admin panel.
 
-First, run the development server:
+## Requirements
+
+- Node.js 20+
+- npm 10+
+- A Supabase project
+
+## 1. Install Dependencies
+
+```bash
+npm install
+```
+
+## 2. Configure Environment Variables
+
+Create `.env.local` (or update `.env`) with these values:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your_supabase_publishable_key
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+ADMIN_PASSKEY=replace_with_a_long_random_passkey
+ADMIN_SESSION_SECRET=replace_with_a_minimum_32_char_random_secret
+ADMIN_SESSION_TTL_SECONDS=28800
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_NAME=Portfolio
+```
+
+Notes:
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` is the preferred frontend key.
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` is kept as a compatibility fallback.
+- `SUPABASE_SERVICE_ROLE_KEY` is required for server-side admin resource APIs and seed scripts.
+- `ADMIN_SESSION_SECRET` must be at least 32 characters.
+- `ADMIN_PASSKEY` must be at least 12 characters.
+
+## 3. Prepare Supabase Schema
+
+1. Open Supabase SQL Editor.
+2. Run `supabase/schema.sql`.
+3. In Supabase Dashboard go to Project Settings -> API.
+4. Ensure `public` is included in Exposed Schemas.
+5. Keep Row Level Security enabled on portfolio tables in production.
+
+If `public` is not exposed, all table requests fail with `PGRST205`.
+
+## 4. Validate DB Access + Seed Data
+
+```bash
+npm run db:check
+npm run seed
+```
+
+Optional reset seed (re-inserts seeded rows by known IDs):
+
+```bash
+npm run seed:force
+```
+
+## 5. Run Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Admin Access
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- URL: `/admin`
+- Passkey: value from `ADMIN_PASSKEY`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Vercel Deployment Guide
 
-## Learn More
+1. Import repository into Vercel.
+2. Set Root Directory to `client`.
+3. Framework Preset: Next.js.
+4. Add Environment Variables in Vercel Project Settings:
+	 - `NEXT_PUBLIC_SUPABASE_URL`
+	 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY`
+	 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (optional fallback)
+	 - `SUPABASE_SERVICE_ROLE_KEY`
+	 - `ADMIN_PASSKEY`
+	 - `ADMIN_SESSION_SECRET`
+	 - `ADMIN_SESSION_TTL_SECONDS` (optional)
+	 - `NEXT_PUBLIC_SITE_URL` (your Vercel production URL)
+	 - `NEXT_PUBLIC_SITE_NAME`
+5. Deploy.
 
-To learn more about Next.js, take a look at the following resources:
+After deploy, verify:
+- `/` loads home sections and portfolio data.
+- `/blog`, `/projects`, `/about`, `/contact` load data.
+- `/admin` accepts the configured passkey.
+- Admin CRUD pages can read/write data.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Troubleshooting
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `PGRST205 Could not find table ... in schema cache`
+	- Run `supabase/schema.sql` again.
+	- Ensure `public` is exposed in Supabase API settings.
+	- Confirm URL and keys belong to the same Supabase project.
 
-## Deploy on Vercel
+- Admin pages load but writes fail
+	- Verify `SUPABASE_SERVICE_ROLE_KEY` is set in runtime environment.
+	- Confirm key role is `service_role` and belongs to the same project ref as `NEXT_PUBLIC_SUPABASE_URL`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `/admin` always rejects passkey
+	- Confirm `ADMIN_PASSKEY` is set and at least 12 characters long.
+	- Confirm `ADMIN_SESSION_SECRET` is set and at least 32 characters long.
+	- Redeploy after updating env variables.

@@ -20,18 +20,18 @@ export default function TimelineCard({ item, index }: TimelineCardProps) {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
-        className="flex-1 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow"
+        className="flex-1 app-surface p-6 hover:shadow-lg transition-shadow"
       >
-        <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: '#DC143C' }}>
+        <span className="text-xs font-semibold uppercase tracking-wider app-accent">
           {item.year_range}
         </span>
-        <h3 className="mt-2 text-lg font-semibold text-gray-900 dark:text-white">{item.title}</h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400">{item.location}</p>
-        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{item.description}</p>
+        <h3 className="mt-2 text-lg font-semibold app-heading">{item.title}</h3>
+        <p className="text-sm app-muted">{item.location}</p>
+        <p className="mt-2 text-sm app-muted">{item.description}</p>
       </motion.div>
 
       {/* Center dot */}
-      <div className="hidden md:flex flex-shrink-0 w-10 h-10 rounded-full items-center justify-center text-white" style={{ backgroundColor: '#DC143C' }}>
+      <div className="hidden md:flex shrink-0 w-10 h-10 rounded-full items-center justify-center text-white app-accent-bg">
         <Icon className="w-4 h-4" />
       </div>
 

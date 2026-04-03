@@ -1,12 +1,6 @@
-import Link from 'next/link';
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa';
-
-const socialLinks = [
-  { icon: FaGithub, href: 'https://github.com', label: 'GitHub' },
-  { icon: FaLinkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-  { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter' },
-  { icon: FaEnvelope, href: 'mailto:hello@example.com', label: 'Email' },
-];
+﻿import Link from 'next/link';
+import { getSocialLinks } from '@/lib/database';
+import { getSocialIcon } from '@/lib/socialIcons';
 
 const footerLinks = [
   { href: '/', label: 'Home' },
@@ -16,24 +10,24 @@ const footerLinks = [
   { href: '/contact', label: 'Contact' },
 ];
 
-export default function Footer() {
+export default async function Footer() {
+  const socialLinks = await getSocialLinks().catch(() => []);
+
   return (
-    <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+    <footer className="app-footer-shell">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Brand */}
           <div>
-            <Link href="/" className="text-xl font-bold" style={{ color: '#DC143C' }}>
+            <Link href="/" className="text-xl font-bold app-accent">
               Portfolio
             </Link>
-            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Building modern web experiences with passion and precision.
+            <p className="mt-2 text-sm app-muted">
+              Content and links are managed directly from the admin panel.
             </p>
           </div>
 
-          {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
+            <h3 className="text-sm font-semibold app-heading uppercase tracking-wider">
               Quick Links
             </h3>
             <ul className="mt-4 space-y-2">
@@ -41,7 +35,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-gray-600 dark:text-gray-400 hover:text-[#DC143C] transition-colors"
+                    className="text-sm app-link transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -50,30 +44,35 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Social */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
+            <h3 className="text-sm font-semibold app-heading uppercase tracking-wider">
               Connect
             </h3>
             <div className="mt-4 flex gap-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-500 hover:text-[#DC143C] transition-colors"
-                  aria-label={social.label}
-                >
-                  <social.icon className="w-5 h-5" />
-                </a>
-              ))}
+              {socialLinks.length === 0 && (
+                <span className="text-sm app-muted">No social links configured.</span>
+              )}
+              {socialLinks.map((social) => {
+                const Icon = getSocialIcon(social.icon_class);
+                return (
+                  <a
+                    key={social.id}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="app-link transition-colors"
+                    aria-label={social.platform}
+                  >
+                    <Icon className="w-5 h-5" />
+                  </a>
+                );
+              })}
             </div>
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800 text-center">
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+        <div className="mt-8 pt-8 border-t text-center" style={{ borderColor: 'var(--app-border)' }}>
+          <p className="text-sm app-muted">
             &copy; {new Date().getFullYear()} Portfolio. All rights reserved.
           </p>
         </div>

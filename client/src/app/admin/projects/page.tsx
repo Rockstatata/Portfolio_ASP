@@ -1,273 +1,361 @@
-'use client';
+﻿'use client';
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import toast from 'react-hot-toast';
-import { FiPlus, FiEdit2, FiTrash2, FiX } from 'react-icons/fi';
-import { sampleProjects } from '@/data/sampleData';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FaEdit, FaSave, FaTrash } from 'react-icons/fa';
 import type { Project } from '@/types';
+import {
+  createAdminResource,
+  deleteAdminResource,
+  fetchAdminResource,
+  updateAdminResource,
+} from '@/lib/adminResourceClient';
+
+type ProjectForm = {
+  title: string;
+  description: string;
+  technologies: string;
+  demo_url: string;
+  github_url: string;
+  status: string;
+  project_year: number;
+  image_url: string;
+  display_order: number;
+};
+
+const defaultForm: ProjectForm = {
+  title: '',
+  description: '',
+  technologies: '',
+  demo_url: '',
+  github_url: '',
+  status: 'active',
+  project_year: new Date().getFullYear(),
+  image_url: '',
+  display_order: 0,
+};
 
 export default function AdminProjectsPage() {
-  const [projects, setProjects] = useState(sampleProjects);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProject, setEditingProject] = useState<Project | null>(null);
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    technologies: '',
-    demo_url: '',
-    github_url: '',
-    status: 'active',
-    project_year: new Date().getFullYear(),
-  });
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [formData, setFormData] = useState<ProjectForm>(defaultForm);
+  const [error, setError] = useState('');
 
-  const openCreateModal = () => {
-    setEditingProject(null);
-    setFormData({
-      title: '',
-      description: '',
-      technologies: '',
-      demo_url: '',
-      github_url: '',
-      status: 'active',
-      project_year: new Date().getFullYear(),
-    });
-    setIsModalOpen(true);
+  const formTitle = useMemo(
+    () => (editingId ? 'Edit Project' : 'Add New Project'),
+    [editingId],
+  );
+
+  const loadProjects = useCallback(async () => {
+    setError('');
+    try {
+      const data = await fetchAdminResource<Project>('projects');
+      setProjects(data);
+    } catch (loadError) {
+      setError(loadError instanceof Error ? loadError.message : 'Failed to load projects.');
+    }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void loadProjects();
+  }, [loadProjects]);
+
+  const resetForm = () => {
+    setEditingId(null);
+    setFormData(defaultForm);
   };
 
-  const openEditModal = (project: Project) => {
-    setEditingProject(project);
+  const startEdit = (project: Project) => {
+    setEditingId(project.id);
     setFormData({
       title: project.title,
       description: project.description,
       technologies: project.technologies,
-      demo_url: project.demo_url || '',
-      github_url: project.github_url || '',
+      demo_url: project.demo_url ?? '',
+      github_url: project.github_url ?? '',
       status: project.status,
       project_year: project.project_year,
+      image_url: project.image_url ?? '',
+      display_order: project.display_order,
     });
-    setIsModalOpen(true);
   };
 
-  const handleSave = () => {
-    if (!formData.title || !formData.description) {
-      toast.error('Title and description are required');
+  const handleSave = async () => {
+    if (!formData.title.trim() || !formData.description.trim()) {
+      setError('Title and description are required.');
       return;
     }
 
-    if (editingProject) {
-      setProjects(projects.map((p) =>
-        p.id === editingProject.id
-          ? { ...p, ...formData, demo_url: formData.demo_url || null, github_url: formData.github_url || null, updated_at: new Date().toISOString() }
-          : p
-      ));
-      toast.success('Project updated');
-    } else {
-      const newProject: Project = {
-        id: crypto.randomUUID(),
-        ...formData,
-        demo_url: formData.demo_url || null,
-        github_url: formData.github_url || null,
-        image_url: '/images/project-placeholder.svg',
-        display_order: projects.length + 1,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-      setProjects([...projects, newProject]);
-      toast.success('Project created');
+    setError('');
+    const payload = {
+      title: formData.title.trim(),
+      description: formData.description.trim(),
+      technologies: formData.technologies.trim(),
+      demo_url: formData.demo_url.trim() || null,
+      github_url: formData.github_url.trim() || null,
+      status: formData.status,
+      project_year: formData.project_year,
+      image_url: formData.image_url.trim() || null,
+      display_order: formData.display_order,
+      updated_at: new Date().toISOString(),
+    };
+
+    try {
+      if (editingId) {
+        await updateAdminResource<Project>('projects', editingId, payload);
+      } else {
+        await createAdminResource<Project>('projects', payload);
+      }
+
+      resetForm();
+      await loadProjects();
+    } catch (saveError) {
+      setError(saveError instanceof Error ? saveError.message : 'Failed to save project.');
     }
-    setIsModalOpen(false);
   };
 
-  const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this project?')) {
-      setProjects(projects.filter((p) => p.id !== id));
-      toast.success('Project deleted');
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this project?')) {
+      return;
+    }
+
+    try {
+      await deleteAdminResource('projects', id);
+      if (editingId === id) {
+        resetForm();
+      }
+      await loadProjects();
+    } catch (deleteError) {
+      setError(deleteError instanceof Error ? deleteError.message : 'Failed to delete project.');
     }
   };
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Projects</h1>
-        <button
-          onClick={openCreateModal}
-          className="inline-flex items-center gap-2 px-4 py-2 text-white text-sm font-medium rounded-lg transition-all hover:shadow-lg"
-          style={{ backgroundColor: '#DC143C' }}
-        >
-          <FiPlus className="w-4 h-4" />
-          Add Project
-        </button>
-      </div>
+    <>
+      <section className="admin-card">
+        <div className="admin-card-header">
+          <div>
+            <h1 className="admin-card-title">{formTitle}</h1>
+            <p className="admin-card-subtitle">Create and manage your portfolio projects.</p>
+          </div>
+          <div className="admin-stat-icon">
+            <FaSave />
+          </div>
+        </div>
 
-      {/* Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 dark:bg-gray-900">
+        <div className="admin-form-grid">
+          <div className="admin-form-group">
+            <label className="admin-form-label">Project Title *</label>
+            <input
+              className="admin-form-input"
+              value={formData.title}
+              onChange={(event) =>
+                setFormData((currentForm) => ({ ...currentForm, title: event.target.value }))
+              }
+              placeholder="Enter project title"
+            />
+          </div>
+
+          <div className="admin-form-group">
+            <label className="admin-form-label">Project Year</label>
+            <input
+              className="admin-form-input"
+              type="number"
+              value={formData.project_year}
+              onChange={(event) =>
+                setFormData((currentForm) => ({
+                  ...currentForm,
+                  project_year: Number(event.target.value) || new Date().getFullYear(),
+                }))
+              }
+            />
+          </div>
+
+          <div className="admin-form-group full-width">
+            <label className="admin-form-label">Description *</label>
+            <textarea
+              className="admin-form-textarea"
+              rows={4}
+              value={formData.description}
+              onChange={(event) =>
+                setFormData((currentForm) => ({ ...currentForm, description: event.target.value }))
+              }
+              placeholder="Describe your project"
+            />
+          </div>
+
+          <div className="admin-form-group">
+            <label className="admin-form-label">Technologies</label>
+            <input
+              className="admin-form-input"
+              value={formData.technologies}
+              onChange={(event) =>
+                setFormData((currentForm) => ({ ...currentForm, technologies: event.target.value }))
+              }
+              placeholder="React, Next.js, PostgreSQL"
+            />
+          </div>
+
+          <div className="admin-form-group">
+            <label className="admin-form-label">Status</label>
+            <select
+              className="admin-form-select"
+              value={formData.status}
+              onChange={(event) =>
+                setFormData((currentForm) => ({ ...currentForm, status: event.target.value }))
+              }
+            >
+              <option value="active">Active</option>
+              <option value="archived">Archived</option>
+              <option value="draft">Draft</option>
+            </select>
+          </div>
+
+          <div className="admin-form-group">
+            <label className="admin-form-label">Demo Link</label>
+            <input
+              className="admin-form-input"
+              value={formData.demo_url}
+              onChange={(event) =>
+                setFormData((currentForm) => ({ ...currentForm, demo_url: event.target.value }))
+              }
+              placeholder="https://demo.example.com"
+            />
+          </div>
+
+          <div className="admin-form-group">
+            <label className="admin-form-label">Source Code Link</label>
+            <input
+              className="admin-form-input"
+              value={formData.github_url}
+              onChange={(event) =>
+                setFormData((currentForm) => ({ ...currentForm, github_url: event.target.value }))
+              }
+              placeholder="https://github.com/user/repo"
+            />
+          </div>
+
+          <div className="admin-form-group">
+            <label className="admin-form-label">Image Path</label>
+            <input
+              className="admin-form-input"
+              value={formData.image_url}
+              onChange={(event) =>
+                setFormData((currentForm) => ({ ...currentForm, image_url: event.target.value }))
+              }
+              placeholder="/images/projects/project.jpg"
+            />
+          </div>
+
+          <div className="admin-form-group">
+            <label className="admin-form-label">Display Order</label>
+            <input
+              className="admin-form-input"
+              type="number"
+              value={formData.display_order}
+              onChange={(event) =>
+                setFormData((currentForm) => ({
+                  ...currentForm,
+                  display_order: Number(event.target.value) || 0,
+                }))
+              }
+            />
+          </div>
+        </div>
+
+        <div className="admin-form-actions">
+          <button className="admin-btn admin-btn-primary" type="button" onClick={handleSave}>
+            <FaSave />
+            {editingId ? 'Save Project' : 'Create Project'}
+          </button>
+          <button className="admin-btn admin-btn-secondary" type="button" onClick={resetForm}>
+            Cancel
+          </button>
+          {editingId && (
+            <button className="admin-btn admin-btn-danger" type="button" onClick={() => handleDelete(editingId)}>
+              <FaTrash />
+              Delete
+            </button>
+          )}
+        </div>
+
+        {error && <p className="error-message">{error}</p>}
+      </section>
+
+      <section className="admin-card">
+        <div className="admin-card-header">
+          <div>
+            <h2 className="admin-card-title">Existing Projects</h2>
+            <p className="admin-card-subtitle">Manage live project records shown on `/projects`.</p>
+          </div>
+        </div>
+
+        <div className="admin-table-container">
+          <table className="admin-table">
+            <thead>
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Title</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Technologies</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Year</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Actions</th>
+                <th>Title</th>
+                <th>Technologies</th>
+                <th>Year</th>
+                <th>Status</th>
+                <th>Links</th>
+                <th>Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody>
+              {projects.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="admin-empty-state">
+                    No projects found.
+                  </td>
+                </tr>
+              )}
               {projects.map((project) => (
-                <tr key={project.id} className="hover:bg-gray-50 dark:hover:bg-gray-900/50">
-                  <td className="px-6 py-4 text-gray-900 dark:text-white font-medium">{project.title}</td>
-                  <td className="px-6 py-4 text-gray-500 dark:text-gray-400">{project.technologies}</td>
-                  <td className="px-6 py-4 text-gray-500 dark:text-gray-400">{project.project_year}</td>
-                  <td className="px-6 py-4">
-                    <span className="px-2 py-1 text-xs font-medium rounded-full bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400">
+                <tr key={project.id}>
+                  <td>{project.title}</td>
+                  <td>{project.technologies}</td>
+                  <td>{project.project_year}</td>
+                  <td>
+                    <span className={`admin-status-chip ${project.status === 'active' ? 'success' : 'warning'}`}>
                       {project.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => openEditModal(project)}
-                        className="p-2 text-gray-500 hover:text-blue-600 transition-colors"
-                        aria-label="Edit"
-                      >
-                        <FiEdit2 className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(project.id)}
-                        className="p-2 text-gray-500 hover:text-red-600 transition-colors"
-                        aria-label="Delete"
-                      >
-                        <FiTrash2 className="w-4 h-4" />
-                      </button>
-                    </div>
+                  <td>
+                    {project.demo_url && (
+                      <a href={project.demo_url} target="_blank" rel="noreferrer" style={{ marginRight: '0.5rem' }}>
+                        Demo
+                      </a>
+                    )}
+                    {project.github_url && (
+                      <a href={project.github_url} target="_blank" rel="noreferrer">
+                        Code
+                      </a>
+                    )}
+                  </td>
+                  <td>
+                    <button
+                      className="admin-btn admin-btn-secondary"
+                      style={{ marginRight: '0.5rem', padding: '0.4rem 0.6rem' }}
+                      type="button"
+                      onClick={() => startEdit(project)}
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      className="admin-btn admin-btn-danger"
+                      style={{ padding: '0.4rem 0.6rem' }}
+                      type="button"
+                      onClick={() => handleDelete(project.id)}
+                    >
+                      <FaTrash />
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </div>
-
-      {/* Modal */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
-            onClick={() => setIsModalOpen(false)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 w-full max-w-lg max-h-[90vh] overflow-y-auto p-6"
-            >
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {editingProject ? 'Edit Project' : 'New Project'}
-                </h2>
-                <button onClick={() => setIsModalOpen(false)} className="p-2 text-gray-500 hover:text-gray-700">
-                  <FiX className="w-5 h-5" />
-                </button>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title *</label>
-                  <input
-                    type="text"
-                    value={formData.title}
-                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#DC143C] focus:border-transparent outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description *</label>
-                  <textarea
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    rows={3}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#DC143C] focus:border-transparent outline-none resize-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Technologies (comma-separated)</label>
-                  <input
-                    type="text"
-                    value={formData.technologies}
-                    onChange={(e) => setFormData({ ...formData, technologies: e.target.value })}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#DC143C] focus:border-transparent outline-none"
-                    placeholder="React, TypeScript, Tailwind CSS"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Demo URL</label>
-                    <input
-                      type="url"
-                      value={formData.demo_url}
-                      onChange={(e) => setFormData({ ...formData, demo_url: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#DC143C] focus:border-transparent outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">GitHub URL</label>
-                    <input
-                      type="url"
-                      value={formData.github_url}
-                      onChange={(e) => setFormData({ ...formData, github_url: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#DC143C] focus:border-transparent outline-none"
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Year</label>
-                    <input
-                      type="number"
-                      value={formData.project_year}
-                      onChange={(e) => setFormData({ ...formData, project_year: parseInt(e.target.value) })}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#DC143C] focus:border-transparent outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
-                    <select
-                      value={formData.status}
-                      onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-[#DC143C] focus:border-transparent outline-none"
-                    >
-                      <option value="active">Active</option>
-                      <option value="archived">Archived</option>
-                      <option value="draft">Draft</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex justify-end gap-3 mt-6">
-                <button
-                  onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSave}
-                  className="px-4 py-2 text-sm font-medium text-white rounded-lg transition-all hover:shadow-lg"
-                  style={{ backgroundColor: '#DC143C' }}
-                >
-                  {editingProject ? 'Save Changes' : 'Create Project'}
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+      </section>
+    </>
   );
 }

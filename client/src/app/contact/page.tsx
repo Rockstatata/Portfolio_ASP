@@ -1,72 +1,98 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import SectionHeading from '@/components/SectionHeading';
 import ContactForm from '@/components/ContactForm';
 import AnimatedSection from '@/components/AnimatedSection';
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa';
+import { FaEnvelope } from 'react-icons/fa6';
 import { FiMapPin, FiPhone } from 'react-icons/fi';
+import { getHomeSections, getSocialLinks } from '@/lib/database';
+import { getSocialIcon } from '@/lib/socialIcons';
 
 export const metadata: Metadata = {
   title: 'Contact | Portfolio',
   description: 'Get in touch with me for collaboration or inquiries.',
 };
 
-const contactInfo = [
-  { icon: FiMapPin, label: 'Location', value: 'San Francisco, CA' },
-  { icon: FaEnvelope, label: 'Email', value: 'hello@example.com' },
-  { icon: FiPhone, label: 'Phone', value: '+1 (555) 000-0000' },
-];
+function findSectionValue(
+  sections: Awaited<ReturnType<typeof getHomeSections>>,
+  candidates: string[],
+) {
+  for (const section of sections) {
+    if (candidates.includes(section.section_name.toLowerCase())) {
+      return section.content;
+    }
+  }
 
-const socialLinks = [
-  { icon: FaGithub, href: 'https://github.com', label: 'GitHub' },
-  { icon: FaLinkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-  { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter' },
-];
+  return '';
+}
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const [homeSections, socialLinks] = await Promise.all([
+    getHomeSections().catch(() => []),
+    getSocialLinks().catch(() => []),
+  ]);
+
+  const location = findSectionValue(homeSections, ['location']);
+  const email = findSectionValue(homeSections, ['email'])
+    || socialLinks.find((link) => link.platform.toLowerCase() === 'email')?.url.replace(/^mailto:/, '')
+    || '';
+  const phone = findSectionValue(homeSections, ['phone']);
+
+  const contactInfo = [
+    { icon: FiMapPin, label: 'Location', value: location || 'Not set in admin panel' },
+    { icon: FaEnvelope, label: 'Email', value: email || 'Not set in admin panel' },
+    { icon: FiPhone, label: 'Phone', value: phone || 'Not set in admin panel' },
+  ];
+
   return (
     <div className="pt-24 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading title="Get in Touch" subtitle="Have a question or want to work together?" />
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
-          {/* Contact info */}
           <AnimatedSection className="lg:col-span-2 space-y-8">
             <div className="space-y-6">
               {contactInfo.map((info) => (
                 <div key={info.label} className="flex items-start gap-4">
-                  <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20">
-                    <info.icon className="w-5 h-5 text-[#DC143C]" />
+                  <div className="p-3 rounded-lg app-chip">
+                    <info.icon className="w-5 h-5 app-accent" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{info.label}</h3>
-                    <p className="text-gray-900 dark:text-white">{info.value}</p>
+                    <h3 className="text-sm font-medium app-muted">{info.label}</h3>
+                    <p className="app-heading wrap-break-word">{info.value}</p>
                   </div>
                 </div>
               ))}
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">Follow me</h3>
-              <div className="flex gap-3">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-[#DC143C] hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
-                    aria-label={social.label}
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </a>
-                ))}
+              <h3 className="text-sm font-medium app-muted mb-3">Follow me</h3>
+              <div className="flex gap-3 flex-wrap">
+                {socialLinks.length === 0 && (
+                  <p className="text-sm app-muted">
+                    No social links configured from admin panel.
+                  </p>
+                )}
+                {socialLinks.map((social) => {
+                  const Icon = getSocialIcon(social.icon_class);
+                  return (
+                    <a
+                      key={social.id}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 rounded-lg app-icon-button app-surface-soft transition-all"
+                      aria-label={social.platform}
+                    >
+                      <Icon className="w-5 h-5" />
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </AnimatedSection>
 
-          {/* Contact form */}
           <div className="lg:col-span-3">
-            <div className="bg-white dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700 p-8">
+            <div className="app-surface p-8">
               <ContactForm />
             </div>
           </div>

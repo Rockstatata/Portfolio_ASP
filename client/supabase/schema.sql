@@ -181,6 +181,31 @@ ALTER TABLE home_sections ENABLE ROW LEVEL SECURITY;
 ALTER TABLE analytics_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies to keep schema re-runnable
+DROP POLICY IF EXISTS "Public read access" ON projects;
+DROP POLICY IF EXISTS "Public read access" ON blog_posts;
+DROP POLICY IF EXISTS "Public read access" ON skills;
+DROP POLICY IF EXISTS "Public read access" ON timeline;
+DROP POLICY IF EXISTS "Public read access" ON experiences;
+DROP POLICY IF EXISTS "Public read access" ON about_sections;
+DROP POLICY IF EXISTS "Public read access" ON social_links;
+DROP POLICY IF EXISTS "Public read access" ON home_sections;
+
+DROP POLICY IF EXISTS "Public insert access" ON messages;
+DROP POLICY IF EXISTS "Public insert access" ON analytics_events;
+
+DROP POLICY IF EXISTS "Admin full access" ON projects;
+DROP POLICY IF EXISTS "Admin full access" ON blog_posts;
+DROP POLICY IF EXISTS "Admin full access" ON messages;
+DROP POLICY IF EXISTS "Admin full access" ON skills;
+DROP POLICY IF EXISTS "Admin full access" ON timeline;
+DROP POLICY IF EXISTS "Admin full access" ON experiences;
+DROP POLICY IF EXISTS "Admin full access" ON about_sections;
+DROP POLICY IF EXISTS "Admin full access" ON social_links;
+DROP POLICY IF EXISTS "Admin full access" ON home_sections;
+DROP POLICY IF EXISTS "Admin full access" ON analytics_events;
+DROP POLICY IF EXISTS "Admin profile access" ON user_profiles;
+
 -- Public read access for portfolio content
 CREATE POLICY "Public read access" ON projects FOR SELECT USING (status = 'active');
 CREATE POLICY "Public read access" ON blog_posts FOR SELECT USING (status = 'published');
@@ -231,15 +256,15 @@ CREATE POLICY "Admin profile access" ON user_profiles FOR ALL USING (id = auth.u
 -- ============================================
 -- Indexes for performance
 -- ============================================
-CREATE INDEX idx_projects_status ON projects(status);
-CREATE INDEX idx_projects_display_order ON projects(display_order);
-CREATE INDEX idx_blog_posts_slug ON blog_posts(slug);
-CREATE INDEX idx_blog_posts_status ON blog_posts(status);
-CREATE INDEX idx_blog_posts_published_at ON blog_posts(published_at);
-CREATE INDEX idx_messages_is_read ON messages(is_read);
-CREATE INDEX idx_messages_created_at ON messages(created_at);
-CREATE INDEX idx_analytics_event_type ON analytics_events(event_type);
-CREATE INDEX idx_analytics_created_at ON analytics_events(created_at);
+CREATE INDEX IF NOT EXISTS idx_projects_status ON projects(status);
+CREATE INDEX IF NOT EXISTS idx_projects_display_order ON projects(display_order);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_slug ON blog_posts(slug);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_status ON blog_posts(status);
+CREATE INDEX IF NOT EXISTS idx_blog_posts_published_at ON blog_posts(published_at);
+CREATE INDEX IF NOT EXISTS idx_messages_is_read ON messages(is_read);
+CREATE INDEX IF NOT EXISTS idx_messages_created_at ON messages(created_at);
+CREATE INDEX IF NOT EXISTS idx_analytics_event_type ON analytics_events(event_type);
+CREATE INDEX IF NOT EXISTS idx_analytics_created_at ON analytics_events(created_at);
 
 -- ============================================
 -- Seed Data (matching ASP.NET default data)

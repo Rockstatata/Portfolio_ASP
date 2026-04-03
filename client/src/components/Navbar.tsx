@@ -36,11 +36,11 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+    <nav className="app-nav-shell fixed top-0 left-0 right-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Brand */}
-          <Link href="/" className="text-xl font-bold" style={{ color: '#DC143C' }}>
+          <Link href="/" className="text-xl font-bold app-accent">
             Portfolio
           </Link>
 
@@ -50,10 +50,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors hover:text-[#DC143C] ${
+                className={`text-sm font-medium transition-colors ${
                   pathname === link.href
-                    ? 'text-[#DC143C]'
-                    : 'text-gray-700 dark:text-gray-300'
+                    ? 'app-accent'
+                    : 'app-link'
                 }`}
               >
                 {link.label}
@@ -61,13 +61,13 @@ export default function Navbar() {
             ))}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="app-icon-button p-2 rounded-full transition-colors"
               aria-label="Toggle theme"
             >
               {isDark ? (
                 <FiSun className="w-5 h-5 text-yellow-400" />
               ) : (
-                <FiMoon className="w-5 h-5 text-gray-700" />
+                <FiMoon className="w-5 h-5 app-muted" />
               )}
             </button>
           </div>
@@ -76,18 +76,18 @@ export default function Navbar() {
           <div className="flex items-center gap-2 md:hidden">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="app-icon-button p-2 rounded-full transition-colors"
               aria-label="Toggle theme"
             >
               {isDark ? (
                 <FiSun className="w-5 h-5 text-yellow-400" />
               ) : (
-                <FiMoon className="w-5 h-5 text-gray-700" />
+                <FiMoon className="w-5 h-5 app-muted" />
               )}
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-md text-gray-700 dark:text-gray-300"
+              className="app-icon-button p-2 rounded-md"
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
@@ -103,7 +103,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800"
+            className="md:hidden app-nav-shell"
           >
             <div className="px-4 py-2 space-y-1">
               {navLinks.map((link) => (
@@ -113,8 +113,8 @@ export default function Navbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
                     pathname === link.href
-                      ? 'text-[#DC143C] bg-red-50 dark:bg-red-900/20'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                      ? 'app-accent app-surface-soft'
+                      : 'app-link hover:bg-(--app-bg-soft)'
                   }`}
                 >
                   {link.label}

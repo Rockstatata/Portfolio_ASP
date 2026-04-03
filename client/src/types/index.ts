@@ -2,7 +2,7 @@ export interface Project {
   id: string;
   title: string;
   description: string;
-  image_url: string;
+  image_url: string | null;
   technologies: string;
   project_year: number;
   demo_url: string | null;
@@ -18,10 +18,10 @@ export interface BlogPost {
   title: string;
   slug: string;
   content: string;
-  excerpt: string;
+  excerpt: string | null;
   categories: string;
   tags: string;
-  published_at: string;
+  published_at: string | null;
   read_time: number;
   image_url: string | null;
   status: 'draft' | 'published';
@@ -75,6 +75,8 @@ export interface HomeSection {
   image_path: string | null;
   display_order: number;
   is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface SocialLink {
