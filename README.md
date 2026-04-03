@@ -1,190 +1,111 @@
-# Portfolio_ASP
+﻿## Portfolio Next.js Client
 
-A responsive personal portfolio built with ASP.NET Web Forms (C# 7.3 / .NET Framework 4.8).  
-Provides a modern public site (glassmorphism, light/dark theme, Vanta.js background) and a small admin panel for managing homepage sections, projects, blogs, experiences, skills and messages backed by SQL Server.
-
-Maintainer: GitHub Copilot
-
----
-
-## Key features
-
-- Public site (portfolio.aspx)
-  - Hero, About, Skills, Projects, Timeline, Blog, Contact sections
-  - Horizontal-scroll blog carousel + blog reading modal (transparent backdrop, light/dark)
-  - Vanta.js background with graceful fallback
-  - Responsive, accessible UI with keyboard and touch support
-
-- Admin area
-  - CRUD pages (ManageHome, ManageBlogs, ManageProjects, ManageExperience, ManageSkills, ManageContacts)
-  - Inline editing of home sections via GridView
-  - Initialization (seeding) of default home sections if table empty
-  - Basic admin action logging
-
-- Implementation notes
-  - Server: ASP.NET Web Forms (.aspx + code-behind)
-  - Data access: ADO.NET (SqlConnection / SqlCommand) with parameterized queries
-  - Client: vanilla JS (Scripts/script.js)
-  - Styling: single CSS file (Content/styles.css)
-  - Local persistence for some client features (localStorage for bookmarks/likes)
-
----
+This is the production frontend for the portfolio and admin panel.
 
 ## Requirements
 
-- Windows
-- Visual Studio 2022 (or newer) with:
-  - __.NET Framework 4.8__ development workload
-  - Web development tools
-- SQL Server (Express or full)
-- Optional: Node / npm only if you plan to extend front-end toolchain
-- Internet to load third-party assets (Vanta.js, three.js, Google Fonts, Font Awesome CDN)
+- Node.js 20+
+- npm 10+
+- A Supabase project
 
----
+## 1. Install Dependencies
 
-## Quick start (local)
+```bash
+npm install
+```
 
-1. Clone repository
-   - git clone https://github.com/Rockstatata/Portfolio_ASP.git
-   - open folder in Visual Studio 2022
+## 2. Configure Environment Variables
 
-2. Restore NuGet packages
-   - In Visual Studio: __Tools > NuGet Package Manager > Package Manager Console__ then run: `Update-Package -reinstall`
-   - Or right-click solution > __Restore NuGet Packages__
+Create `.env.local` (or update `.env`) with these values:
 
-3. Configure database connection
-   - Open Web.config and set your connection string name `adminpanel_db` to point to your SQL Server instance.
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=your_supabase_publishable_key
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+ADMIN_PASSKEY=replace_with_a_long_random_passkey
+ADMIN_SESSION_SECRET=replace_with_a_minimum_32_char_random_secret
+ADMIN_SESSION_TTL_SECONDS=28800
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SITE_NAME=Portfolio
+```
 
-4. Ensure DB schema exists
-   - Create a database named in your connection string (e.g. `PortfolioDb`).
-   - Create tables used by the app (examples below). The app will seed default home sections if `HomeSections` is empty.
+Notes:
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` is the preferred frontend key.
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` is kept as a compatibility fallback.
+- `SUPABASE_SERVICE_ROLE_KEY` is required for server-side admin resource APIs and seed scripts.
+- `ADMIN_SESSION_SECRET` must be at least 32 characters.
+- `ADMIN_PASSKEY` must be at least 12 characters.
 
-5. Run in Visual Studio
-   - Press __F5__ (Start Debugging) or click __Debug > Start Debugging__ to launch with __IIS Express__.
+## 3. Prepare Supabase Schema
 
----
+1. Open Supabase SQL Editor.
+2. Run `supabase/schema.sql`.
+3. In Supabase Dashboard go to Project Settings -> API.
+4. Ensure `public` is included in Exposed Schemas.
+5. Keep Row Level Security enabled on portfolio tables in production.
 
-## Database - essential tables (schema summary)
+If `public` is not exposed, all table requests fail with `PGRST205`.
 
-The app uses straightforward tables. Use these as guidance — adjust types as needed.
+## 4. Validate DB Access + Seed Data
 
-- HomeSections
-  - Id (int, PK, identity)
-  - SectionName (nvarchar)
-  - Content (nvarchar(max), nullable)
-  - ImagePath (nvarchar, nullable)
-  - DisplayOrder (int)
-  - IsActive (bit)
-  - CreatedDate (datetime)
-  - UpdatedDate (datetime, nullable)
+```bash
+npm run db:check
+npm run seed
+```
 
-- Projects, Blogs, Skills, Experience, Timeline, Contacts (simple COUNT queries used)
-  - Each table should at minimum include an Id (PK) and typical fields:
-    - Projects: Title, Description, ImagePath, Technologies, SourceLink, DemoLink, ProjectYear, Status
-    - Blogs: Title, Content, Excerpt, Tags, Categories, PublishDate, ReadTime
-    - Skills: SkillName, SkillIcon, Category
-    - Experience: Company, Position, Duration, Description, Responsibilities
-    - Timeline: YearRange, Title, Location, Description, Type
-    - Contacts: Name, Email, Subject, Message, CreatedDate
+Optional reset seed (re-inserts seeded rows by known IDs):
 
-If you want, I can provide full CREATE TABLE scripts for these tables.
+```bash
+npm run seed:force
+```
 
----
+## 5. Run Locally
 
-## Seeding & initialization
+```bash
+npm run dev
+```
 
-- ManageHome.aspx.cs includes `InitializeDefaultHomeSections()`; if `HomeSections` has zero rows the method inserts a set of default sections.
-- You can safely run the site after creating an empty database — the app will seed homepage sections.
+## Admin Access
 
----
+- URL: `/admin`
+- Passkey: value from `ADMIN_PASSKEY`
 
-## Project structure (high level)
+## Vercel Deployment Guide
 
-- `/` root
-  - portfolio.aspx (+ portfolio.aspx.cs) — public site
-  - /admin (ManageHome.aspx, ManageBlogs.aspx, ManageProjects.aspx, etc.)
-  - /Content/styles.css — all styles including modal + light/dark support
-  - /Scripts/script.js — theme toggle, Vanta init, blog scroll, modal logic, notifications
-  - Web.config — connection strings & config
-  - App_Code / Services / Models (PortfolioService.cs, PortfolioModels.cs) — business logic & objects
+1. Import repository into Vercel.
+2. Set Root Directory to `client`.
+3. Framework Preset: Next.js.
+4. Add Environment Variables in Vercel Project Settings:
+	 - `NEXT_PUBLIC_SUPABASE_URL`
+	 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY`
+	 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` (optional fallback)
+	 - `SUPABASE_SERVICE_ROLE_KEY`
+	 - `ADMIN_PASSKEY`
+	 - `ADMIN_SESSION_SECRET`
+	 - `ADMIN_SESSION_TTL_SECONDS` (optional)
+	 - `NEXT_PUBLIC_SITE_URL` (your Vercel production URL)
+	 - `NEXT_PUBLIC_SITE_NAME`
+5. Deploy.
 
----
+After deploy, verify:
+- `/` loads home sections and portfolio data.
+- `/blog`, `/projects`, `/about`, `/contact` load data.
+- `/admin` accepts the configured passkey.
+- Admin CRUD pages can read/write data.
 
-## Client-side behavior
+## Troubleshooting
 
-- Theme: toggled via element `#theme-toggle`, persisted in localStorage `theme` key
-- Blog carousel: horizontal scroll with mouse/touch drag, arrow controls, dots
-- Blog modal: click blog card or blog-arrow opens modal populated from card markup; click outside (backdrop) or Escape closes it
-- Local features: bookmark/like stored in localStorage (keys: `blogBookmarks`, `blogLikes`)
+- `PGRST205 Could not find table ... in schema cache`
+	- Run `supabase/schema.sql` again.
+	- Ensure `public` is exposed in Supabase API settings.
+	- Confirm URL and keys belong to the same Supabase project.
 
----
+- Admin pages load but writes fail
+	- Verify `SUPABASE_SERVICE_ROLE_KEY` is set in runtime environment.
+	- Confirm key role is `service_role` and belongs to the same project ref as `NEXT_PUBLIC_SUPABASE_URL`.
 
-## Deployment (IIS)
-
-1. Publish from Visual Studio
-   - Right click project > __Publish__ > choose profile (Folder or IIS)
-2. Ensure production connection string points to production SQL Server
-3. Configure IIS app pool to run .NET Framework v4.0
-4. Grant DB access to the app pool identity or use SQL authentication
-
----
-
-## Troubleshooting & common fixes
-
-- Exception: "The conversion could not be completed because the supplied DateTime did not have the Kind property set correctly."
-  - Fix applied in ManageHome.aspx.cs: use `DateTime.SpecifyKind(parsed, DateTimeKind.Utc)` before calling `TimeZoneInfo.ConvertTimeFromUtc(...)`
-
-- If an ADO.NET query fails:
-  - Check `Web.config` connection string `adminpanel_db`
-  - Ensure the user account has permissions
-  - Check SQL Server instance (use SSMS to run queries)
-
-- If JS features don't run:
-  - Open browser console (F12) and check for errors (missing script path or blocked CDNs)
-  - Confirm `Scripts/script.js` is loaded and not blocked by CSP
-
-- Duplicate `</form>` in .aspx pages will break client scripts — ensure only one server form (`<form runat="server">`) exists.
-
----
-
-## Security notes
-
-- Avoid storing sensitive credentials in source. Use Windows secrets or environment-managed connection strings for production.
-- All DB calls use parameterized queries; validate input when accepting content from admin UI.
-- For production, serve assets over HTTPS and enable strong IIS security (request filtering, authentication as needed).
-
----
-
-## Testing
-
-- Manual: run with __IIS Express__ (F5); exercise each admin page and edit/save home sections
-- Verify blog modal: open portfolio.aspx, click a blog card — modal should open and close on backdrop/Escape
-- Verify theme persistence: toggle theme and reload
-
----
-
-## Contributing
-
-- Fork repo > create feature branch > open a PR.
-- Keep server-side changes compatible with .NET Framework 4.8 and C# 7.3.
-- Prefer ADO.NET and avoid introducing heavy runtime dependencies in the main project.
-
----
-
-## Next steps / optional improvements
-
-- Add unit/integration tests for DB helpers (requires refactor to allow DI)
-- Move SQL schema to a SQL migration script or simple setup SQL file
-- Add image upload in admin pages with validation and storage (Azure Blob / local uploads)
-- Replace cookie-based visitor tracking with server-side persistent analytics if needed
-
----
-
-## Contact
-
-If you want a README expanded with:
-- full CREATE TABLE scripts,
-- step-by-step IIS publish profile,
-- or a one-file SQL seed script,
-
-tell me which tables to include and I’ll generate them.
+- `/admin` always rejects passkey
+	- Confirm `ADMIN_PASSKEY` is set and at least 12 characters long.
+	- Confirm `ADMIN_SESSION_SECRET` is set and at least 32 characters long.
+	- Redeploy after updating env variables.
