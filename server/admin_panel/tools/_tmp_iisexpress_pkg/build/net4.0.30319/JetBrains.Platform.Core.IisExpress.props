@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <JetReference Include="$(MSBuildThisFileDirectory)..\..\DotFiles\JetBrains.Platform.IisExpressHost.dll" />
-    <JetReference Include="$(MSBuildThisFileDirectory)..\..\DotFiles\JetBrains.Platform.IisExpressTask.dll" />
-    <JetMetadata Include="$(MSBuildThisFileDirectory)..\..\DotFiles\JetBrains.Platform.Core.IisExpress.JetMetadata.sstg" />
-  </ItemGroup>
-</Project>

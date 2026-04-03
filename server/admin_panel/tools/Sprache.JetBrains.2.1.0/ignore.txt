@@ -1,7 +1,0 @@
-System
-System.Configuration
-System.Core
-System.Threading.Tasks.Dataflow
-System.Xaml
-System.Xml
-mscorlib

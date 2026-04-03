@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<coreProperties xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.openxmlformats.org/package/2006/metadata/core-properties">
-  <dc:creator>JetBrains</dc:creator>
-  <dc:description>JetBrains Platform Core IisExpress Package Version 233.0.20240606.111243</dc:description>
-  <dc:identifier>JetBrains.Platform.Core.IisExpress</dc:identifier>
-  <version>233.0.20240606.111243</version>
-  <keywords></keywords>
-  <lastModifiedBy>NuGet.Packaging, Version=6.9.1.32767, Culture=neutral, PublicKeyToken=5aaa11a165479571;Microsoft Windows NT 6.2.9200.0;.NET Framework 4.7.2</lastModifiedBy>
-</coreProperties>
