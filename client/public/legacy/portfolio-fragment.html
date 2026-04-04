@@ -1,0 +1,713 @@
+<div id="vanta-background" class="vanta-bg"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar-container" id="main-navbar">
+      <!-- Main Navbar Container -->
+      <div class="navbar-content">
+        <!-- Main Flex Container -->
+        <div class="navbar-flex">
+          <!-- LEFT SIDE: Brand/Logo -->
+          <div class="navbar-brand">
+            <a href="#home" class="brand-link">
+              <!-- Brand Text -->
+              <span class="brand-text"></span>
+            </a>
+          </div>
+
+          <!-- CENTER: Desktop Navigation Links -->
+          <div class="desktop-nav">
+            <!-- Home link removed, brand acts as Home -->
+            <a href="#about" class="nav-link">
+              About Me
+              <span class="nav-underline"></span>
+            </a>
+            <a href="#timeline" class="nav-link">
+              Timeline
+              <span class="nav-underline"></span>
+            </a>
+            <a href="#skills" class="nav-link">
+              Skills
+              <span class="nav-underline"></span>
+            </a>
+            <a href="#projects" class="nav-link">
+              Projects
+              <span class="nav-underline"></span>
+            </a>
+            <a href="#experience" class="nav-link">
+              Experience
+              <span class="nav-underline"></span>
+            </a>
+            <a href="#blog" class="nav-link">
+              Blog
+              <span class="nav-underline"></span>
+            </a>
+            <a href="#contact" class="nav-link">
+              Contact
+              <span class="nav-underline"></span>
+            </a>
+          </div>
+
+          <!-- RIGHT SIDE: Theme Toggle & Mobile Menu -->
+          <div class="nav-actions">
+            <!-- Theme Toggle Button -->
+            <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+              <!-- Sun Icon (visible in dark mode) -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="theme-icon sun-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+              <!-- Moon Icon (visible in light mode) -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="theme-icon moon-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+            </button>
+
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button id="mobile-menu-toggle" class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+              <!-- Hamburger Icon -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="hamburger-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Menu (Hidden by default) -->
+      <div id="mobile-menu" class="mobile-menu hidden">
+        <div class="mobile-menu-content">
+          <!-- Mobile Navigation Links -->
+          <nav class="mobile-nav-container">
+
+            <a href="#about" class="mobile-nav-link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="mobile-nav-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+              About Me
+            </a>
+
+            <a href="#timeline" class="mobile-nav-link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="mobile-nav-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              Timeline
+            </a>
+
+            <a href="#skills" class="mobile-nav-link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="mobile-nav-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                />
+              </svg>
+              Skills
+            </a>
+
+            <a href="#projects" class="mobile-nav-link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="mobile-nav-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2H5a2 2 0 00-2 2v2M7 7h10"
+                />
+              </svg>
+              Projects
+            </a>
+
+            <a href="#experience" class="mobile-nav-link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="mobile-nav-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2H5a2 2 0 00-2 2v2M7 7h10"
+                />
+              </svg>
+              Experience
+            </a>
+
+            <a href="#blog" class="mobile-nav-link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="mobile-nav-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                />
+              </svg>
+              Blog
+            </a>
+
+            <a href="#contact" class="mobile-nav-link">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="mobile-nav-icon"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+              Contact
+            </a>
+          </nav>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Home Section -->
+      <section id="home" class="home-section">
+        <!-- Main Content Grid -->
+        <div class="container content-grid">
+          <div class="home-grid">
+            <!-- Left Side: Text Content -->
+            <div class="home-text-content">
+              <!-- Status Badge -->
+              <div class="status-badge">
+                <div class="status-dot"></div>
+                <span class="status-text"></span>
+              </div>
+
+              <!-- Name with Optimized Typography -->
+              <div class="name-section">
+                <h1 class="main-heading">
+                  <div class="name-line">
+                    <span class="slide-up text-gradient-primary" style="--delay: 0ms"></span>
+                  </div>
+                  <div class="name-line">
+                    <span class="slide-up name-middle" style="--delay: 100ms"></span>
+                  </div>
+                  <div class="name-line">
+                    <span class="slide-up text-gradient-secondary" style="--delay: 200ms"></span>
+                  </div>
+                </h1>
+              </div>
+
+              <!-- Role Description -->
+              <div class="role-section">
+                <!-- Main Tagline -->
+                <div class="slide-up" style="--delay: 300ms">
+                  <h2 class="tagline"></h2>
+                </div>
+
+                <!-- Description -->
+                <div class="slide-up" style="--delay: 400ms">
+                  <p class="description"></p>
+                </div>
+
+                <!-- Specialization Tags -->
+                <div class="skill-tags slide-up" style="--delay: 500ms"></div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="action-buttons">
+                <a href="#projects" class="btn-primary slide-up" style="--delay: 700ms" data-magnetic>
+                  <span class="btn-content">
+                    <span>Explore My Work</span>
+                    <svg class="btn-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </span>
+                </a>
+
+                <a href="#contact" class="btn-secondary slide-up" style="--delay: 750ms" data-magnetic>
+                  <span class="btn-content">
+                    <svg class="btn-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    <span>Let's Talk</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Right Side: Profile Display -->
+            <div class="profile-display">
+              <div class="profile-section-wrapper">
+                <!-- Main Profile Container -->
+                <div class="profile-container">
+                  <!-- Optimized Rotating Ring -->
+                  <div class="profile-ring"></div>
+                  <div class="profile-ring-inner"></div>
+
+                  <!-- Profile Image -->
+                  <div class="profile-image-container">
+                    <img
+                      src="/legacy/assets/Sarwad.jpeg"
+                      alt="Profile photo"
+                      class="profile-image"
+                      loading="lazy"
+                      decoding="async"
+                      data-magnetic
+                    />
+                  </div>
+
+                </div>
+
+                <!-- Social Links -->
+                <div class="social-links">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section - Bento Grid Layout -->
+      
+      <section id="about" class="about-section">
+        <div class="about-container">
+          <div class="about-header">
+            <h2 class="about-title">About Me</h2>
+            <p class="about-description">
+              Discover my journey, passions, and the technologies that drive my
+              creative vision
+            </p>
+          </div>
+
+          <div class="bento-grid">
+            <div class="bento-card bento-card-large group">
+              <div class="card-content">
+                <div class="card-header">
+                  <div>
+                    <h3 class="card-title"></h3>
+                  </div>
+                </div>
+
+                <p class="card-text card-mb-8"></p>
+                <p class="text-large card-mb-8 text-relaxed text-gray-700"></p>
+                <p class="text-large card-mb-8 text-relaxed text-gray-700"></p>
+                <p class="text-large card-mb-6 text-relaxed text-gray-700"></p>
+              </div>
+
+              <div class="floating-element floating-element-1"></div>
+              <div class="floating-element floating-element-2"></div>
+            </div>
+
+            <div class="bento-card bento-card-wide group">
+              <div class="card-header-mb-6">
+                <span class="text-small text-gray-500 text-medium text-uppercase text-tracking-wider">What I Do</span>
+                <h3 class="card-title card-mt-1">Development Arsenal</h3>
+              </div>
+
+              <div class="skills-grid skills-mb-4"></div>
+
+              <p class="text-small text-gray-600">
+                Building cross-platform applications with clean, modular, and
+                maintainable code
+              </p>
+            </div>
+
+            <div class="bento-card bento-card-wide group">
+              <h3 class="card-title card-mb-4">Research Focus</h3>
+
+              <div class="research-grid text-small"></div>
+
+              <p class="text-extra-small text-gray-500 research-mt-4">
+                Exploring the intersection of space science and AI
+              </p>
+            </div>
+
+            <div class="bento-card group">
+              <div>
+                <h3 class="card-title card-mb-4">Future Goals</h3>
+
+                <div class="goals-list"></div>
+
+                <p class="text-extra-small text-gray-500 goals-mt-4">
+                  Creating impactful solutions for humanity
+                </p>
+              </div>
+            </div>
+
+            <div class="bento-card bento-card-wider group">
+              <div class="flex-items-start-justify-between learning-mb-6">
+                <div>
+                  <h3 class="card-title learning-mt-1">Current Focus Areas</h3>
+                </div>
+              </div>
+
+              <div class="learning-grid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- Timeline Section -->
+      <section id="timeline" class="section">
+        <div class="timeline-container">
+          <div class="timeline-header">
+            <h1 class="section-title">Timeline</h1>
+            <p class="section-subtitle">
+              My educational and professional journey
+            </p>
+          </div>
+          
+          <!-- Timeline Content -->
+          <div class="timeline-content">
+            <div class="timeline-line"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
+      <section id="skills" class="section">
+        <div class="skills-container">
+          <div class="skills-header">
+            <h1 class="section-title">Skills</h1>
+            <p class="section-subtitle">
+              Technologies and tools I work with
+            </p>
+          </div>
+          
+          <!-- Skills Grid -->
+          <div class="skills-categories-grid">
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section id="projects" class="section projects-section">
+        <div class="projects-container">
+          <div class="projects-header">
+            <h1 class="section-title">Projects</h1>
+            <p class="section-subtitle">
+              A collection of my most significant projects, showcasing my expertise in full-stack
+              development, cloud architecture, and innovative problem-solving.
+            </p>
+          </div>
+
+          <div class="projects-grid">
+          </div>
+        </div>
+      </section>
+
+      <!-- Experience Section -->
+      <section id="experience" class="section projects-section">
+        <div class="projects-container">
+          <div class="projects-header">
+            <h1 class="section-title">Experience</h1>
+            <p class="section-subtitle">
+              My professional journey and work experience in software development and technology.
+            </p>
+          </div>
+
+          <div class="projects-grid">
+          </div>
+        </div>
+      </section>
+
+      <!-- Blog Section -->
+      <section id="blog" class="section blog-section">
+        <div class="container">
+          <div class="blog-container">
+            <div class="blog-header">
+              <div class="blog-title-container">
+                <h1 class="section-title">Blogs</h1>
+              </div>
+              <p class="section-subtitle">
+                Insights and stories from my journey as a developer.
+              </p>
+            </div>
+          </div>
+
+          <!-- Horizontal Scroll Container -->
+          <div class="blog-scroll-container">
+            <!-- Scroll Controls -->
+            <div class="scroll-controls">
+              <button class="scroll-btn scroll-btn-left" id="scrollLeft">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 18l-6-6 6-6"/>
+                </svg>
+              </button>
+              <button class="scroll-btn scroll-btn-right" id="scrollRight">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 18l6-6-6-6"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Scrollable Blog Grid -->
+            <div class="blog-grid-scroll" id="blogGrid">
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="scroll-indicator-dots"><div class="scroll-dot active" data-index="0"></div><div class="scroll-dot" data-index="1"></div><div class="scroll-dot" data-index="2"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="section contact-section">
+        <div class="container">
+          <div class="contact-container">
+            <!-- Contact Header -->
+            <div class="contact-header">
+              <span class="contact-subtitle">REACH OUT TO ME</span>
+              <h1 class="section-title contact-title">CONTACT</h1>
+            </div>
+
+            <!-- Contact Content Grid -->
+            <div class="contact-content-grid">
+              <!-- Left Side: Map and Contact Info -->
+              <div class="contact-left">
+                <!-- Google Map -->
+                <div class="contact-map-section">
+                  <h3 class="contact-section-title">My Location</h3>
+                  <div class="contact-map-container">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3675.41658088928!2d89.49616848665764!3d22.898000667506604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ff9b795e158f77%3A0x74faf2f9bc27ba7f!2sAmar%20Ekushey%20Hall!5e0!3m2!1sen!2sin!4v1756143304401!5m2!1sen!2sin"
+                      width="100%"
+                      height="300"
+                      style="border:0;"
+                      allowfullscreen=""
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade"
+                      title="My Location - Khulna, Bangladesh"></iframe>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Right Side: Contact Form -->
+              <div class="contact-right">
+                <div class="contact-form-section">
+                  <h3 class="contact-section-title">Contact Form</h3>
+                  <form class="contact-form" id="contactForm">
+                    <!-- Name and Email Row -->
+                    <div class="form-row">
+                      <div class="form-group">
+                        <input id="txtName" name="name" type="text" placeholder="Your Name *" class="form-input" />
+                      </div>
+                      <div class="form-group">
+                        <input id="txtEmail" name="email" type="email" placeholder="Your Email *" class="form-input" />
+                      </div>
+                    </div>
+
+                    <!-- Subject -->
+                    <div class="form-group">
+                      <input id="txtSubject" name="subject" type="text" placeholder="Your Subject..." class="form-input" />
+                    </div>
+
+                    <!-- Message -->
+                    <div class="form-group">
+                      <textarea id="txtMessage" name="message" rows="6" placeholder="Your message..." class="form-textarea"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="btnSubmitContact" class="contact-submit-btn">SEND</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Social Media Links -->
+            <div class="contact-social-section">
+              <div class="social-links-contact">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer Section -->
+      <footer class="footer">
+        <div class="container">
+          <div class="footer-content">
+            <p class="footer-text">
+              © 2026 | All rights reserved | This website is developed by 
+              <a href="https://github.com/Rockstatata" target="_blank" rel="noopener noreferrer" class="footer-link"></a>
+            </p>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+      <!-- Blog Reading Modal -->
+      <div id="blogModal" class="blog-modal" style="display: none;" aria-hidden="true" role="dialog" aria-labelledby="blogModalTitle" aria-describedby="blogModalContent">
+        <div class="blog-modal-backdrop" id="blogModalBackdrop"></div>
+        <div class="blog-modal-container">
+          <div class="blog-modal-content">
+            <!-- Modal Header -->
+            <header class="blog-modal-header">
+              <div class="blog-modal-meta">
+                <div class="blog-modal-categories" id="modalCategories">
+                  <!-- Categories will be populated by JavaScript -->
+                </div>
+                <div class="blog-modal-date-info">
+                  <span class="blog-modal-date" id="modalDate"><!-- Date will be populated --></span>
+                  <span class="blog-modal-separator">•</span>
+                  <span class="blog-modal-read-time" id="modalReadTime"><!-- Read time will be populated --></span>
+                </div>
+              </div>
+              
+              <h1 class="blog-modal-title" id="blogModalTitle">
+                <!-- Title will be populated by JavaScript -->
+              </h1>
+              
+              <div class="blog-modal-tags" id="modalTags">
+                <!-- Tags will be populated by JavaScript -->
+              </div>
+              
+              <button type="button" class="blog-modal-close" id="blogModalClose" aria-label="Close blog modal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </header>
+            
+            <!-- Modal Body -->
+            <main class="blog-modal-body" id="blogModalContent">
+              <div class="blog-modal-excerpt" id="modalExcerpt">
+                <!-- Excerpt will be populated by JavaScript -->
+              </div>
+              
+              <div class="blog-modal-article" id="modalArticle">
+                <!-- Full content will be populated by JavaScript -->
+              </div>
+              
+              <!-- Coming Soon Message for fallback content -->
+              <div class="blog-modal-coming-soon" id="modalComingSoon" style="display: none;">
+                <div class="coming-soon-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                </div>
+                <h3>Full Article Coming Soon</h3>
+                <p>I'm currently working on publishing the complete version of this article. Check back soon for the full content!</p>
+                <div class="coming-soon-actions">
+                  <button type="button" class="btn-notify" id="notifyMeBtn">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                      <path d="M13.73 21a2 2 0 01-3.46 0"/>
+                    </svg>
+                    Notify Me When Published
+                  </button>
+                </div>
+              </div>
+            </main>
+            
+            <!-- Modal Footer -->
+            <footer class="blog-modal-footer">
+              <div class="blog-modal-actions">
+                <button type="button" class="blog-action-btn share-btn" id="shareBtn" title="Share this article">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                    <polyline points="16,6 12,2 8,6"/>
+                    <line x1="12" y1="2" x2="12" y2="15"/>
+                  </svg>
+                  <span>Share</span>
+                </button>
+                
+                <button type="button" class="blog-action-btn bookmark-btn" id="bookmarkBtn" title="Bookmark this article">
+                  <svg class="bookmark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+                  </svg>
+                  <span>Bookmark</span>
+                </button>
+                
+                <button type="button" class="blog-action-btn like-btn" id="likeBtn" title="Like this article">
+                  <svg class="like-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                  </svg>
+                  <span>Like</span>
+                </button>
+              </div>
+              
+              <div class="blog-modal-scroll-indicator">
+                <div class="scroll-progress" id="scrollProgress"></div>
+              </div>
+            </footer>
+          </div>
+        </div>
+      </div>

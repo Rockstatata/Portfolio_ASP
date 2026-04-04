@@ -13,6 +13,7 @@ interface BlogCardProps {
 
 export default function BlogCard({ post, index }: BlogCardProps) {
   const tags = parseTags(post.tags);
+  const routeParam = post.slug?.trim() || post.id;
 
   return (
     <motion.article
@@ -34,7 +35,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
       </div>
 
       <h3 className="mt-3 text-xl font-semibold app-heading group-hover:text-(--app-accent) transition-colors">
-        <Link href={`/blog/${post.slug}`}>{post.title}</Link>
+        <Link href={`/blog/${routeParam}`}>{post.title}</Link>
       </h3>
 
       <p className="mt-2 app-muted text-sm line-clamp-3">
@@ -54,7 +55,7 @@ export default function BlogCard({ post, index }: BlogCardProps) {
       </div>
 
       <Link
-        href={`/blog/${post.slug}`}
+        href={`/blog/${routeParam}`}
         className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium app-accent hover:underline"
       >
         Read more

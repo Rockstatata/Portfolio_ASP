@@ -1,4 +1,5 @@
 ﻿import Link from 'next/link';
+import { unstable_noStore as noStore } from 'next/cache';
 import { getSocialLinks } from '@/lib/database';
 import { getSocialIcon } from '@/lib/socialIcons';
 
@@ -11,6 +12,7 @@ const footerLinks = [
 ];
 
 export default async function Footer() {
+  noStore();
   const socialLinks = await getSocialLinks().catch(() => []);
 
   return (

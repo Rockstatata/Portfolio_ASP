@@ -171,39 +171,32 @@ export default function AdminContactsPage() {
     };
   }, [messages]);
 
-  const markAsRead = async (id: string) => {
+  const updateMessageFlags = async (id: string, updates: Partial<Contact>) => {
     try {
-      await updateAdminResource<Contact>('messages', id, { is_read: true });
+      await updateAdminResource<Contact>('messages', id, updates);
       await loadData();
       if (selectedMessage?.id === id) {
-        setSelectedMessage((current) => (current ? { ...current, is_read: true } : current));
+        setSelectedMessage((current) => (current ? { ...current, ...updates } : current));
       }
     } catch (updateError) {
       setError(updateError instanceof Error ? updateError.message : 'Failed to update message.');
     }
   };
 
+  const markAsRead = async (id: string) => {
+    await updateMessageFlags(id, { is_read: true });
+  };
+
+  const markAsUnread = async (id: string) => {
+    await updateMessageFlags(id, { is_read: false });
+  };
+
   const markAsResponded = async (id: string) => {
-    try {
-      await updateAdminResource<Contact>('messages', id, {
-        is_read: true,
-        is_archived: true,
-      });
-      await loadData();
-      if (selectedMessage?.id === id) {
-        setSelectedMessage((current) =>
-          current
-            ? {
-                ...current,
-                is_read: true,
-                is_archived: true,
-              }
-            : current,
-        );
-      }
-    } catch (updateError) {
-      setError(updateError instanceof Error ? updateError.message : 'Failed to update message.');
-    }
+    await updateMessageFlags(id, { is_read: true, is_archived: true });
+  };
+
+  const markAsNotResponded = async (id: string) => {
+    await updateMessageFlags(id, { is_archived: false });
   };
 
   const deleteMessage = async (id: string) => {
@@ -711,6 +704,17 @@ export default function AdminContactsPage() {
                           <FaCheck />
                         </button>
                       )}
+                      {message.is_read && (
+                        <button
+                          className="admin-btn admin-btn-secondary"
+                          type="button"
+                          style={{ padding: '0.4rem 0.55rem' }}
+                          onClick={() => markAsUnread(message.id)}
+                          title="Mark as Unread"
+                        >
+                          <FaEnvelopeOpen />
+                        </button>
+                      )}
                       {!message.is_archived && (
                         <button
                           className="admin-btn admin-btn-secondary"
@@ -718,6 +722,17 @@ export default function AdminContactsPage() {
                           style={{ padding: '0.4rem 0.55rem' }}
                           onClick={() => markAsResponded(message.id)}
                           title="Mark as Responded"
+                        >
+                          <FaReply />
+                        </button>
+                      )}
+                      {message.is_archived && (
+                        <button
+                          className="admin-btn admin-btn-secondary"
+                          type="button"
+                          style={{ padding: '0.4rem 0.55rem' }}
+                          onClick={() => markAsNotResponded(message.id)}
+                          title="Mark as Not Responded"
                         >
                           <FaReply />
                         </button>

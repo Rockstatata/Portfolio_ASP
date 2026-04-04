@@ -134,9 +134,14 @@ export async function POST(request: NextRequest) {
   let expectedPasskey: string;
   try {
     expectedPasskey = getAdminPasskey();
-  } catch {
+  } catch (error) {
+    const message =
+      process.env.NODE_ENV !== 'production' && error instanceof Error
+        ? error.message
+        : 'Admin authentication is not configured.';
+
     return NextResponse.json(
-      { ok: false, error: 'Admin authentication is not configured.' },
+      { ok: false, error: message },
       { status: 500, headers: { 'Cache-Control': 'no-store' } },
     );
   }

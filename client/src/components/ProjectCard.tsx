@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { FiExternalLink, FiGithub } from 'react-icons/fi';
 import type { Project } from '@/types';
 import { parseTechStack } from '@/utils/helpers';
@@ -34,7 +35,9 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
       <div className="p-6">
         <h3 className="text-lg font-semibold app-heading group-hover:text-(--app-accent) transition-colors">
-          {project.title}
+          <Link href={`/projects/${project.id}`} className="hover:underline">
+            {project.title}
+          </Link>
         </h3>
         <p className="mt-2 text-sm app-muted line-clamp-3">
           {project.description}
@@ -54,6 +57,12 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
 
         {/* Links */}
         <div className="mt-4 flex gap-3">
+          <Link
+            href={`/projects/${project.id}`}
+            className="app-link inline-flex items-center gap-1.5 text-sm transition-colors"
+          >
+            Details
+          </Link>
           {project.github_url && (
             <a
               href={project.github_url}

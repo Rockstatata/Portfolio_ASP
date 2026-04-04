@@ -84,7 +84,7 @@ export default function AdminPasskeyGate({ defaultNextPath = '/admin/dashboard' 
               <FaChartLine />
             </div>
             <h1 className="login-title">Admin Portal</h1>
-            <p className="login-subtitle">Enter the passkey to access the admin panel.</p>
+            <p className="login-subtitle">Sign in to manage your portfolio.</p>
           </div>
 
           <div className="form-group">

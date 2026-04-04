@@ -34,6 +34,23 @@ const defaultForm: ProjectForm = {
   display_order: 0,
 };
 
+const projectStatusOptions: Array<{ value: string; label: string }> = [
+  { value: 'active', label: 'Completed' },
+  { value: 'draft', label: 'In Development / Planning' },
+  { value: 'archived', label: 'On Hold / Cancelled' },
+];
+
+const projectStatusChipByValue: Record<string, string> = {
+  active: 'success',
+  draft: 'warning',
+  archived: 'danger',
+};
+
+const getProjectStatusLabel = (value: string) => {
+  const matched = projectStatusOptions.find((option) => option.value === value);
+  return matched ? matched.label : value;
+};
+
 export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -205,9 +222,11 @@ export default function AdminProjectsPage() {
                 setFormData((currentForm) => ({ ...currentForm, status: event.target.value }))
               }
             >
-              <option value="active">Active</option>
-              <option value="archived">Archived</option>
-              <option value="draft">Draft</option>
+              {projectStatusOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -316,8 +335,10 @@ export default function AdminProjectsPage() {
                   <td>{project.technologies}</td>
                   <td>{project.project_year}</td>
                   <td>
-                    <span className={`admin-status-chip ${project.status === 'active' ? 'success' : 'warning'}`}>
-                      {project.status}
+                    <span
+                      className={`admin-status-chip ${projectStatusChipByValue[project.status] ?? 'warning'}`}
+                    >
+                      {getProjectStatusLabel(project.status)}
                     </span>
                   </td>
                   <td>

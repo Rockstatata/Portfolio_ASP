@@ -7,6 +7,7 @@ import {
   createAdminResource,
   deleteAdminResource,
   fetchAdminResource,
+  isMissingColumnError,
   updateAdminResource,
 } from '@/lib/adminResourceClient';
 import { truncateText } from '@/utils/helpers';
@@ -17,6 +18,7 @@ type ExperienceForm = {
   duration: string;
   description: string;
   responsibilities: string;
+  status: string;
   display_order: number;
 };
 
@@ -26,14 +28,24 @@ const defaultForm: ExperienceForm = {
   duration: '',
   description: '',
   responsibilities: '',
+  status: 'Current',
   display_order: 0,
 };
+
+const experienceStatusOptions = [
+  'Current',
+  'Previous',
+  'Contract',
+  'Internship',
+  'Freelance',
+];
 
 export default function AdminExperiencePage() {
   const [experiences, setExperiences] = useState<Experience[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<ExperienceForm>(defaultForm);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
 
   const formTitle = useMemo(
     () => (editingId ? 'Edit Experience' : 'Add New Experience'),
@@ -70,6 +82,7 @@ export default function AdminExperiencePage() {
       duration: experience.duration,
       description: experience.description,
       responsibilities: experience.responsibilities,
+      status: experience.status ?? 'Current',
       display_order: experience.display_order,
     });
   };
@@ -81,6 +94,7 @@ export default function AdminExperiencePage() {
     }
 
     setError('');
+    setNotice('');
 
     const payload = {
       company: formData.company.trim(),
@@ -88,6 +102,7 @@ export default function AdminExperiencePage() {
       duration: formData.duration.trim(),
       description: formData.description.trim(),
       responsibilities: formData.responsibilities.trim(),
+      status: formData.status,
       display_order: formData.display_order,
     };
 
@@ -101,6 +116,29 @@ export default function AdminExperiencePage() {
       resetForm();
       await loadExperiences();
     } catch (saveError) {
+      if (isMissingColumnError(saveError, 'status')) {
+        const { status: statusToDrop, ...fallbackPayload } = payload;
+        void statusToDrop;
+
+        try {
+          if (editingId) {
+            await updateAdminResource<Experience>('experiences', editingId, fallbackPayload);
+          } else {
+            await createAdminResource<Experience>('experiences', fallbackPayload);
+          }
+
+          resetForm();
+          await loadExperiences();
+          setNotice('Saved successfully. Experience status requires schema update to persist.');
+          return;
+        } catch (retryError) {
+          setError(
+            retryError instanceof Error ? retryError.message : 'Failed to save experience.',
+          );
+          return;
+        }
+      }
+
       setError(
         saveError instanceof Error ? saveError.message : 'Failed to save experience.',
       );
@@ -201,6 +239,26 @@ export default function AdminExperiencePage() {
             />
           </div>
 
+          <div className="admin-form-group">
+            <label className="admin-form-label">Status</label>
+            <select
+              className="admin-form-select"
+              value={formData.status}
+              onChange={(event) =>
+                setFormData((currentForm) => ({
+                  ...currentForm,
+                  status: event.target.value,
+                }))
+              }
+            >
+              {experienceStatusOptions.map((statusOption) => (
+                <option key={statusOption} value={statusOption}>
+                  {statusOption}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <div className="admin-form-group full-width">
             <label className="admin-form-label">Description</label>
             <textarea
@@ -277,6 +335,7 @@ export default function AdminExperiencePage() {
                 <th>Company</th>
                 <th>Position</th>
                 <th>Duration</th>
+                <th>Status</th>
                 <th>Description</th>
                 <th>Order</th>
                 <th>Actions</th>
@@ -285,7 +344,7 @@ export default function AdminExperiencePage() {
             <tbody>
               {experiences.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="admin-empty-state">
+                  <td colSpan={7} className="admin-empty-state">
                     No experience entries found.
                   </td>
                 </tr>
@@ -295,6 +354,11 @@ export default function AdminExperiencePage() {
                   <td>{experience.company}</td>
                   <td>{experience.position}</td>
                   <td>{experience.duration || '—'}</td>
+                  <td>
+                    <span className={`admin-status-chip ${(experience.status ?? 'Current') === 'Previous' ? 'warning' : 'success'}`}>
+                      {experience.status ?? 'Current'}
+                    </span>
+                  </td>
                   <td>{truncateText(experience.description || '', 90)}</td>
                   <td>{experience.display_order}</td>
                   <td>
@@ -320,6 +384,8 @@ export default function AdminExperiencePage() {
             </tbody>
           </table>
         </div>
+
+        {notice && <p className="success-message">{notice}</p>}
       </section>
     </>
   );

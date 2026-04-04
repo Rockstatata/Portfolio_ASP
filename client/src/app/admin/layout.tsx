@@ -8,6 +8,7 @@ import {
   FaBriefcase,
   FaChartLine,
   FaClock,
+  FaCog,
   FaCode,
   FaEnvelope,
   FaGlobe,
@@ -27,6 +28,7 @@ const adminLinks = [
   { href: '/admin/timeline', label: 'Timeline', icon: FaClock },
   { href: '/admin/blogs', label: 'Blogs', icon: FaBlog },
   { href: '/admin/contacts', label: 'Contacts', icon: FaEnvelope },
+  { href: '/admin/settings', label: 'Settings', icon: FaCog },
 ];
 
 function isActivePath(currentPath: string, href: string) {

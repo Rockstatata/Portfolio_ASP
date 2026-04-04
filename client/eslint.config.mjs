@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored legacy assets used for 1:1 ASP.NET portfolio rendering.
+    "public/legacy/**",
   ]),
 ]);
 

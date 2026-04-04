@@ -1,7 +1,8 @@
 export const ADMIN_AUTH_COOKIE = 'portfolio_admin_session';
 
 const DEFAULT_ADMIN_SESSION_TTL_SECONDS = 60 * 60 * 8;
-const MINIMUM_PASSKEY_LENGTH = 12;
+const MINIMUM_PASSKEY_LENGTH = 8;
+const RECOMMENDED_PASSKEY_LENGTH = 12;
 const MINIMUM_SESSION_SECRET_LENGTH = 32;
 const ADMIN_SESSION_SUBJECT = 'portfolio-admin';
 
@@ -152,6 +153,12 @@ export function getAdminPasskey() {
   if (configured.length < MINIMUM_PASSKEY_LENGTH) {
     throw new Error(
       `ADMIN_PASSKEY must be at least ${MINIMUM_PASSKEY_LENGTH} characters.`,
+    );
+  }
+
+  if (configured.length < RECOMMENDED_PASSKEY_LENGTH) {
+    console.warn(
+      `[adminAuth] ADMIN_PASSKEY is accepted but shorter than the recommended ${RECOMMENDED_PASSKEY_LENGTH} characters.`,
     );
   }
 

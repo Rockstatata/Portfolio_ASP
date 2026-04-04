@@ -7,6 +7,8 @@ import { FiMapPin, FiPhone } from 'react-icons/fi';
 import { getHomeSections, getSocialLinks } from '@/lib/database';
 import { getSocialIcon } from '@/lib/socialIcons';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Contact | Portfolio',
   description: 'Get in touch with me for collaboration or inquiries.',
