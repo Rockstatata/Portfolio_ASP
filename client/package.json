@@ -10,6 +10,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "legacy:fragment": "node scripts/convert-portfolio-to-fragment.mjs",
     "db:check": "node scripts/seed-supabase.mjs --check",
     "seed": "node scripts/seed-supabase.mjs",
     "seed:force": "node scripts/seed-supabase.mjs --force"

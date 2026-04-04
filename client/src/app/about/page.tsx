@@ -5,6 +5,8 @@ import SkillBar from '@/components/SkillBar';
 import { getAboutSections, getExperiences, getSkills } from '@/lib/database';
 import type { Skill } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'About | Portfolio',
   description: 'Learn more about my background, skills, and professional experience.',

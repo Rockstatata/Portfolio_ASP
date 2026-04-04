@@ -45,6 +45,7 @@ export interface Skill {
   skill_name: string;
   skill_icon: string;
   proficiency: number;
+  status?: string | null;
   display_order: number;
 }
 
@@ -55,6 +56,7 @@ export interface TimelineItem {
   location: string;
   description: string;
   type: 'education' | 'work' | 'milestone';
+  status?: string | null;
   display_order: number;
 }
 
@@ -65,6 +67,7 @@ export interface Experience {
   duration: string;
   description: string;
   responsibilities: string;
+  status?: string | null;
   display_order: number;
 }
 

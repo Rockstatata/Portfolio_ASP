@@ -86,3 +86,20 @@ export async function deleteAdminResource(resource: string, id: string) {
     throw new Error(result.error ?? `Failed to delete ${resource}`);
   }
 }
+
+export function isMissingColumnError(error: unknown, columnName: string) {
+  if (!(error instanceof Error)) {
+    return false;
+  }
+
+  const message = error.message.toLowerCase();
+  const target = columnName.toLowerCase();
+  const hasColumnReference = message.includes(target);
+  const hasMissingSignal =
+    message.includes('does not exist') ||
+    message.includes('schema cache') ||
+    message.includes('could not find') ||
+    message.includes('column');
+
+  return hasColumnReference && hasMissingSignal;
+}

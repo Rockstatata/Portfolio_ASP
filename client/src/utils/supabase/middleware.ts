@@ -19,6 +19,10 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
+  if (!supabaseUrl || !supabaseKey) {
+    return supabaseResponse;
+  }
+
   const supabase = createServerClient(
     supabaseUrl!,
     supabaseKey!,
@@ -40,7 +44,12 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  await supabase.auth.getUser();
+  try {
+    await supabase.auth.getUser();
+  } catch {
+    // In dev, React Strict Mode can trigger overlapping refresh checks.
+    // We avoid surfacing noisy lock timeout warnings here.
+  }
 
   return supabaseResponse;
 }

@@ -7,6 +7,7 @@ import {
   createAdminResource,
   deleteAdminResource,
   fetchAdminResource,
+  isMissingColumnError,
   updateAdminResource,
 } from '@/lib/adminResourceClient';
 
@@ -15,6 +16,7 @@ type SkillForm = {
   skill_name: string;
   skill_icon: string;
   proficiency: number;
+  status: string;
   display_order: number;
 };
 
@@ -23,14 +25,25 @@ const defaultForm: SkillForm = {
   skill_name: '',
   skill_icon: '',
   proficiency: 70,
+  status: 'Active',
   display_order: 0,
 };
+
+const skillStatusOptions = [
+  'Active',
+  'Learning',
+  'Expert',
+  'Intermediate',
+  'Beginner',
+  'Inactive',
+];
 
 export default function AdminSkillsPage() {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<SkillForm>(defaultForm);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
 
   const formTitle = useMemo(
     () => (editingId ? 'Edit Skill' : 'Add New Skill'),
@@ -64,6 +77,7 @@ export default function AdminSkillsPage() {
       skill_name: skill.skill_name,
       skill_icon: skill.skill_icon,
       proficiency: skill.proficiency,
+      status: skill.status ?? 'Active',
       display_order: skill.display_order,
     });
   };
@@ -75,12 +89,14 @@ export default function AdminSkillsPage() {
     }
 
     setError('');
+    setNotice('');
 
     const payload = {
       category: formData.category.trim(),
       skill_name: formData.skill_name.trim(),
       skill_icon: formData.skill_icon.trim(),
       proficiency: Math.min(100, Math.max(1, formData.proficiency || 1)),
+      status: formData.status,
       display_order: formData.display_order,
     };
 
@@ -94,6 +110,27 @@ export default function AdminSkillsPage() {
       resetForm();
       await loadSkills();
     } catch (saveError) {
+      if (isMissingColumnError(saveError, 'status')) {
+        const { status: statusToDrop, ...fallbackPayload } = payload;
+        void statusToDrop;
+
+        try {
+          if (editingId) {
+            await updateAdminResource<Skill>('skills', editingId, fallbackPayload);
+          } else {
+            await createAdminResource<Skill>('skills', fallbackPayload);
+          }
+
+          resetForm();
+          await loadSkills();
+          setNotice('Saved successfully. Skills status requires schema update to persist.');
+          return;
+        } catch (retryError) {
+          setError(retryError instanceof Error ? retryError.message : 'Failed to save skill.');
+          return;
+        }
+      }
+
       setError(saveError instanceof Error ? saveError.message : 'Failed to save skill.');
     }
   };
@@ -207,6 +244,26 @@ export default function AdminSkillsPage() {
               }
             />
           </div>
+
+          <div className="admin-form-group">
+            <label className="admin-form-label">Status</label>
+            <select
+              className="admin-form-select"
+              value={formData.status}
+              onChange={(event) =>
+                setFormData((currentForm) => ({
+                  ...currentForm,
+                  status: event.target.value,
+                }))
+              }
+            >
+              {skillStatusOptions.map((statusOption) => (
+                <option key={statusOption} value={statusOption}>
+                  {statusOption}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="admin-form-actions">
@@ -253,6 +310,7 @@ export default function AdminSkillsPage() {
                 <th>Skill Name</th>
                 <th>Icon</th>
                 <th>Proficiency</th>
+                <th>Status</th>
                 <th>Order</th>
                 <th>Actions</th>
               </tr>
@@ -260,7 +318,7 @@ export default function AdminSkillsPage() {
             <tbody>
               {skills.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="admin-empty-state">
+                  <td colSpan={7} className="admin-empty-state">
                     No skills found.
                   </td>
                 </tr>
@@ -294,6 +352,11 @@ export default function AdminSkillsPage() {
                       </span>
                     </div>
                   </td>
+                  <td>
+                    <span className={`admin-status-chip ${(skill.status ?? 'Active') === 'Inactive' ? 'warning' : 'success'}`}>
+                      {skill.status ?? 'Active'}
+                    </span>
+                  </td>
                   <td>{skill.display_order}</td>
                   <td>
                     <button
@@ -318,6 +381,8 @@ export default function AdminSkillsPage() {
             </tbody>
           </table>
         </div>
+
+        {notice && <p className="success-message">{notice}</p>}
       </section>
     </>
   );

@@ -267,42 +267,8 @@ CREATE INDEX IF NOT EXISTS idx_analytics_event_type ON analytics_events(event_ty
 CREATE INDEX IF NOT EXISTS idx_analytics_created_at ON analytics_events(created_at);
 
 -- ============================================
--- Seed Data (matching ASP.NET default data)
+-- Seed Data
 -- ============================================
-
--- Default social links
-INSERT INTO social_links (platform, url, icon_class, display_order) VALUES
-  ('GitHub', 'https://github.com', 'FaGithub', 1),
-  ('LinkedIn', 'https://linkedin.com', 'FaLinkedin', 2),
-  ('Twitter', 'https://twitter.com', 'FaTwitter', 3),
-  ('Email', 'mailto:hello@example.com', 'FaEnvelope', 4);
-
--- Default skills (from ASP.NET Database_Setup_Script.sql)
-INSERT INTO skills (category, skill_name, skill_icon, proficiency, display_order) VALUES
-  ('Frontend', 'React', 'FaReact', 90, 1),
-  ('Frontend', 'Next.js', 'SiNextdotjs', 85, 2),
-  ('Frontend', 'TypeScript', 'SiTypescript', 88, 3),
-  ('Frontend', 'Tailwind CSS', 'SiTailwindcss', 92, 4),
-  ('Frontend', 'HTML5', 'FaHtml5', 95, 5),
-  ('Frontend', 'CSS3', 'FaCss3Alt', 93, 6),
-  ('Backend', 'Node.js', 'FaNodeJs', 82, 7),
-  ('Backend', 'Python', 'FaPython', 78, 8),
-  ('Backend', 'C#', 'SiCsharp', 80, 9),
-  ('Database', 'PostgreSQL', 'SiPostgresql', 85, 10),
-  ('Database', 'MongoDB', 'SiMongodb', 75, 11),
-  ('Tools', 'Git', 'FaGitAlt', 90, 12),
-  ('Tools', 'Docker', 'FaDocker', 70, 13);
-
--- Default about sections
-INSERT INTO about_sections (title, subtitle, content, section_type, display_order) VALUES
-  ('About Me', 'Full-Stack Developer', 'I am a passionate full-stack developer with expertise in building modern web applications.', 'main', 1),
-  ('My Passion', NULL, 'I am driven by the desire to create meaningful digital experiences that make a difference.', 'passion', 2);
-
--- Default home sections
-INSERT INTO home_sections (section_name, content, display_order) VALUES
-  ('Hero', 'Welcome to my portfolio', 1),
-  ('About', 'About me section', 2),
-  ('Skills', 'Skills and expertise', 3),
-  ('Projects', 'Featured projects', 4),
-  ('Experience', 'Work experience', 5),
-  ('Contact', 'Get in touch', 6);
+-- Intentionally left empty to avoid reintroducing placeholder content.
+-- Use: node client/scripts/seed-supabase.mjs --force
+-- This seeds Supabase with frontend-derived portfolio content and keeps admin/data in sync.

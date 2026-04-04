@@ -5,6 +5,7 @@ import Link from 'next/link';
 import {
   FaBlog,
   FaBriefcase,
+  FaCog,
   FaCode,
   FaClock,
   FaEnvelope,
@@ -30,6 +31,7 @@ const quickActions = [
   { href: '/admin/contacts', label: 'View Messages', icon: FaEnvelope },
   { href: '/admin/about', label: 'Update About', icon: FaUser },
   { href: '/admin/timeline', label: 'Update Timeline', icon: FaClock },
+  { href: '/admin/settings', label: 'Admin Settings', icon: FaCog },
 ];
 
 type DashboardStats = {

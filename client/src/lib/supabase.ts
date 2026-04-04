@@ -12,6 +12,13 @@ const missingEnv = [
 const rawClient = createClient(
   supabaseUrl ?? 'https://placeholder.supabase.co',
   supabaseKey ?? 'placeholder-publishable-key',
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+      detectSessionInUrl: false,
+    },
+  },
 );
 
 if (missingEnv.length > 0) {

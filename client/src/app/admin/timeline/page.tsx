@@ -7,6 +7,7 @@ import {
   createAdminResource,
   deleteAdminResource,
   fetchAdminResource,
+  isMissingColumnError,
   updateAdminResource,
 } from '@/lib/adminResourceClient';
 import { truncateText } from '@/utils/helpers';
@@ -16,6 +17,7 @@ type TimelineForm = {
   title: string;
   location: string;
   type: 'education' | 'work' | 'milestone';
+  status: string;
   display_order: number;
   description: string;
 };
@@ -25,15 +27,19 @@ const defaultForm: TimelineForm = {
   title: '',
   location: '',
   type: 'work',
+  status: 'Active',
   display_order: 0,
   description: '',
 };
+
+const timelineStatusOptions = ['Active', 'Completed', 'In Progress', 'Ongoing', 'Inactive'];
 
 export default function AdminTimelinePage() {
   const [timelineEntries, setTimelineEntries] = useState<TimelineItem[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<TimelineForm>(defaultForm);
   const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
 
   const formTitle = useMemo(
     () => (editingId ? 'Edit Timeline Entry' : 'Add New Timeline Entry'),
@@ -69,6 +75,7 @@ export default function AdminTimelinePage() {
       title: entry.title,
       location: entry.location,
       type: entry.type,
+      status: entry.status ?? 'Active',
       display_order: entry.display_order,
       description: entry.description,
     });
@@ -81,12 +88,14 @@ export default function AdminTimelinePage() {
     }
 
     setError('');
+    setNotice('');
 
     const payload = {
       year_range: formData.year_range.trim(),
       title: formData.title.trim(),
       location: formData.location.trim(),
       type: formData.type,
+      status: formData.status,
       display_order: formData.display_order,
       description: formData.description.trim(),
     };
@@ -101,6 +110,31 @@ export default function AdminTimelinePage() {
       resetForm();
       await loadTimeline();
     } catch (saveError) {
+      if (isMissingColumnError(saveError, 'status')) {
+        const { status: statusToDrop, ...fallbackPayload } = payload;
+        void statusToDrop;
+
+        try {
+          if (editingId) {
+            await updateAdminResource<TimelineItem>('timeline', editingId, fallbackPayload);
+          } else {
+            await createAdminResource<TimelineItem>('timeline', fallbackPayload);
+          }
+
+          resetForm();
+          await loadTimeline();
+          setNotice('Saved successfully. Timeline status requires schema update to persist.');
+          return;
+        } catch (retryError) {
+          setError(
+            retryError instanceof Error
+              ? retryError.message
+              : 'Failed to save timeline entry.',
+          );
+          return;
+        }
+      }
+
       setError(
         saveError instanceof Error ? saveError.message : 'Failed to save timeline entry.',
       );
@@ -221,6 +255,26 @@ export default function AdminTimelinePage() {
             />
           </div>
 
+          <div className="admin-form-group">
+            <label className="admin-form-label">Status</label>
+            <select
+              className="admin-form-select"
+              value={formData.status}
+              onChange={(event) =>
+                setFormData((currentForm) => ({
+                  ...currentForm,
+                  status: event.target.value,
+                }))
+              }
+            >
+              {timelineStatusOptions.map((statusOption) => (
+                <option key={statusOption} value={statusOption}>
+                  {statusOption}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <div className="admin-form-group full-width">
             <label className="admin-form-label">Description</label>
             <textarea
@@ -282,6 +336,7 @@ export default function AdminTimelinePage() {
                 <th>Title</th>
                 <th>Location</th>
                 <th>Type</th>
+                <th>Status</th>
                 <th>Description</th>
                 <th>Order</th>
                 <th>Actions</th>
@@ -290,7 +345,7 @@ export default function AdminTimelinePage() {
             <tbody>
               {timelineEntries.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="admin-empty-state">
+                  <td colSpan={8} className="admin-empty-state">
                     No timeline events found.
                   </td>
                 </tr>
@@ -301,6 +356,11 @@ export default function AdminTimelinePage() {
                   <td>{entry.title}</td>
                   <td>{entry.location || '—'}</td>
                   <td>{entry.type}</td>
+                  <td>
+                    <span className={`admin-status-chip ${(entry.status ?? 'Active') === 'Inactive' ? 'warning' : 'success'}`}>
+                      {entry.status ?? 'Active'}
+                    </span>
+                  </td>
                   <td>{truncateText(entry.description || '', 90)}</td>
                   <td>{entry.display_order}</td>
                   <td>
@@ -326,6 +386,8 @@ export default function AdminTimelinePage() {
             </tbody>
           </table>
         </div>
+
+        {notice && <p className="success-message">{notice}</p>}
       </section>
     </>
   );

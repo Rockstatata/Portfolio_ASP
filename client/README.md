@@ -35,7 +35,7 @@ Notes:
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` is kept as a compatibility fallback.
 - `SUPABASE_SERVICE_ROLE_KEY` is required for server-side admin resource APIs and seed scripts.
 - `ADMIN_SESSION_SECRET` must be at least 32 characters.
-- `ADMIN_PASSKEY` must be at least 12 characters.
+- `ADMIN_PASSKEY` must be at least 8 characters (12+ recommended).
 
 ## 3. Prepare Supabase Schema
 
@@ -106,6 +106,6 @@ After deploy, verify:
 	- Confirm key role is `service_role` and belongs to the same project ref as `NEXT_PUBLIC_SUPABASE_URL`.
 
 - `/admin` always rejects passkey
-	- Confirm `ADMIN_PASSKEY` is set and at least 12 characters long.
+	- Confirm `ADMIN_PASSKEY` is set and at least 8 characters long (12+ recommended).
 	- Confirm `ADMIN_SESSION_SECRET` is set and at least 32 characters long.
 	- Redeploy after updating env variables.

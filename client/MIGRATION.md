@@ -1,5 +1,19 @@
 # ASP.NET WebForms → Next.js Migration Guide
 
+## Legacy 1:1 Homepage Mode
+
+The `/` route now renders a generated fragment extracted from `server/admin_panel/portfolio.aspx` to preserve the original ASP.NET portfolio design/behavior.
+
+- Fragment source: `client/public/legacy/portfolio-fragment.html`
+- Legacy assets: `client/public/legacy/Content/styles.css`, `client/public/legacy/Scripts/script.js`, `client/public/legacy/assets/*`
+- Regenerate fragment after legacy markup updates:
+
+```bash
+npm run legacy:fragment
+```
+
+Note: Run the command from the `client` folder.
+
 ## Architecture Mapping
 
 | ASP.NET WebForms | Next.js Equivalent |
@@ -27,8 +41,9 @@
 | `Login.aspx` | `/admin/login` |
 | `Default.aspx` (admin) | `/admin/dashboard` |
 | `ManageProjects.aspx` | `/admin/projects` |
-| `ManageBlogs.aspx` | `/admin/blog` |
+| `ManageBlogs.aspx` | `/admin/blogs` |
 | `ViewContacts.aspx` | `/admin/messages` |
+| `Settings.aspx` | `/admin/settings` |
 
 ## Database Migration
 
@@ -53,11 +68,11 @@ Key changes:
 - Plaintext password comparison
 - Fallback to `Web.config` credentials
 
-**After (Supabase):**
-- JWT-based auth via Supabase Auth
-- Secure password hashing (bcrypt)
-- Row Level Security for data access
-- Protected admin routes via middleware
+**After (Next.js client):**
+- Passkey-based admin login (`ADMIN_PASSKEY`)
+- Signed JWT cookie session (`ADMIN_SESSION_SECRET`)
+- Route protection via `proxy.ts` and session verification
+- Supabase used for portfolio data CRUD, not for admin user authentication
 
 ## Setup Instructions
 
