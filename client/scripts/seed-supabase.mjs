@@ -674,13 +674,14 @@ async function run() {
 
   const preflightCounts = new Map();
   const missingTables = [];
+  const requiredTables = [...seedPlan.map((tableSeed) => tableSeed.table), 'storage_files'];
 
-  for (const tableSeed of seedPlan) {
+  for (const tableName of requiredTables) {
     try {
-      const count = await countRows(tableSeed.table);
-      preflightCounts.set(tableSeed.table, count);
+      const count = await countRows(tableName);
+      preflightCounts.set(tableName, count);
     } catch (error) {
-      missingTables.push({ table: tableSeed.table, message: error.message });
+      missingTables.push({ table: tableName, message: error.message });
     }
   }
 
@@ -695,9 +696,9 @@ async function run() {
 
   if (checkOnly) {
     console.log('Schema check passed. Current row counts:');
-    for (const tableSeed of seedPlan) {
-      const count = preflightCounts.get(tableSeed.table) ?? 0;
-      console.log(`- ${tableSeed.table}: ${count}`);
+    for (const tableName of requiredTables) {
+      const count = preflightCounts.get(tableName) ?? 0;
+      console.log(`- ${tableName}: ${count}`);
     }
     return;
   }

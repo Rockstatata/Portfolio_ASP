@@ -302,6 +302,17 @@ export async function getExperiences() {
   return data as Experience[];
 }
 
+export async function getExperienceById(id: string) {
+  const { data, error } = await supabase
+    .from('experiences')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) throw error;
+  return data as Experience;
+}
+
 export async function createExperience(experience: Omit<Experience, 'id'>) {
   const { data, error } = await supabase
     .from('experiences')

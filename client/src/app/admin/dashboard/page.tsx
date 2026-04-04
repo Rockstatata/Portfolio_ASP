@@ -9,6 +9,7 @@ import {
   FaCode,
   FaClock,
   FaEnvelope,
+  FaFolderOpen,
   FaHome,
   FaPlus,
   FaSave,
@@ -22,6 +23,7 @@ import {
   fetchAdminResource,
   updateAdminResource,
 } from '@/lib/adminResourceClient';
+import { uploadAdminFile } from '@/lib/adminStorageClient';
 
 const quickActions = [
   { href: '/admin/projects', label: 'Add New Project', icon: FaBriefcase },
@@ -29,6 +31,7 @@ const quickActions = [
   { href: '/admin/skills', label: 'Manage Skills', icon: FaCode },
   { href: '/admin/blogs', label: 'Write Blog Post', icon: FaBlog },
   { href: '/admin/contacts', label: 'View Messages', icon: FaEnvelope },
+  { href: '/admin/storage', label: 'Upload Files', icon: FaFolderOpen },
   { href: '/admin/about', label: 'Update About', icon: FaUser },
   { href: '/admin/timeline', label: 'Update Timeline', icon: FaClock },
   { href: '/admin/settings', label: 'Admin Settings', icon: FaCog },
@@ -88,6 +91,8 @@ export default function AdminDashboardPage() {
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<HomeSectionForm>(defaultForm);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [error, setError] = useState('');
 
   const sectionFormTitle = useMemo(
@@ -145,10 +150,12 @@ export default function AdminDashboardPage() {
   const resetForm = () => {
     setEditingId(null);
     setFormData(defaultForm);
+    setSelectedImageFile(null);
   };
 
   const startEdit = (section: HomeSection) => {
     setEditingId(section.id);
+    setSelectedImageFile(null);
     setFormData({
       section_name: section.section_name,
       content: section.content,
@@ -156,6 +163,36 @@ export default function AdminDashboardPage() {
       display_order: section.display_order,
       is_active: section.is_active,
     });
+  };
+
+  const handleImageUpload = async () => {
+    if (!selectedImageFile) {
+      setError('Please choose an image to upload.');
+      return;
+    }
+
+    setError('');
+    setIsUploadingImage(true);
+
+    try {
+      const uploaded = await uploadAdminFile({
+        file: selectedImageFile,
+        folder: 'home',
+        resource: 'home',
+        resourceId: editingId ?? undefined,
+        fieldName: 'image_path',
+      });
+
+      setFormData((currentForm) => ({
+        ...currentForm,
+        image_path: uploaded.public_url,
+      }));
+      setSelectedImageFile(null);
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : 'Failed to upload image.');
+    } finally {
+      setIsUploadingImage(false);
+    }
   };
 
   const handleSave = async () => {
@@ -310,6 +347,30 @@ export default function AdminDashboardPage() {
               }
               placeholder="/images/hero.jpg"
             />
+          </div>
+
+          <div className="admin-form-group full-width">
+            <label className="admin-form-label">Upload Image</label>
+            <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              <input
+                className="admin-form-input"
+                type="file"
+                accept="image/*"
+                style={{ maxWidth: '420px' }}
+                onChange={(event) => setSelectedImageFile(event.target.files?.[0] ?? null)}
+              />
+              <button
+                className="admin-btn admin-btn-secondary"
+                type="button"
+                disabled={!selectedImageFile || isUploadingImage}
+                onClick={() => void handleImageUpload()}
+              >
+                {isUploadingImage ? 'Uploading...' : 'Upload Image'}
+              </button>
+            </div>
+            <span className="admin-form-hint">
+              Uploads to the portfolio-storage bucket and fills Image Path automatically.
+            </span>
           </div>
 
           <div className="admin-form-group full-width">

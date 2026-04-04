@@ -8,6 +8,7 @@ import {
   FaCode,
   FaCog,
   FaEnvelope,
+  FaFolderOpen,
   FaHome,
   FaUser,
 } from 'react-icons/fa';
@@ -60,6 +61,12 @@ const settingGroups = [
     description: 'Manage messages, response workflow, and social/contact links.',
     href: '/admin/contacts',
     icon: FaEnvelope,
+  },
+  {
+    title: 'Storage Manager',
+    description: 'Upload files, images, PDFs, and copy persistent Supabase storage URLs.',
+    href: '/admin/storage',
+    icon: FaFolderOpen,
   },
 ];
 

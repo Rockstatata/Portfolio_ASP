@@ -1,4 +1,5 @@
 ﻿import type { Metadata } from 'next';
+import Link from 'next/link';
 import AnimatedSection from '@/components/AnimatedSection';
 import SectionHeading from '@/components/SectionHeading';
 import SkillBar from '@/components/SkillBar';
@@ -132,6 +133,14 @@ export default async function AboutPage() {
                     ))}
                   </div>
                 )}
+                <div className="mt-4">
+                  <Link
+                    href={`/experience/${experience.id}`}
+                    className="text-sm font-medium app-link hover:underline"
+                  >
+                    View full experience
+                  </Link>
+                </div>
               </div>
             </AnimatedSection>
           ))}

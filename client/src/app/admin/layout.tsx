@@ -11,6 +11,7 @@ import {
   FaCog,
   FaCode,
   FaEnvelope,
+  FaFolderOpen,
   FaGlobe,
   FaHome,
   FaSignOutAlt,
@@ -28,6 +29,7 @@ const adminLinks = [
   { href: '/admin/timeline', label: 'Timeline', icon: FaClock },
   { href: '/admin/blogs', label: 'Blogs', icon: FaBlog },
   { href: '/admin/contacts', label: 'Contacts', icon: FaEnvelope },
+  { href: '/admin/storage', label: 'Storage', icon: FaFolderOpen },
   { href: '/admin/settings', label: 'Settings', icon: FaCog },
 ];
 

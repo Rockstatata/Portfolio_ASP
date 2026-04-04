@@ -9,6 +9,7 @@ import {
   fetchAdminResource,
   updateAdminResource,
 } from '@/lib/adminResourceClient';
+import { uploadAdminFile } from '@/lib/adminStorageClient';
 
 type ProjectForm = {
   title: string;
@@ -55,6 +56,8 @@ export default function AdminProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<ProjectForm>(defaultForm);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [error, setError] = useState('');
 
   const formTitle = useMemo(
@@ -73,17 +76,18 @@ export default function AdminProjectsPage() {
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     void loadProjects();
   }, [loadProjects]);
 
   const resetForm = () => {
     setEditingId(null);
     setFormData(defaultForm);
+    setSelectedImageFile(null);
   };
 
   const startEdit = (project: Project) => {
     setEditingId(project.id);
+    setSelectedImageFile(null);
     setFormData({
       title: project.title,
       description: project.description,
@@ -95,6 +99,36 @@ export default function AdminProjectsPage() {
       image_url: project.image_url ?? '',
       display_order: project.display_order,
     });
+  };
+
+  const handleImageUpload = async () => {
+    if (!selectedImageFile) {
+      setError('Please choose an image to upload.');
+      return;
+    }
+
+    setError('');
+    setIsUploadingImage(true);
+
+    try {
+      const uploaded = await uploadAdminFile({
+        file: selectedImageFile,
+        folder: 'projects',
+        resource: 'projects',
+        resourceId: editingId ?? undefined,
+        fieldName: 'image_url',
+      });
+
+      setFormData((currentForm) => ({
+        ...currentForm,
+        image_url: uploaded.public_url,
+      }));
+      setSelectedImageFile(null);
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : 'Failed to upload image.');
+    } finally {
+      setIsUploadingImage(false);
+    }
   };
 
   const handleSave = async () => {
@@ -264,6 +298,30 @@ export default function AdminProjectsPage() {
               }
               placeholder="/images/projects/project.jpg"
             />
+          </div>
+
+          <div className="admin-form-group full-width">
+            <label className="admin-form-label">Upload Image</label>
+            <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              <input
+                className="admin-form-input"
+                type="file"
+                accept="image/*"
+                style={{ maxWidth: '420px' }}
+                onChange={(event) => setSelectedImageFile(event.target.files?.[0] ?? null)}
+              />
+              <button
+                className="admin-btn admin-btn-secondary"
+                type="button"
+                disabled={!selectedImageFile || isUploadingImage}
+                onClick={() => void handleImageUpload()}
+              >
+                {isUploadingImage ? 'Uploading...' : 'Upload Image'}
+              </button>
+            </div>
+            <span className="admin-form-hint">
+              Uploads to the portfolio-storage bucket and sets Image Path automatically.
+            </span>
           </div>
 
           <div className="admin-form-group">

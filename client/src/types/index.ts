@@ -108,6 +108,21 @@ export interface AnalyticsEvent {
   created_at: string;
 }
 
+export interface StorageFile {
+  id: string;
+  bucket_name: string;
+  storage_path: string;
+  public_url: string;
+  original_name: string;
+  mime_type: string | null;
+  size_bytes: number;
+  resource: string | null;
+  resource_id: string | null;
+  field_name: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface User {
   id: string;
   email: string;

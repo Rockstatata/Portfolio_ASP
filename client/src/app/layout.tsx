@@ -4,9 +4,9 @@ import AppShell from '@/components/AppShell';
 import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
-  title: 'Portfolio | Full-Stack Developer',
+  title: 'Sarwad Hasan Siddiqui | CSE Engineer',
   description: 'A modern developer portfolio showcasing projects, blog posts, and professional experience.',
-  keywords: ['developer', 'portfolio', 'full-stack', 'web development', 'react', 'next.js'],
+  keywords: ['developer', 'portfolio', 'full-stack', 'fastapi', 'react-native', 'next.js', 'python', 'cse', 'engineer', 'sarwad', 'hasan', 'siddiqui'],
 };
 
 export default function RootLayout({

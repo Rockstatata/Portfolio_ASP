@@ -60,7 +60,7 @@ export default async function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-sm font-medium app-muted">{info.label}</h3>
-                    <p className="app-heading wrap-break-word">{info.value}</p>
+                    <p className="app-heading app-break-anywhere">{info.value}</p>
                   </div>
                 </div>
               ))}

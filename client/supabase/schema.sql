@@ -6,6 +6,11 @@
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+-- Ensure the public storage bucket exists for admin uploads
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('portfolio-storage', 'portfolio-storage', true)
+ON CONFLICT (id) DO UPDATE SET public = EXCLUDED.public;
+
 -- ============================================
 -- Users table (managed by Supabase Auth)
 -- This is for additional user profile data
@@ -80,6 +85,7 @@ CREATE TABLE IF NOT EXISTS skills (
   skill_name TEXT NOT NULL,
   skill_icon TEXT DEFAULT '',
   proficiency INTEGER NOT NULL DEFAULT 50 CHECK (proficiency >= 0 AND proficiency <= 100),
+  status TEXT NOT NULL DEFAULT 'Active',
   display_order INTEGER NOT NULL DEFAULT 0
 );
 
@@ -94,6 +100,7 @@ CREATE TABLE IF NOT EXISTS timeline (
   location TEXT DEFAULT '',
   description TEXT DEFAULT '',
   type TEXT NOT NULL DEFAULT 'work' CHECK (type IN ('education', 'work', 'milestone')),
+  status TEXT NOT NULL DEFAULT 'Active',
   display_order INTEGER NOT NULL DEFAULT 0
 );
 
@@ -108,8 +115,33 @@ CREATE TABLE IF NOT EXISTS experiences (
   duration TEXT NOT NULL,
   description TEXT DEFAULT '',
   responsibilities TEXT DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'Current',
   display_order INTEGER NOT NULL DEFAULT 0
 );
+
+-- ============================================
+-- Uploaded Storage Files table
+-- Stores metadata and references for files uploaded to portfolio-storage bucket
+-- ============================================
+CREATE TABLE IF NOT EXISTS storage_files (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  bucket_name TEXT NOT NULL DEFAULT 'portfolio-storage',
+  storage_path TEXT NOT NULL UNIQUE,
+  public_url TEXT NOT NULL,
+  original_name TEXT NOT NULL,
+  mime_type TEXT,
+  size_bytes BIGINT NOT NULL DEFAULT 0,
+  resource TEXT,
+  resource_id UUID,
+  field_name TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Backfill compatibility for older deployments where these status columns are missing
+ALTER TABLE skills ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'Active';
+ALTER TABLE timeline ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'Active';
+ALTER TABLE experiences ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'Current';
 
 -- ============================================
 -- About Sections table
@@ -180,6 +212,7 @@ ALTER TABLE social_links ENABLE ROW LEVEL SECURITY;
 ALTER TABLE home_sections ENABLE ROW LEVEL SECURITY;
 ALTER TABLE analytics_events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE storage_files ENABLE ROW LEVEL SECURITY;
 
 -- Drop existing policies to keep schema re-runnable
 DROP POLICY IF EXISTS "Public read access" ON projects;
@@ -204,6 +237,7 @@ DROP POLICY IF EXISTS "Admin full access" ON about_sections;
 DROP POLICY IF EXISTS "Admin full access" ON social_links;
 DROP POLICY IF EXISTS "Admin full access" ON home_sections;
 DROP POLICY IF EXISTS "Admin full access" ON analytics_events;
+DROP POLICY IF EXISTS "Admin full access" ON storage_files;
 DROP POLICY IF EXISTS "Admin profile access" ON user_profiles;
 
 -- Public read access for portfolio content
@@ -251,6 +285,9 @@ CREATE POLICY "Admin full access" ON home_sections FOR ALL USING (
 CREATE POLICY "Admin full access" ON analytics_events FOR SELECT USING (
   EXISTS (SELECT 1 FROM user_profiles WHERE id = auth.uid() AND role = 'admin')
 );
+CREATE POLICY "Admin full access" ON storage_files FOR ALL USING (
+  EXISTS (SELECT 1 FROM user_profiles WHERE id = auth.uid() AND role = 'admin')
+);
 CREATE POLICY "Admin profile access" ON user_profiles FOR ALL USING (id = auth.uid());
 
 -- ============================================
@@ -265,6 +302,8 @@ CREATE INDEX IF NOT EXISTS idx_messages_is_read ON messages(is_read);
 CREATE INDEX IF NOT EXISTS idx_messages_created_at ON messages(created_at);
 CREATE INDEX IF NOT EXISTS idx_analytics_event_type ON analytics_events(event_type);
 CREATE INDEX IF NOT EXISTS idx_analytics_created_at ON analytics_events(created_at);
+CREATE INDEX IF NOT EXISTS idx_storage_files_created_at ON storage_files(created_at);
+CREATE INDEX IF NOT EXISTS idx_storage_files_resource ON storage_files(resource, resource_id);
 
 -- ============================================
 -- Seed Data
